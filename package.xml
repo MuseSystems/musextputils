@@ -1,0 +1,87 @@
+<package id="musextputils"
+         name="musextputils"
+         developer="Muse Systems"
+         descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
+         version="2.0.1"
+         updater="2.4.0">
+
+	<pkgnotes>
+		A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module.
+	</pkgnotes>
+	<prerequisite type="Query"
+		        name="PostgreSQL Database Version">
+	    <query>
+	      SELECT CASE WHEN (current_setting('server_version_num'))::integer >= 90500 THEN true ELSE false END;
+	    </query>
+	    <message>
+	      This package must be installed against PostgreSQL Database Version 9.5 or later.
+	    </message>
+	</prerequisite>
+	<prerequisite type="Query"
+		        name="PostgreSQL hstore Module Installed">
+	    <query>
+	      SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname = 'hstore');
+	    </query>
+	    <message>
+	      The PostgreSQL contrib module "hstore" must be installed prior to loading this package.
+	    </message>
+	</prerequisite>
+	
+	<prerequisite type="Query"
+		        name="xTuple ERP Version">
+	    <query>
+	      WITH version AS (
+            SELECT 
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^([[:digit:]]+)\..*'))::integer as major_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
+                (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
+         )
+	     SELECT 
+                (major_version = 4 AND minor_version = 10 AND patch_version >= 0)
+            OR  (major_version = 4 AND minor_version > 10)
+            OR  (major_version > 4)
+         FROM version;
+	    </query>
+	    <message>
+	      This package must be installed against xTuple ERP version 4.10.0 or later.  This package has only been tested against version 4.10.0 and may not work in later version without updating.
+	    </message>
+	</prerequisite>
+
+    <initscript file="database/misc/drop_objects.sql" />
+	<initscript file="database/views/v_basic_catalog.sql" />
+	<initscript file="database/views/v_catalog_triggers.sql" />
+	<initscript file="database/misc/domains.sql" />
+	<createtable file="database/tables/musemetric.sql" name="musemetric" />
+	<createtable file="database/tables/exceptionlog.sql" name="exceptionlog" />
+    <createtable file="database/tables/auditlog.sql" name="auditlog" />
+	<createfunction file="database/functions/create_musemetric.sql" name="create_musemetric" />
+	<createfunction file="database/functions/get_musemetric.sql" name="get_musemetric" />
+	<createfunction file="database/triggers/trig_b_iu_audit_field_maintenance.sql" name="trig_b_iu_audit_field_maintenance" />
+    <createfunction file="database/triggers/trig_a_iud_record_audit_logging.sql" name="trig_a_iud_record_audit_logging" />
+    <createfunction file="database/functions/add_common_table_columns.sql" name="add_common_table_columns" />
+    <createfunction file="database/functions/get_advisory_lock.sql" name="get_advisory_lock" />
+    <createfunction file="database/functions/log_exception.sql" name="log_exception" />
+    <createfunction file="database/functions/get_normalized_numeric.sql" name="get_normalized_numeric" />
+    <createfunction file="database/functions/get_scale.sql" name="get_scale" />
+    <createfunction file="database/functions/set_trans_variable.sql" name="set_trans_variable" />
+    <createfunction file="database/functions/set_session_variable.sql" name="set_session_variable" />
+    <createfunction file="database/functions/get_variable.sql" name="get_variable" />
+    <createfunction file="database/functions/get_implied_null.sql" name="get_implied_null" />
+    <createfunction file="database/functions/get_xtuple_version.sql" name="get_xtuple_version" />
+    <createfunction file="database/functions/add_table_auditing.sql" name="add_table_auditing" />
+    <createfunction file="database/functions/jsonb_diff.sql" name="jsonb_diff" />
+	<createview file="database/views/v_basic_catalog.sql" name="v_basic_catalog"/>
+	<createview file="database/views/v_catalog_triggers.sql" name="v_catalog_triggers"/>
+    <createview file="database/views/v_auditlog_changes.sql" name="v_auditlog_changes" />
+	<loadappscript file="client/scripts/museUtils.js" name="museUtils" order="10">A JavaScript module providing opinionated functions that facilitate custom development of the xTuple ERP desktop client.  This script now only includes all the sub-modules; it otherwise contains no functionality.</loadappscript>
+	<loadappscript file="client/scripts/numbro/numbro.js" name="numbro" order="10">The numbro JavaScript number formatting library.  This manages formatting and takes care of some of our floating point math issues.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsJsPolyfill.js" name="museUtilsJsPolyfill" order="10">A set of simple polyfills for those times the Qt JavaScript version falls short of the current standards.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsException.js" name="museUtilsException" order="10">A library encapsulating custom exception handling.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsConfig.js" name="museUtilsConfig" order="10">A library encapsulating custom configuration handling.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsQt.js" name="museUtilsQt" order="10">A library defining custom extensions to stock Qt UI widgets and similar form related helpers.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsUser.js" name="museUtilsUser" order="10">A library encapsulating user related functions.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsJs.js" name="museUtilsJs" order="10">A library defining misc., usefull JavaScript functions.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsDb.js" name="museUtilsDb" order="10">A library defining custom database access functionality.</loadappscript>
+	
+	<finalscript file="database/misc/create_metrics.sql" />
+</package>
