@@ -9,6 +9,7 @@ Contributing Code or Participating in Design
 If you think you would like to participate more deeply, we would be happy to consider your merge requests or input on design features.  There are currently two paths by which this package will evolve:
 
 1) Muse Systems Internal Development Process ("Muse Process")
+
 2) Community Development Process ("Community Process")
 
 The Muse Process will incorporate designs and development efforts undertaken within Muse Systems or as engaged on specific Muse client projects.  This development will largely be handled internally and the code will be contributed back to the community on completion (unless there is some specific prohibition against so doing).  The Muse Process will largely not be public and will be driven commercially: this model is really the standard closed source development process.  We expect the vast majority of development to happen this way.
@@ -36,7 +37,10 @@ Once the work is merged with the develop branch, it will automatically be includ
 We have a few simple requirements for any code submission before it can be merged with the package.
 
 1) We don't have a formal style guide as such, but we try to be reasonably consistent.
+
 2) Don't abuse the global namespace.  Unfortunately, this is a common practice in xTuple package development and we cannot perpetuate it here.  If something goes into the global namespace, there must be a compelling reason.
+
 3) There is a camp that likes commented code, and one which abhors it.  We like it and we should be more consistent in doing so.
+
 4) The big controversial requirement: we want you to get credit for any code you submit, but we must insist on copyright assignment to Muse Systems.  There are a number of reasons for this, but most importantly, we don't want any complexity in terms of how the future of this package may evolve.  We want to offer this code to the community, but at the same time we may find ourselves in situations where we must dual license the code on a commercial basis or similar.  We will promise that you will receive an appropriate place in the list of contributors and that any submission will appear in at least one open source release of the package.  We will nonetheless reserve the right to issue the work under other licenses, commercially license, sell the intellectual property rights to the package without further notice or permission from the contributors, and possibly cease public distribution of the package.  Having said that, the heat death of the universe will likely come pass before any of that becomes an issue for this software package... and even that's assuming there's interest outside of Muse System in contributing code!   
 
