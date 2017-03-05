@@ -10,9 +10,7 @@
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
  ** 
- ** Licensing restrictions apply.  Please refer to your Master Services
- ** Agreement or governing Statement of Work for complete terms and 
- ** conditions.
+ ** License: MIT License. See LICENSE.TXT for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
