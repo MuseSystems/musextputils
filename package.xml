@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.1.0"
+         version="2.2.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -73,6 +73,7 @@
 	<createview file="database/views/v_basic_catalog.sql" name="v_basic_catalog"/>
 	<createview file="database/views/v_catalog_triggers.sql" name="v_catalog_triggers"/>
     <createview file="database/views/v_auditlog_changes.sql" name="v_auditlog_changes" />
+    <createview file="database/views/v_characteristic.sql" name="v_characteristic" />
 	<loadappscript file="client/scripts/museUtils.js" name="museUtils" order="10">A JavaScript module providing opinionated functions that facilitate custom development of the xTuple ERP desktop client.  This script now only includes all the sub-modules; it otherwise contains no functionality.</loadappscript>
 	<loadappscript file="client/scripts/numbro/numbro.js" name="numbro" order="10">The numbro JavaScript number formatting library.  This manages formatting and takes care of some of our floating point math issues.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJsPolyfill.js" name="museUtilsJsPolyfill" order="10">A set of simple polyfills for those times the Qt JavaScript version falls short of the current standards.</loadappscript>
