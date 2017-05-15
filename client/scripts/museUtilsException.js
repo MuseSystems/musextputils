@@ -103,6 +103,11 @@ this.MuseUtils = this.MuseUtils || {};
                 returnText += "\n\n---------------------------------------------------\n";
                 returnText += "Root Cause Function Name: "+rootCause.myFunction+"\n";
                 returnText += "Root Cause Package Name: "+rootCause.myPackage+"\n";
+                if(pPublicApi.isDebugging) {
+                    returnText += "Root Cause Exception Name: "+rootCause.myErrorName+"\n";
+                    returnText += "Root Cause Exception Desc: "+rootCause.myErrorDesc+"\n";
+                    returnText += "Root Cause Payload: "+JSON.stringify(rootCause.myPayload)+"\n";
+                }
             } else {
                 returnText += "\nmessage: " + rootCause.message || "(N/A)";
                 returnText += "\nfileName: " + rootCause.fileName || "(N/A)";
