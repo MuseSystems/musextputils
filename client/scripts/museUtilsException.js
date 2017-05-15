@@ -30,7 +30,8 @@ this.MuseUtils = this.MuseUtils || {};
      *  Private Functions & Vars
      ***************************************/
 
-    var isDebugging;
+    pPublicApi.isDebugging = false;
+    pPublicApi.isRootCauseReported = false;
 
     // Check the debugging configuration.            
     try {    
@@ -40,17 +41,43 @@ this.MuseUtils = this.MuseUtils || {};
             );
     
         if(debugQuery.first()) {
-            isDebugging = ('t' == debugQuery.value("result")
+            pPublicApi.isDebugging = ('t' == debugQuery.value("result")
                                     .toString()
                                     .toLowerCase()
                                     .substring(0,1));
         } else {
-            isDebugging = false;
+            pPublicApi.isDebugging = false;
         }
     
     } catch(e) {
-        isDebugging = false;
+        pPublicApi.isDebugging = false;
     }
+
+    // Check the root cause reporting configuration.
+    try {
+        var rootCauseQuery = toolbox.executeQuery(
+            "SELECT musextputils.get_musemetric('musextputils', " +
+            "'rootCauseReportingEnabled', null::boolean) AS result");
+
+        if(rootCauseQuery.first()) {
+            pPublicApi.isRootCauseReported = ('t' == rootCauseQuery.value("result")
+                                                .toString()
+                                                .toLowerCase()
+                                                .substring(0,1));
+        } else {
+            pPublicApi.isRootCauseReported = false;
+        }
+    } catch(e) {
+        pPublicApi.isRootCauseReported = false;
+    }
+
+    var getRootCause = function(pMuseExceptionPayload) {
+        if(pMuseExceptionPayload.hasOwnProperty("thrownError")) {
+            return getRootCause(pMuseExceptionPayload.thrownError);
+        } else {
+            return pMuseExceptionPayload;
+        }
+    };
 
     /**
      * Constructs exception text messages to be displayed to the user.  The
@@ -62,30 +89,50 @@ this.MuseUtils = this.MuseUtils || {};
 
         var returnText;
 
-        if(!this.isDebugging || this.isDebugging === false) {
-            // Setup local variables to convert the passed data to a string return.
-            returnText = "\n";
-            returnText += this.logMsg || "(Exception not logged!)";
-            returnText += "\n\n";
+        returnText = "\n";
+        returnText += this.logMsg || "(Exception not logged!)";
+        returnText += "\n\n";
+
+        if(pPublicApi.isRootCauseReported) {
+            var rootCause = getRootCause(this.myPayload || {});
+
+            if(rootCause.myIsMuseUtilsException || false) {
+                returnText += "Root Cause " + rootCause.logMsg || "(Exception not logged!)";
+                returnText += "\nRoot Cause: "+ rootCause.myMessage;
+                returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
+                returnText += "\n\n---------------------------------------------------\n";
+                returnText += "Root Cause Function Name: "+rootCause.myFunction+"\n";
+                returnText += "Root Cause Package Name: "+rootCause.myPackage+"\n";
+            } else {
+                returnText += "\nmessage: " + rootCause.message || "(N/A)";
+                returnText += "\nfileName: " + rootCause.fileName || "(N/A)";
+                returnText += "\nsourceId: " + rootCause.sourceId || "(N/A)";
+                returnText += "\nlineNumber: " + rootCause.lineNumber || "(N/A)";
+                returnText += "\nexpressionEndOffset: " + rootCause.expressionEndOffset || "(N/A)";
+                returnText += "\nexpressionBeginOffset: " + rootCause.expressionBeginOffset || "(N/A)";
+                returnText += "\nexpressionCaretOffset: " + rootCause.expressionCaretOffset || "(N/A)";
+                returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
+                returnText += "\n\n---------------------------------------------------\n";
+            }
+        } else {
             returnText += this.myMessage;
             returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
             returnText += "\n\n---------------------------------------------------\n";
+        }
+
+        if(pPublicApi.isDebugging || false) {
+            // Setup local variables to convert the passed data to a string return.
+            returnText += "Message: "+this.myMessage+"\n";
             returnText += "Function Name: "+this.myFunction+"\n";
             returnText += "Package Name: "+this.myPackage+"\n";
-        } else {
-            // Setup local variables to convert the passed data to a string return.
-            returnText = "\n";
-            returnText += this.logMsg || "(Exception not logged!)";
-            returnText += "\n\n";
-            returnText += this.myMessage;
-            returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
-            returnText += "\n\n---------------------------------------------------\n";
             returnText += "Exception Name: "+this.myErrorName+"\n";
             returnText += "Exception Desc: "+this.myErrorDesc+"\n";
+            returnText += "Payload: "+JSON.stringify(this.myPayload)+"\n";
+        } else {
+            // Setup local variables to convert the passed data to a string return.
             returnText += "Function Name: "+this.myFunction+"\n";
             returnText += "Package Name: "+this.myPackage+"\n";
-            returnText += "Payload: "+JSON.stringify(this.myPayload)+"\n";
-        }        
+        }
       
         return returnText; 
     }; 
@@ -123,7 +170,7 @@ this.MuseUtils = this.MuseUtils || {};
     var UnknownException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -142,7 +189,7 @@ this.MuseUtils = this.MuseUtils || {};
     var ParameterException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -160,7 +207,7 @@ this.MuseUtils = this.MuseUtils || {};
     var DatabaseException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -178,7 +225,7 @@ this.MuseUtils = this.MuseUtils || {};
     var OutOfBoundsException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -196,7 +243,7 @@ this.MuseUtils = this.MuseUtils || {};
     var PermissionException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -214,7 +261,7 @@ this.MuseUtils = this.MuseUtils || {};
     var NotFoundException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -232,7 +279,7 @@ this.MuseUtils = this.MuseUtils || {};
     var RecordLockedException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
@@ -250,7 +297,7 @@ this.MuseUtils = this.MuseUtils || {};
      var ApiException = function(pPackage, pMessage, pFunction, pPayload) {
 
         this.myIsMuseUtilsException = true;
-        this.myIsDeugging = isDebugging;
+        this.myIsDeugging = pPublicApi.isDebugging;
         this.myPackage = pPackage;
         this.myMessage = pMessage;
         this.myFunction = pFunction;
