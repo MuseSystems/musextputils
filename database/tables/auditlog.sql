@@ -10,7 +10,7 @@
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
  ** 
- ** License: MIT License. See LICENSE.TXT for complete licensing details.
+ ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
