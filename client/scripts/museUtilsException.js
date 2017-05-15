@@ -106,7 +106,8 @@ this.MuseUtils = this.MuseUtils || {};
                 if(pPublicApi.isDebugging) {
                     returnText += "Root Cause Exception Name: "+rootCause.myErrorName+"\n";
                     returnText += "Root Cause Exception Desc: "+rootCause.myErrorDesc+"\n";
-                    returnText += "Root Cause Payload: "+JSON.stringify(rootCause.myPayload)+"\n";
+                    returnText += "Root Cause Payload: "+JSON.stringify(rootCause.myPayload);
+                    returnText += "\n\n---------------------------------------------------\n";
                 }
             } else {
                 returnText += "\nmessage: " + rootCause.message || "(N/A)";
