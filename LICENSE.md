@@ -1,3 +1,7 @@
+Muse Systems xTuple Utilities
+
+Contact: muse.information@musesystems.com; https://muse.systems
+
 Copyright 2014-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
