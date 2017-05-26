@@ -92,6 +92,12 @@ this.MuseUtils = this.MuseUtils || {};
         returnText = "\n";
         returnText += this.logMsg || "(Exception not logged!)";
         returnText += "\n\n";
+        returnText += this.myMessage;
+        returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
+        returnText += "\n\n";
+        returnText += "Function Name: "+this.myFunction+"\n";
+        returnText += "Package Name: "+this.myPackage+"\n\n";
+        returnText += "---------------------------------------------------\n\n";
 
         if(pPublicApi.isRootCauseReported) {
             var rootCause = getRootCause(this.myPayload || {});
@@ -99,10 +105,15 @@ this.MuseUtils = this.MuseUtils || {};
             if(rootCause.myIsMuseUtilsException || false) {
                 returnText += "Root Cause " + rootCause.logMsg || "(Exception not logged!)";
                 returnText += "\nRoot Cause: "+ rootCause.myMessage;
-                returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
-                returnText += "\n\n---------------------------------------------------\n";
-                returnText += "Root Cause Function Name: "+rootCause.myFunction+"\n";
-                returnText += "Root Cause Package Name: "+rootCause.myPackage+"\n";
+                returnText += "\n\nRoot Cause Function Name: "+rootCause.myFunction+"\n";
+                returnText += "Root Cause Package Name: "+rootCause.myPackage+"\n\n";
+                returnText += "---------------------------------------------------\n\n";
+                if(pPublicApi.isDebugging) {
+                    returnText += "Root Cause Exception Name: "+rootCause.myErrorName+"\n";
+                    returnText += "Root Cause Exception Desc: "+rootCause.myErrorDesc+"\n";
+                    returnText += "Root Cause Payload: "+JSON.stringify(rootCause.myPayload);
+                    returnText += "\n\n------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n";
+                }
             } else {
                 returnText += "\nmessage: " + rootCause.message || "(N/A)";
                 returnText += "\nfileName: " + rootCause.fileName || "(N/A)";
@@ -114,24 +125,16 @@ this.MuseUtils = this.MuseUtils || {};
                 returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
                 returnText += "\n\n---------------------------------------------------\n";
             }
-        } else {
-            returnText += this.myMessage;
-            returnText += "\n\nPlease report this to your support staff along with the Exception Log Id above.";
-            returnText += "\n\n---------------------------------------------------\n";
         }
 
         if(pPublicApi.isDebugging || false) {
             // Setup local variables to convert the passed data to a string return.
-            returnText += "Message: "+this.myMessage+"\n";
-            returnText += "Function Name: "+this.myFunction+"\n";
-            returnText += "Package Name: "+this.myPackage+"\n";
-            returnText += "Exception Name: "+this.myErrorName+"\n";
-            returnText += "Exception Desc: "+this.myErrorDesc+"\n";
-            returnText += "Payload: "+JSON.stringify(this.myPayload)+"\n";
-        } else {
-            // Setup local variables to convert the passed data to a string return.
-            returnText += "Function Name: "+this.myFunction+"\n";
-            returnText += "Package Name: "+this.myPackage+"\n";
+            returnText += "Calling Function Name: "+this.myFunction+"\n";
+            returnText += "Calling Package Name: "+this.myPackage+"\n";
+            returnText += "Calling Exception Name: "+this.myErrorName+"\n";
+            returnText += "Calling Exception Desc: "+this.myErrorDesc+"\n";
+            returnText += "Calling Payload: "+JSON.stringify(this.myPayload)+"\n\n";
+            returnText += "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
         }
       
         return returnText; 
