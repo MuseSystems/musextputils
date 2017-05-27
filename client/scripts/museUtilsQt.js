@@ -106,6 +106,30 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
         }
     };
 
+    var createNumericLineEdit = function(pObjName, pParent, pDecimalPlaces) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pObjName: pObjName,
+            pParent: pParent,
+            pDecimalPlaces: pDecimalPlaces
+        };
+        
+        try {
+            var targXLineEdit = toolbox.createWidget("XLineEdit",pParent, 
+                pObjName);
+            targXLineEdit.alignment = Qt.AlignRight;
+            numericLineEdit(targXLineEdit, (pDecimalPlaces || 0));
+
+            return targXLineEdit;
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "We found errors while trying to create a new numeric XLineEdit widget.",
+                "MuseUtils.createNumericLineEdit",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -143,6 +167,34 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                 });
         }
          
+    };
+
+    pPublicApi.createNumericLineEdit = function(pObjName, pParent, 
+        pDecimalPlaces) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pObjName: pObjName,
+            pParent: pParent,
+            pDecimalPlaces: pDecimalPlaces
+        };
+
+        if(!pObjName) {
+            throw new MuseUtils.ParameterException(
+                "musextputils",
+                "We require that you provide an object name for your new numeric XLineEdit widget.",
+                "MuseUtils.pPublicApi.createNumericLineEdit",
+                {params: funcParams});
+        }
+
+        try {
+            return createNumericLineEdit(pObjName, pParent, pDecimalPlaces);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "We failed to properly create a numeric XLineEdit widget as requested.",
+                "MuseUtils.pPublicApi.createNumericLineEdit",
+                {params: funcParams, thrownError: e});
+        }
     };
 
     // Set a flag indicating that this library is loaded.
