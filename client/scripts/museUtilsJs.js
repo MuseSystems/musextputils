@@ -112,7 +112,14 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
         } else {
             return false;
         }
-    }; 
+    };
+
+    var getNormalizedString = function(pText) {
+        return pText.replace(/'/g,'')
+                    .replace(/[^\w]+/g,'_')
+                    .replace(/^_|_$/,'')
+                    .toLowerCase();
+    };
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
@@ -201,6 +208,26 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                         },
                     thrownError: e
                 });
+        }
+    };
+
+    pPublicApi.getNormalizedString = function(pText) {
+        try {
+            if(pText == "undefined" || pText === null) {
+                // We don't assume to know that a meaningless value is right or
+                // wrong so we won't intentially blow up here... we'll take
+                // measures to ensure that we don't unintentially blow up,
+                // however.
+                return getNormalizedString("");
+            } else {
+                return getNormalizedString(pText);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.getNormalizedString",
+                {params: funcParams, thrownError: e});
         }
     };
 
