@@ -133,6 +133,16 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                     }));
     };
 
+    var getCleanTextLine = function(pText) {
+        if(coalesce(pText,"") === "") {
+            return null;
+        }
+        
+        return pText.replace(/\r?\n|\r|\t/g," ")
+                    .replace(/ +/g," ")
+                    .replace(/^ +| +$/g,"");
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -251,6 +261,23 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                 "musextputils",
                 "There was an error during the execution of an API call.",
                 "MuseUtils.pPublicApi.parseParams",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    pPublicApi.getCleanTextLine = function(pText) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pText: pText
+        };
+        
+        try {
+            return getCleanTextLine(pText);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.getCleanTextLine",
                 {params: funcParams, thrownError: e});
         }
     };
