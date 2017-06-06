@@ -68,6 +68,8 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
             pLineEdit.setFormattedText(pLineEdit.getNumericValue());
         };
 
+        pLineEdit.alignment = Qt.AlignRight;
+
         pLineEdit.getNumericValue = function() {
             // Parse the line with numbro and convert to a number.
             var vReturnValue = numbro()
@@ -117,7 +119,7 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
         try {
             var targXLineEdit = toolbox.createWidget("XLineEdit",pParent, 
                 pObjName);
-            targXLineEdit.alignment = Qt.AlignRight;
+
             numericLineEdit(targXLineEdit, (pDecimalPlaces || 0));
 
             return targXLineEdit;
