@@ -137,7 +137,7 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
         if(coalesce(pText,"") === "") {
             return null;
         }
-        
+
         return pText.replace(/\r?\n|\r|\t/g," ")
                     .replace(/ +/g," ")
                     .replace(/^ +| +$/g,"");
@@ -234,6 +234,11 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     };
 
     pPublicApi.getNormalizedString = function(pText) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pText: pText
+        };
+        
         try {
             if(pText == "undefined" || pText === null) {
                 // We don't assume to know that a meaningless value is right or
@@ -254,6 +259,11 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     };
 
     pPublicApi.parseParams = function(pParams) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pParams: pParams
+        };
+        
         try {
             return parseParams(pParams);
         } catch(e) {
