@@ -121,6 +121,18 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                     .toLowerCase();
     };
 
+    var parseParams = function(pParams) {
+        if(realNull(pParams) === null) {
+            return null;
+        }
+
+        return JSON.parse(
+                JSON.stringify(pParams,
+                    function(key, value) {
+                        return value.valueOf();
+                    }));
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -227,6 +239,18 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                 "musextputils",
                 "There was an error during the execution of an API call.",
                 "MuseUtils.pPublicApi.getNormalizedString",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    pPublicApi.parseParams = function(pParams) {
+        try {
+            return parseParams(pParams);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.parseParams",
                 {params: funcParams, thrownError: e});
         }
     };
