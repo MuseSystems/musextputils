@@ -44,6 +44,10 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
     var isTrue = function(pBoolString) {
+      if(pBoolString === undefined || pBoolString === null) {
+        pBoolString = false;
+      }
+
       return  ('t' == pBoolString.toString().toLowerCase().substring(0,1));
     }; 
 
@@ -147,7 +151,22 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
 
-    pPublicApi.isTrue = isTrue;
+    pPublicApi.isTrue = function(pBoolString) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pBoolString: pBoolString
+        };
+
+        try {
+            return isTrue(pBoolString);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.isTrue",
+                {params: funcParams, thrownError: e});
+        }
+    };
 
     pPublicApi.realNull = realNull;
 
