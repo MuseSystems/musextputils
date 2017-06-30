@@ -54,7 +54,7 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     var realNull = function(pValue) {
         if(pValue === undefined || 
             pValue === null || 
-            (typeof pValues === "string" && pValue === "")) {
+            (typeof pValue === "string" && pValue === "")) {
             return null;
         } else {
             return pValue;
