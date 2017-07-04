@@ -133,7 +133,11 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
         return JSON.parse(
                 JSON.stringify(pParams,
                     function(key, value) {
-                        return value.valueOf();
+                        if(realNull(value) === null) {
+                            return null;
+                        } else {
+                            return value.valueOf();
+                        }
                     }));
     };
 
