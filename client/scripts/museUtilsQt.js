@@ -132,6 +132,17 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
         }
     };
 
+    var getModeFromXtpEnumId = function(pEnumId) {
+        var modes = ["unknown","new","edit","view","copy","release","post",
+        "replace"];
+        
+        if(pEnumId > 7 || pEnumId < 0) {
+            return modes[0];    
+        } else {
+            return modes[pEnumId];
+        }
+    };
+
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
@@ -197,6 +208,24 @@ if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                 "MuseUtils.pPublicApi.createNumericLineEdit",
                 {params: funcParams, thrownError: e});
         }
+    };
+
+    pPublicApi.getModeFromXtpEnumId = function(pEnumId) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pEnumId: pEnumId
+        };
+        
+        if(!Number.isInteger(pEnumId) ||
+            pEnumId < 0) {
+            throw new MuseUtils.ParameterException(
+                "musextputils",
+                "We require an integer parameter in order to resolve the mode string.",
+                "MuseUtils.pPublicApi.getModeFromXtpEnumId",
+                {params: funcParams});
+        }
+
+        return getModeFromXtpEnumId(pEnumId);
     };
 
     // Set a flag indicating that this library is loaded.
