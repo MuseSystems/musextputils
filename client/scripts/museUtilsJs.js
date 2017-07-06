@@ -44,13 +44,17 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
     var isTrue = function(pBoolString) {
+      if(pBoolString === undefined || pBoolString === null) {
+        pBoolString = false;
+      }
+
       return  ('t' == pBoolString.toString().toLowerCase().substring(0,1));
     }; 
 
     var realNull = function(pValue) {
         if(pValue === undefined || 
             pValue === null || 
-            (typeof pValues === "string" && pValue === "")) {
+            (typeof pValue === "string" && pValue === "")) {
             return null;
         } else {
             return pValue;
@@ -112,13 +116,61 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
         } else {
             return false;
         }
-    }; 
+    };
+
+    var getNormalizedString = function(pText) {
+        return pText.replace(/'/g,'')
+                    .replace(/[^\w]+/g,'_')
+                    .replace(/^_|_$/,'')
+                    .toLowerCase();
+    };
+
+    var parseParams = function(pParams) {
+        if(realNull(pParams) === null) {
+            return null;
+        }
+
+        return JSON.parse(
+                JSON.stringify(pParams,
+                    function(key, value) {
+                        if(realNull(value) === null) {
+                            return null;
+                        } else {
+                            return value.valueOf();
+                        }
+                    }));
+    };
+
+    var getCleanTextLine = function(pText) {
+        if(coalesce(pText,"") === "") {
+            return null;
+        }
+
+        return pText.replace(/\r?\n|\r|\t/g," ")
+                    .replace(/ +/g," ")
+                    .replace(/^ +| +$/g,"");
+    };
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
 
-    pPublicApi.isTrue = isTrue;
+    pPublicApi.isTrue = function(pBoolString) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pBoolString: pBoolString
+        };
+
+        try {
+            return isTrue(pBoolString);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.isTrue",
+                {params: funcParams, thrownError: e});
+        }
+    };
 
     pPublicApi.realNull = realNull;
 
@@ -201,6 +253,65 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                         },
                     thrownError: e
                 });
+        }
+    };
+
+    pPublicApi.getNormalizedString = function(pText) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pText: pText
+        };
+        
+        try {
+            if(pText == "undefined" || pText === null) {
+                // We don't assume to know that a meaningless value is right or
+                // wrong so we won't intentially blow up here... we'll take
+                // measures to ensure that we don't unintentially blow up,
+                // however.
+                return getNormalizedString("");
+            } else {
+                return getNormalizedString(pText);
+            }
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.getNormalizedString",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    pPublicApi.parseParams = function(pParams) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pParams: pParams
+        };
+        
+        try {
+            return parseParams(pParams);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.parseParams",
+                {params: funcParams, thrownError: e});
+        }
+    };
+
+    pPublicApi.getCleanTextLine = function(pText) {
+        // Capture function parameters for later exception references.
+        var funcParams = {
+            pText: pText
+        };
+        
+        try {
+            return getCleanTextLine(pText);
+        } catch(e) {
+            throw new MuseUtils.ApiException(
+                "musextputils",
+                "There was an error during the execution of an API call.",
+                "MuseUtils.pPublicApi.getCleanTextLine",
+                {params: funcParams, thrownError: e});
         }
     };
 
