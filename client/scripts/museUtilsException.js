@@ -72,8 +72,15 @@ this.MuseUtils = this.MuseUtils || {};
     }
 
     var getRootCause = function(pMuseExceptionPayload) {
-        if(pMuseExceptionPayload.hasOwnProperty("thrownError")) {
-            return getRootCause(pMuseExceptionPayload.thrownError);
+
+        if(!pMuseExceptionPayload.hasOwnProperty("myIsMuseUtilsException")) {
+            return pMuseExceptionPayload;
+        }
+
+        var payload = pMuseExceptionPayload.myPayload;
+
+        if(payload.hasOwnProperty("thrownError")) {
+            return getRootCause(payload.thrownError);
         } else {
             return pMuseExceptionPayload;
         }
@@ -100,7 +107,7 @@ this.MuseUtils = this.MuseUtils || {};
         returnText += "---------------------------------------------------\n\n";
 
         if(pPublicApi.isRootCauseReported) {
-            var rootCause = getRootCause(this.myPayload || {});
+            var rootCause = getRootCause(this || {});
 
             if(rootCause.myIsMuseUtilsException || false) {
                 returnText += "Root Cause " + rootCause.logMsg || "(Exception not logged!)";
