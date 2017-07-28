@@ -382,6 +382,18 @@ this.MuseUtils = this.MuseUtils || {};
         displayError(pException, pParent);
     };
 
+    pPublicApi.getRootCause = function(pException) {
+        if(typeof pException === undefined || typeof pException === null) {
+            throw new ParameterException(
+                "musextputils",
+                "We require some exception object in order to parse it for a root cause.",
+                "MuseUtils.getRootCause",
+                {params: {pException: pException}});
+        }
+
+        return getRootCause(pException);
+    };
+
     // Set a flag indicating that this library is loaded.
     pPublicApi.isMuseUtilsExceptionLoaded = true;
 
