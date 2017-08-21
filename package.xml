@@ -70,6 +70,8 @@
     <createfunction file="database/functions/get_xtuple_version.sql" name="get_xtuple_version" />
     <createfunction file="database/functions/add_table_auditing.sql" name="add_table_auditing" />
     <createfunction file="database/functions/jsonb_diff.sql" name="jsonb_diff" />
+    <createfunction file="database/functions/get_normalized_name.sql" name="get_normalized_name" />
+    
 	<createview file="database/views/v_basic_catalog.sql" name="v_basic_catalog"/>
 	<createview file="database/views/v_catalog_triggers.sql" name="v_catalog_triggers"/>
     <createview file="database/views/v_auditlog_changes.sql" name="v_auditlog_changes" />
