@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.4.1"
+         version="2.5.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -26,17 +26,17 @@
 	      The PostgreSQL contrib module "hstore" must be installed prior to loading this package.
 	    </message>
 	</prerequisite>
-	
+
 	<prerequisite type="Query"
 		        name="xTuple ERP Version">
 	    <query>
 	      WITH version AS (
-            SELECT 
+            SELECT
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^([[:digit:]]+)\..*'))::integer as major_version,
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.([[:digit:]]+)\..*$'))::integer as minor_version,
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
          )
-	     SELECT 
+	     SELECT
                 (major_version = 4 AND minor_version = 10 AND patch_version >= 0)
             OR  (major_version = 4 AND minor_version > 10)
             OR  (major_version > 4)
@@ -71,7 +71,7 @@
     <createfunction file="database/functions/add_table_auditing.sql" name="add_table_auditing" />
     <createfunction file="database/functions/jsonb_diff.sql" name="jsonb_diff" />
     <createfunction file="database/functions/get_normalized_name.sql" name="get_normalized_name" />
-    
+
 	<createview file="database/views/v_basic_catalog.sql" name="v_basic_catalog"/>
 	<createview file="database/views/v_catalog_triggers.sql" name="v_catalog_triggers"/>
     <createview file="database/views/v_auditlog_changes.sql" name="v_auditlog_changes" />
@@ -85,6 +85,6 @@
 	<loadappscript file="client/scripts/museUtilsUser.js" name="museUtilsUser" order="10">A library encapsulating user related functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJs.js" name="museUtilsJs" order="10">A library defining misc., usefull JavaScript functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsDb.js" name="museUtilsDb" order="10">A library defining custom database access functionality.</loadappscript>
-	
+
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
