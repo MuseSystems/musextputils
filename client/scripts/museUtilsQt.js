@@ -160,6 +160,10 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
             var preSaveEventFuncs = [];
             var postSaveEventFuncs = [];
 
+            var addPreSaveHookFunc = function(pFunc) {
+                preSaveEventFuncs.push(pFunc);
+            };
+
             var removePreSaveHookFunc = function(pFunc) {
                 preSaveEventFuncs = preSaveEventFuncs.filter(function(
                     targFunc
@@ -299,7 +303,7 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                         pFunc: pFunc
                     };
 
-                    if (typeof pFunc === "function") {
+                    if (typeof pFunc !== "function") {
                         throw new MuseUtils.ParameterException(
                             "musextputils",
                             "We require a valid function to add it to the post-save event hook.",
