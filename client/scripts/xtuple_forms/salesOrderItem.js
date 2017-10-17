@@ -118,11 +118,7 @@ include("museUtils");
      *                         the xTuple C++ forms which contain context
      *                         setting information.
      */
-    pPublicApi.set = function(pParams) {
-        //----------------------------------------------------------------
-        //  Connects/Disconnects
-        //----------------------------------------------------------------
-    };
+    pPublicApi.set = function(pParams) {};
 
     //--------------------------------------------------------------------
     //  Foreign Script "Set" Handling
