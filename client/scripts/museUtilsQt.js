@@ -186,6 +186,9 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                     try {
                         preSaveEventFuncs[i1]();
                     } catch (e) {
+                        // Roll everything back if possible
+                        toolbox.executeRollback();
+
                         // If we have pre-save exceptions, we abort the save process.
                         throw new MuseUtils.ApiException(
                             "musextputils",
