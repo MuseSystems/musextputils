@@ -111,6 +111,15 @@ include("museUtils");
         }
     };
 
+    pPublicApi.setNativeSaveFunc = function(pFunc) {
+        try {
+            saveHookFramework.setNativeSaveFunc(pFunc);
+        } catch (e) {
+            MuseUtils.displayError(e, mywindow);
+            mywindow.close();
+        }
+    };
+
     /**
      * Form startup initialization.  Standard part of the xTuple ERP
      * startup process.
