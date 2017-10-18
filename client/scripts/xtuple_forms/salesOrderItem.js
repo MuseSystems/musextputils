@@ -42,7 +42,7 @@ include("museUtils");
 
 (function(pPublicApi, pGlobal) {
     var saveHookFramework = MuseUtils.initSaveHookFramework(
-        mywindow.sSaveClicked(),
+        mywindow.sSaveClicked,
         mywindow
     );
 
