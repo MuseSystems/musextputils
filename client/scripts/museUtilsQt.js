@@ -244,6 +244,10 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                 }
             };
 
+            var setNativeSaveFunc = function(pFunc) {
+                nativeSaveFunction = pFunc;
+            };
+
             return {
                 addPreSaveHookFunc: function(pFunc) {
                     // Capture function parameters for later exception references.
@@ -367,6 +371,32 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
                             "There was a non-recoverable error while trying to save a record.  We will abort the save process here.",
                             "MuseUtils.initSaveHookFramework.public.sProcessSaveFramework",
                             { thrownError: e }
+                        );
+                    }
+                },
+                setNativeSaveFunc: function(pFunc) {
+                    // Capture function parameters for later exception references.
+                    var funcParams = {
+                        pFunc: pFunc
+                    };
+
+                    if (typeof pFunc !== "function") {
+                        throw new MuseUtils.ParameterException(
+                            "musextputils",
+                            "We require a valid function in order to set a new native save function.",
+                            "MuseUtils.initSaveHookFramework.public.setNativeSaveFunc",
+                            { params: funcParams }
+                        );
+                    }
+
+                    try {
+                        setNativeSaveFunc(pFunc);
+                    } catch (e) {
+                        throw new MuseUtils.ApiException(
+                            "musextputils",
+                            "We encountered an error trying to set a new native function call.",
+                            "MuseUtils.initSaveHookFramework.public.setNativeSaveFunc",
+                            { params: funcParams, thrownError: e }
                         );
                     }
                 }
