@@ -42,7 +42,7 @@ include("museUtils");
 
 (function(pPublicApi, pGlobal) {
     var saveHookFramework = MuseUtils.initSaveHookFramework(
-        mywindow.sSaveClicked,
+        mywindow.sSave,
         mywindow
     );
 
@@ -57,7 +57,7 @@ include("museUtils");
 
     // Disconnect the native function and connect the framework.  Earlier
     // the better.
-    toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSaveClicked()");
+    toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSave()");
     _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
 
     //--------------------------------------------------------------------
