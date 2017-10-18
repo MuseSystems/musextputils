@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.5.1"
+         version="2.6.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -86,6 +86,9 @@
 	<loadappscript file="client/scripts/museUtilsUser.js" name="museUtilsUser" order="10">A library encapsulating user related functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJs.js" name="museUtilsJs" order="10">A library defining misc., usefull JavaScript functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsDb.js" name="museUtilsDb" order="10">A library defining custom database access functionality.</loadappscript>
+
+    <loadappscript file="client/scripts/xtuple_forms/salesOrderItem.js" name="salesOrderItem" order="0">A script to provide Sales Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
+    <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="0">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
 
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
