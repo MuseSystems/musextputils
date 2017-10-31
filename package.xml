@@ -89,6 +89,7 @@
 
     <loadappscript file="client/scripts/xtuple_forms/salesOrderItem.js" name="salesOrderItem" order="0">A script to provide Sales Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="0">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
+    <loadappscript file="client/scripts/xtuple_forms/shipTo.js" name="shipTo" order="0">A script to provide ShipTo save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
 
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
