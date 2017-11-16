@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -26,34 +26,34 @@ this.MuseUtils = this.MuseUtils || {};
 //////////////////////////////////////////////////////////////////////////
 
 // Number formatting and basic math.
-if(!this.numbro) {
+if (!this.numbro) {
     include("numbro");
 }
 
-if(!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
+if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
     include("museUtilsJsPolyfill");
 }
 
-if(!MuseUtils.isMuseUtilsExceptionLoaded) {
+if (!MuseUtils.isMuseUtilsExceptionLoaded) {
     include("museUtilsException");
 }
 
-if(!MuseUtils.isMuseUtilsConfigLoaded) {
+if (!MuseUtils.isMuseUtilsConfigLoaded) {
     include("museUtilsConfig");
 }
 
-if(!MuseUtils.isMuseUtilsQtLoaded) {
+if (!MuseUtils.isMuseUtilsQtLoaded) {
     include("museUtilsQt");
 }
 
-if(!MuseUtils.isMuseUtilsUserLoaded) {
+if (!MuseUtils.isMuseUtilsUserLoaded) {
     include("museUtilsUser");
 }
 
-if(!MuseUtils.isMuseUtilsJsLoaded) {
+if (!MuseUtils.isMuseUtilsJsLoaded) {
     include("museUtilsJs");
 }
 
-if(!MuseUtils.isMuseUtilsDbLoaded) {
+if (!MuseUtils.isMuseUtilsDbLoaded) {
     include("museUtilsDb");
 }
