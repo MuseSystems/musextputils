@@ -9,13 +9,13 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-CREATE OR REPLACE FUNCTION musextputils.get_normalized_numeric(pWeight text) 
+CREATE OR REPLACE FUNCTION musextputils.get_normalized_numeric(pWeight text)
     RETURNS numeric AS
         $BODY$
             SELECT regexp_replace($1,'[\,]+','','g')::numeric;
@@ -30,5 +30,5 @@ GRANT EXECUTE ON FUNCTION musextputils.get_normalized_numeric(pWeight text) TO a
 GRANT EXECUTE ON FUNCTION musextputils.get_normalized_numeric(pWeight text) TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.get_normalized_numeric(pWeight text) 
-    IS 'A function which normalizes textually formatted numbers.  This can happen when trying get locale based weight rounding.'; 
+COMMENT ON FUNCTION musextputils.get_normalized_numeric(pWeight text)
+    IS 'A function which normalizes textually formatted numbers.  This can happen when trying get locale based weight rounding.';

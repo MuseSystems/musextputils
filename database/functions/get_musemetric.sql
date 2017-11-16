@@ -9,18 +9,18 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
 --  We create this function as a polymorphic function which can retrieve differently typed configuration data based on the passed pMetricType value.
-CREATE OR REPLACE FUNCTION musextputils.get_musemetric(pMetricPackage text, pMetricName text, pMetricType anyelement) 
+CREATE OR REPLACE FUNCTION musextputils.get_musemetric(pMetricPackage text, pMetricName text, pMetricType anyelement)
     RETURNS anyelement AS
         $BODY$
             DECLARE
-                vReturnValue ALIAS FOR $0; -- Special value initialized to the polymorphic parameter's type as passed into the function (same real type as pMetricType). 
+                vReturnValue ALIAS FOR $0; -- Special value initialized to the polymorphic parameter's type as passed into the function (same real type as pMetricType).
                 vValueColumn        text;
             BEGIN
                 -- First we validate input.

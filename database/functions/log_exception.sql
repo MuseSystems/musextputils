@@ -9,13 +9,13 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-CREATE OR REPLACE FUNCTION musextputils.log_exception(pExceptionName text, pExceptionDescription text, pExceptionMessage text, pFunctionName text, pPackageName text, pPayload jsonb) 
+CREATE OR REPLACE FUNCTION musextputils.log_exception(pExceptionName text, pExceptionDescription text, pExceptionMessage text, pFunctionName text, pPackageName text, pPayload jsonb)
 	RETURNS bigint AS
 		$BODY$
 			DECLARE

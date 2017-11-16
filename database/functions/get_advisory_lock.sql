@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -23,7 +23,7 @@
 
 -- The bigint version of the function.
 
-CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint) 
+CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
     RETURNS TABLE(is_acquired boolean, locker_pid integer, locker_role text) AS
         $BODY$
             DECLARE
@@ -35,13 +35,13 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                 END IF;
 
                 -- Make compatible with both PostgreSQL < 9.3 AND 9.3+
-                CASE 
+                CASE
                     WHEN current_setting('server_version_num')::integer >= 90300 THEN
                         -- This is PostgreSQL 9.3 or greater so run the queries compatible with that version.
 
                         -- Next, we'll try and get the lock requested.  We'll follow xTuple's idea of also checking for the same session having the lock already.
-                        IF EXISTS(SELECT     1 
-                                    FROM     pg_catalog.pg_stat_activity psa 
+                        IF EXISTS(SELECT     1
+                                    FROM     pg_catalog.pg_stat_activity psa
                                         JOIN pg_catalog.pg_locks pl ON pl.pid = psa.pid
                                     WHERE     pl.locktype = 'advisory'
                                             AND pl.objsubid = 1
@@ -54,7 +54,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                         END IF;
 
                         -- If we fail to lock, then we want to return pertinent information. Otherwise we'll return a positive respsonse.
-                        IF NOT vIsAcquired THEN 
+                        IF NOT vIsAcquired THEN
 
                             RETURN QUERY (SELECT     vIsAcquired,coalesce(psa.pid,-2)::integer,coalesce(psa.usename,'***UNKNOWN***')::text
                                             FROM     pg_catalog.pg_stat_activity psa JOIN pg_catalog.pg_locks pl ON pl.pid = psa.pid
@@ -62,15 +62,15 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                                                   AND pl.objsubid = 1
                                                   AND    (pl.classid::int8 << 32) | pl.objid::int8 = pLockID);
                             RETURN;
-                        
+
                         END IF;
 
                     WHEN current_setting('server_version_num')::integer < 90300 THEN
                         -- This PostgreSQL 9.2 or earlier so we'll run those queries.
 
                         -- Next, we'll try and get the lock requested.  We'll follow xTuple's idea of also checking for the same session having the lock already.
-                        IF EXISTS(SELECT     1 
-                                    FROM     pg_catalog.pg_stat_activity psa 
+                        IF EXISTS(SELECT     1
+                                    FROM     pg_catalog.pg_stat_activity psa
                                         JOIN pg_catalog.pg_locks pl ON pl.pid = psa.procpid
                                     WHERE     pl.locktype = 'advisory'
                                             AND pl.objsubid = 1
@@ -83,7 +83,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                         END IF;
 
                         -- If we fail, then we want to return pertinent information. Otherwise we'll return a positive respsonse.
-                        IF NOT vIsAcquired THEN 
+                        IF NOT vIsAcquired THEN
 
                                 RETURN QUERY (SELECT     vIsAcquired,coalesce(psa.procpid,-2)::integer,coalesce(psa.usename,'***UNKNOWN***')::text
                                                 FROM     pg_catalog.pg_stat_activity psa JOIN pg_catalog.pg_locks pl ON pl.pid = psa.procpid
@@ -91,7 +91,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                                                       AND pl.objsubid = 1
                                                       AND    (pl.classid::int8 << 32) | pl.objid::int8 = pLockID);
                                 RETURN;
-                            
+
                         END IF;
                     ELSE
                         -- We didn't successfully detect the PostgreSQL version correctly... somthing's wrong.
@@ -102,7 +102,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pLockID bigint)
                 --If we get here we should have successfully gotten our lock.... so return it!
                 RETURN QUERY (SELECT vIsAcquired,null::integer,null::text);
                 RETURN;
-                
+
             END;
         $BODY$
     LANGUAGE plpgsql;
@@ -118,7 +118,7 @@ GRANT EXECUTE ON FUNCTION musextputils.get_advisory_lock(bigint) TO xtrole;
 
 
 -- This is the int, int version of the function.
-CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, pSecondLockID integer) 
+CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, pSecondLockID integer)
     RETURNS TABLE(is_acquired boolean, locker_pid integer, locker_role text) AS
         $BODY$
             DECLARE
@@ -130,13 +130,13 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                 END IF;
 
                 -- Make compatible with both PostgreSQL < 9.3 AND 9.3+
-                CASE 
+                CASE
                     WHEN current_setting('server_version_num')::integer >= 90300 THEN
                         -- This is PostgreSQL 9.3 or greater so run the queries compatible with that version.
 
                         -- Next, we'll try and get the lock requested.  We'll follow xTuple's idea of also checking for the same session having the lock already.
-                        IF EXISTS(SELECT     1 
-                                    FROM     pg_catalog.pg_stat_activity psa 
+                        IF EXISTS(SELECT     1
+                                    FROM     pg_catalog.pg_stat_activity psa
                                         JOIN pg_catalog.pg_locks pl ON pl.pid = psa.pid
                                     WHERE     pl.locktype = 'advisory'
                                             AND pl.objsubid = 2
@@ -149,7 +149,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                         END IF;
 
                         -- If we fail to lock, then we want to return pertinent information. Otherwise we'll return a positive respsonse.
-                        IF NOT vIsAcquired THEN 
+                        IF NOT vIsAcquired THEN
 
                             RETURN QUERY (SELECT     vIsAcquired,coalesce(psa.pid,-2)::integer,coalesce(psa.usename,'***UNKNOWN***')::text
                                             FROM     pg_catalog.pg_stat_activity psa JOIN pg_catalog.pg_locks pl ON pl.pid = psa.pid
@@ -157,15 +157,15 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                                                   AND pl.objsubid = 2
                                                   AND    pl.classid::int8 = pFirstLockID AND pl.objid::int8 = pSecondLockID);
                             RETURN;
-                        
+
                         END IF;
 
                     WHEN current_setting('server_version_num')::integer < 90300 THEN
                         -- This PostgreSQL 9.2 or earlier so we'll run those queries.
 
                         -- Next, we'll try and get the lock requested.  We'll follow xTuple's idea of also checking for the same session having the lock already.
-                        IF EXISTS(SELECT     1 
-                                    FROM     pg_catalog.pg_stat_activity psa 
+                        IF EXISTS(SELECT     1
+                                    FROM     pg_catalog.pg_stat_activity psa
                                         JOIN pg_catalog.pg_locks pl ON pl.pid = psa.procpid
                                     WHERE     pl.locktype = 'advisory'
                                             AND pl.objsubid = 2
@@ -178,7 +178,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                         END IF;
 
                         -- If we fail, then we want to return pertinent information. Otherwise we'll return a positive respsonse.
-                        IF NOT vIsAcquired THEN 
+                        IF NOT vIsAcquired THEN
 
                                 RETURN QUERY (SELECT     vIsAcquired,coalesce(psa.procpid,-2)::integer,coalesce(psa.usename,'***UNKNOWN***')::text
                                                 FROM     pg_catalog.pg_stat_activity psa JOIN pg_catalog.pg_locks pl ON pl.pid = psa.procpid
@@ -186,7 +186,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                                                       AND pl.objsubid = 2
                                                       AND    pl.classid::int8 = pFirstLockID AND pl.objid::int8 = pSecondLockID);
                                 RETURN;
-                            
+
                         END IF;
                     ELSE
                         -- We didn't successfully detect the PostgreSQL version correctly... somthing's wrong.
@@ -197,7 +197,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_advisory_lock(pFirstLockID integer, 
                 --If we get here we should have successfully gotten our lock.... so return it!
                 RETURN QUERY (SELECT vIsAcquired,null::integer,null::text);
                 RETURN;
-                
+
             END;
         $BODY$
     LANGUAGE plpgsql;

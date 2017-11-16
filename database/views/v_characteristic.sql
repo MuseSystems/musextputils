@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -74,17 +74,17 @@ REVOKE ALL ON TABLE musextputils.v_characteristic FROM public;
 GRANT ALL ON TABLE musextputils.v_characteristic TO admin;
 GRANT ALL ON TABLE musextputils.v_characteristic TO xtrole;
 
-COMMENT ON VIEW musextputils.v_characteristic 
+COMMENT ON VIEW musextputils.v_characteristic
     IS $DOC$Compacts characteristic assignments into JSONB unstructured documents.  The division is by target type and target id.  The object generated for each target type/id contains other objects keyed by the public.char natural key and containing all other values of both char and charass.  Note that we assume one instance of a characteristic per one target id.  Also note that this view will not perform well unless a reasonably well restricted WHERE clause is provided. $DOC$;
 
 COMMENT ON COLUMN musextputils.v_characteristic.charass_target_type
-    IS 
+    IS
     $DOC$The type of record the characteristic is assoiated with (i.e 'LS' for Lot/Serial, 'INCDT' for incidents).$DOC$;
 
 COMMENT ON COLUMN musextputils.v_characteristic.charass_target_id
-    IS 
+    IS
     $DOC$The primary key of the specific record of the target type being described.$DOC$;
 
 COMMENT ON COLUMN musextputils.v_characteristic.json_data
-    IS 
+    IS
     $DOC$A JSON object containing sub-objects for each characteristic that has been assigned to the target type/id record.  Note that the top level JSON attributes are the public.char.char_name (natural key) values of the assigned characteristics.  All data about the characteristic and the assigned values are contained within the appropriate sub-object.$DOC$;

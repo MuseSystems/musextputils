@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,7 +20,7 @@
 -- avoid cast errors here and simply return null when a "setting" is not found.
 --
 
-CREATE OR REPLACE FUNCTION musextputils.get_variable(pPackage text, pVariable text, pReturnType anyelement) 
+CREATE OR REPLACE FUNCTION musextputils.get_variable(pPackage text, pVariable text, pReturnType anyelement)
     RETURNS anyelement AS
         $BODY$
             DECLARE
@@ -32,13 +32,13 @@ CREATE OR REPLACE FUNCTION musextputils.get_variable(pPackage text, pVariable te
                     NULL; -- Nothing to do here.
                 ELSE
                     EXECUTE format('SELECT current_setting(%1$L)::%2$s',
-                        pPackage||'.'||pVariable, pg_typeof(pReturnType)) 
+                        pPackage||'.'||pVariable, pg_typeof(pReturnType))
                         INTO vReturnValue;
                     RAISE NOTICE ' Execute Null Test: %', vReturnValue;
                 END IF;
 
                 RETURN vReturnValue;
-            EXCEPTION 
+            EXCEPTION
                 WHEN SQLSTATE '42704' THEN
                     RAISE WARNING 'Could not find configuration (%).',
                         pPackage||'.'||pVariable;
@@ -55,5 +55,5 @@ GRANT EXECUTE ON FUNCTION musextputils.get_variable(pPackage text, pVariable tex
 GRANT EXECUTE ON FUNCTION musextputils.get_variable(pPackage text, pVariable text, pReturnType anyelement) TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.get_variable(pPackage text, pVariable text, pReturnType anyelement) 
+COMMENT ON FUNCTION musextputils.get_variable(pPackage text, pVariable text, pReturnType anyelement)
     IS $DOC$Retrieves a session or local variable and casts it to a useful type.  We also avoid cast errors here and simply return null when a "setting" is not found. $DOC$;

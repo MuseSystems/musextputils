@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,11 +20,11 @@
 -- good xTuple usage.
 --
 
-CREATE OR REPLACE FUNCTION musextputils.set_trans_variable(pPackage text, pVariable text, pValue text) 
+CREATE OR REPLACE FUNCTION musextputils.set_trans_variable(pPackage text, pVariable text, pValue text)
     RETURNS boolean AS
         $BODY$
             DECLARE
-                
+
             BEGIN
                 -- Validate require parameters
                 IF pPackage IS NULL THEN
@@ -53,5 +53,5 @@ GRANT EXECUTE ON FUNCTION musextputils.set_trans_variable(pPackage text, pVariab
 GRANT EXECUTE ON FUNCTION musextputils.set_trans_variable(pPackage text, pVariable text, pValue text) TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.set_trans_variable(pPackage text, pVariable text, pValue text) 
+COMMENT ON FUNCTION musextputils.set_trans_variable(pPackage text, pVariable text, pValue text)
     IS $DOC$Wraps the standard set_config system function with some formality needed for good xTuple usage.$DOC$;
