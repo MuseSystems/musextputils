@@ -8,7 +8,7 @@ this.MuseUtils = this.MuseUtils || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!MuseUtils.isMuseUtilsExceptionLoaded) {
+if (!MuseUtils.isMuseUtilsExceptionLoaded) {
     include("museUtilsException");
 }
 
@@ -17,7 +17,6 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi) {
-
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
@@ -28,19 +27,21 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
         var userQuery;
 
         try {
-            userQuery = toolbox.executeQuery('SELECT oid AS usr_id FROM pg_catalog.pg_roles WHERE rolname = current_user;');
-        } catch(e) {
+            userQuery = toolbox.executeQuery(
+                "SELECT oid AS usr_id FROM pg_catalog.pg_roles WHERE rolname = current_user;"
+            );
+        } catch (e) {
             throw new MuseUtils.DatabaseException(
                 "musextputils",
                 "We encountered a database problem determining the current user id.",
                 "MuseUtils.getCurrentUserId",
                 {
                     databaseError: userQuery.lastError()
-                });
+                }
+            );
         }
-        
-        
-        if(userQuery.first()) {
+
+        if (userQuery.first()) {
             // We got something so lets return that.
             var usrId = userQuery.value("usr_id");
             return usrId;
@@ -52,22 +53,21 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                 "MuseUtils.getCurrentUserId",
                 {
                     databaseError: userQuery.lastError()
-                });
+                }
+            );
         }
     };
 
     var getUserIdByUsername = function(pUsername) {
-        
         var userQuery;
 
         try {
             userQuery = toolbox.executeQuery(
-                'SELECT oid AS usr_id FROM pg_catalog.pg_roles ' +
-                'WHERE rolname = <? value("pUsername") ?>;',
-                {pUsername: pUsername});
-
-        } catch(e) {
-
+                "SELECT oid AS usr_id FROM pg_catalog.pg_roles " +
+                    'WHERE rolname = <? value("pUsername") ?>;',
+                { pUsername: pUsername }
+            );
+        } catch (e) {
             throw new MuseUtils.DatabaseException(
                 "musextputils",
                 "We encountered a database problem determining the requested user's id.",
@@ -78,11 +78,11 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                     },
                     databaseError: userQuery.lastError(),
                     error: e
-                });
+                }
+            );
         }
-        
-    
-        if(userQuery.first()) {
+
+        if (userQuery.first()) {
             // We got something so lets return that.
             var usrId = userQuery.value("usr_id");
             return usrId;
@@ -93,9 +93,10 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                 "We encountered a problem determining the requested user's id.",
                 "MuseUtils.getUserIdByUsername",
                 {
-                    params: {pUsername: pUsername},
+                    params: { pUsername: pUsername },
                     databaseError: userQuery.lastError()
-                });
+                }
+            );
         }
     };
 
@@ -106,42 +107,44 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     pPublicApi.getCurrentUserId = function() {
         try {
             return getCurrentUserId();
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during the execution of an API call.",
                 "MuseUtils.pPublicApi.getCurrentUserId",
                 {
                     thrownError: e
-                });
+                }
+            );
         }
     };
 
     pPublicApi.getUserIdByUsername = function(pUsername) {
         try {
             // validate the input
-            if(!pUsername) {
+            if (!pUsername) {
                 throw new MuseUtils.ParameterException(
                     "musextputils",
                     "We were asked to look up a user id, but weren't given anybody's name.  This is a problem.",
                     "MuseUtils.getUserIdByUsername",
-                    {params: {pUsername: pUsername}});
+                    { params: { pUsername: pUsername } }
+                );
             }
-    
+
             return getUserIdByUsername(pUsername);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during the execution of an API call.",
                 "MuseUtils.pPublicApi.getUserIdByUsername",
                 {
                     thrownError: e,
-                    params: {pUsername: pUsername}
-                });
+                    params: { pUsername: pUsername }
+                }
+            );
         }
     };
-    
+
     // Set a flag indicating that this library is loaded.
     pPublicApi.isMuseUtilsUserLoaded = true;
-
 })(MuseUtils);

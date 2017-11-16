@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -25,7 +25,7 @@ this.MuseUtils = this.MuseUtils || {};
 //  Imports
 //////////////////////////////////////////////////////////////////////////
 
-if(!MuseUtils.isMuseUtilsExceptionLoaded) {
+if (!MuseUtils.isMuseUtilsExceptionLoaded) {
     include("museUtilsException");
 }
 
@@ -34,13 +34,12 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
 //////////////////////////////////////////////////////////////////////////
 
 (function(pPublicApi) {
-
     //--------------------------------------------------------------------
     //  "Private" Functional Logic
     //--------------------------------------------------------------------
     var getMetric = function(pPackageName, pMetricName, pMetricType) {
         // Validate that we have our params.
-        if(!pMetricName || !pPackageName || !pMetricType) {
+        if (!pMetricName || !pPackageName || !pMetricType) {
             throw new MuseUtils.ParameterException(
                 "musextputils",
                 "We did not receive all of the required parameters to retrieve an application configuration.",
@@ -51,26 +50,30 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                         pMetricName: pMetricName,
                         pMetricType: pMetricType
                     }
-                });
+                }
+            );
         }
         var metricQuery;
         // Get the metric
         try {
             metricQuery = toolbox.executeQuery(
                 'SELECT musextputils.get_musemetric(<? value("package") ?>, ' +
-                ' <? value("metric") ?>, null::' + pMetricType +') AS result', 
+                    ' <? value("metric") ?>, null::' +
+                    pMetricType +
+                    ") AS result",
                 {
                     package: pPackageName,
                     metric: pMetricName
-                });
+                }
+            );
 
-            if(metricQuery.first()) {
+            if (metricQuery.first()) {
                 return metricQuery.value("result");
             }
-            
-            // We didn't get a result, just return null.    
+
+            // We didn't get a result, just return null.
             return null;
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.DatabaseException(
                 "musextputils",
                 "We encountered what is most likely a database error trying to retrieve a configuration.",
@@ -82,11 +85,11 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
                         pMetricType: pMetricType
                     },
                     databaseError: metricQuery.lastError()
-                });
+                }
+            );
         }
-        
     };
-    var getNumberMetric = function(pPackageName, pMetricName) {            
+    var getNumberMetric = function(pPackageName, pMetricName) {
         // Get the metric
         return getMetric(pPackageName, pMetricName, "numeric");
     };
@@ -116,159 +119,157 @@ if(!MuseUtils.isMuseUtilsExceptionLoaded) {
     };
     var getTextArrayMetric = function(pPackageName, pMetricName) {
         // Get the metric
-        return getMetric(pPackageName, pMetricName, "text[]");        
+        return getMetric(pPackageName, pMetricName, "text[]");
     };
 
     //--------------------------------------------------------------------
     //  Public Interface -- Functions
     //--------------------------------------------------------------------
 
-    pPublicApi.getNumberMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getNumberMetric = function(pPackageName, pMetricName) {
         try {
             return getNumberMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getNumberMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getTextMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getTextMetric = function(pPackageName, pMetricName) {
         try {
             return getTextMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getTextMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getFlagMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getFlagMetric = function(pPackageName, pMetricName) {
         try {
             return getFlagMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getFlagMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getDateMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getDateMetric = function(pPackageName, pMetricName) {
         try {
             return getDateMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getDateMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getHstoreMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getHstoreMetric = function(pPackageName, pMetricName) {
         try {
             return getHstoreMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getHstoreMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getJsonMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getJsonMetric = function(pPackageName, pMetricName) {
         try {
             return getJsonMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getJsonMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getNumberArrayMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getNumberArrayMetric = function(pPackageName, pMetricName) {
         try {
             return getNumberArrayMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.pPublicApi",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
-    pPublicApi.getTextArrayMetric = function (pPackageName, pMetricName) {
+    pPublicApi.getTextArrayMetric = function(pPackageName, pMetricName) {
         try {
             return getTextArrayMetric(pPackageName, pMetricName);
-        } catch(e) {
+        } catch (e) {
             throw new MuseUtils.ApiException(
                 "musextputils",
                 "There was an error during execution of an API call.",
                 "MuseUtils.pPublicApi.getTextArrayMetric",
                 {
-                    params:{
-                        pPackageName: pPackageName, 
+                    params: {
+                        pPackageName: pPackageName,
                         pMetricName: pMetricName
                     }
-                });
+                }
+            );
         }
-        
     };
 
     // Set a flag indicating that this library is loaded.
     pPublicApi.isMuseUtilsConfigLoaded = true;
-
 })(MuseUtils);
-
