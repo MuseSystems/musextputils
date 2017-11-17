@@ -60,24 +60,26 @@ try {
             }
 
             var sEditingFinished = function() {
-                pLineEdit.setFormattedText(pLineEdit.getNumericValue());
+                pLineEdit.setFormattedText(pLineEdit.getNumericValue(true));
             };
 
             pLineEdit.alignment = Qt.AlignRight;
 
-            pLineEdit.getNumericValue = function() {
+            pLineEdit.getNumericValue = function(pIsNullOnNonNumber) {
+                // See if the caller is OK with null values, legacy is false
+                // so any non-understood value will be treated as though we're
+                // expecting the legacy.
+                pIsNullOnNonNumber = pIsNullOnNonNumber === true ? true : false;
+
                 // Parse the line with numbro and convert to a number.
                 var vReturnValue = numbro().unformat(
                     numbro(this.text).format(vNumericFormat)
                 );
 
-                // See if we have a number.  If so, return it.  If not, return
-                // 0. NOTE:  This may need to be abstracted away to a
-                // "getSaFeNumericValue" function.  Undefined in the case of no
-                // number is more accurate, but inconvenient in that you're
-                // always testing for it.
                 if (MuseUtils.isNumber(vReturnValue)) {
                     return vReturnValue;
+                } else if (pIsNullOnNonNumber) {
+                    return null;
                 } else {
                     return 0;
                 }
@@ -85,17 +87,14 @@ try {
 
             pLineEdit.setFormattedText = function(pValue) {
                 if (!MuseUtils.isNumber(numbro().unformat(pValue))) {
-                    throw new MuseUtils.ParameterException(
-                        "musextputils",
-                        "This line edit widget requires a number value.",
-                        "MuseUtils.numericLineEdit.setFormattedText",
-                        {
-                            params: { pValue: pValue }
-                        }
-                    );
+                    if (typeof this.clear === "function") {
+                        this.clear();
+                    } else {
+                        this.text = null;
+                    }
+                } else {
+                    this.text = numbro(pValue).format(vTextFormat);
                 }
-
-                this.text = numbro(pValue).format(vTextFormat);
             };
 
             if (pLineEdit.editingFinished !== undefined) {
