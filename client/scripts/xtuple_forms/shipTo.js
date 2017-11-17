@@ -153,6 +153,6 @@ try {
     QMessageBox.critical(
         mainwindow,
         "Muse Systems xTuple Utilities",
-        "We failed loading the exception utilities. \n\n" + e.message
+        "We failed loading the shipTo utilities. \n\n" + e.message
     );
 }
