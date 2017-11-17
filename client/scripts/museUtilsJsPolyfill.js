@@ -22,15 +22,15 @@ try {
     this.MuseUtils = this.MuseUtils || {};
 
     /**
- *  NOTE: Many of the polyfills here are copied from other sources verbatim.
- *  Each function will identify the source and applicable license.
- */
+     *  NOTE: Many of the polyfills here are copied from other sources verbatim.
+     *  Each function will identify the source and applicable license.
+     */
 
     /**
- * isIntger polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
- * This code is in the Public Domain per the licensing terms of the source
- * website.
- */
+     * isIntger polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isInteger
+     * This code is in the Public Domain per the licensing terms of the source
+     * website.
+     */
     Number.isInteger =
         Number.isInteger ||
         function(value) {
@@ -42,10 +42,10 @@ try {
         };
 
     /**
- * isFinite polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite
- * This code is in the Public Domain per the licensing terms of the source
- * website.
- */
+     * isFinite polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isFinite
+     * This code is in the Public Domain per the licensing terms of the source
+     * website.
+     */
     Number.isFinite =
         Number.isFinite ||
         function(value) {
@@ -53,10 +53,10 @@ try {
         };
 
     /**
- * Object.assign polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
- * This code is in the Public Domain per the licensing terms of the source
- * website.
- */
+     * Object.assign polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign#Polyfill
+     * This code is in the Public Domain per the licensing terms of the source
+     * website.
+     */
     if (typeof Object.assign != "function") {
         (function() {
             Object.assign = function(target) {
@@ -85,10 +85,10 @@ try {
     }
 
     /**
- * Array.prototype.includes polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
- * This code is in the Public Domain per the licensing terms of the source
- * website.
- */
+     * Array.prototype.includes polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/includes
+     * This code is in the Public Domain per the licensing terms of the source
+     * website.
+     */
     // https://tc39.github.io/ecma262/#sec-array.prototype.includes
     if (!Array.prototype.includes) {
         Object.defineProperty(Array.prototype, "includes", {
@@ -138,10 +138,10 @@ try {
     }
 
     /**
- * Object.keys polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
- * This code is in the Public Domain per the licensing terms of the source
- * website.
- */
+     * Object.keys polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+     * This code is in the Public Domain per the licensing terms of the source
+     * website.
+    */
     if (!Object.keys) {
         Object.keys = (function() {
             "use strict";
