@@ -9,17 +9,17 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table() 
+CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table()
     RETURNS void AS
         $BODY$
             DECLARE
-                
+
             BEGIN
 
                 -- First we'll see if the table exists already.  If not, we'll create it.  If so, we'll check to be sure that it's up to spec.
@@ -28,13 +28,13 @@ CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table()
                     CREATE TABLE musextputils.exceptionlog (
                          exceptionlog_id                        bigserial       NOT NULL    PRIMARY KEY
                         ,exceptionlog_name                      text
-                        ,exceptionlog_descrip                   text    
+                        ,exceptionlog_descrip                   text
                         ,exceptionlog_message                   text
                         ,exceptionlog_function_name             text
                         ,exceptionlog_package_name              text
                         ,exceptionlog_payload                   jsonb
                     );
-                    
+
                     ALTER TABLE  musextputils.exceptionlog OWNER TO admin;
 
                     COMMENT ON TABLE musextputils.exceptionlog IS 'A place to store thrown exceptions created by our exception framework.';
@@ -46,8 +46,8 @@ CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table()
                     COMMENT ON COLUMN musextputils.exceptionlog.exceptionlog_function_name IS 'The name on of function that threw the exception.';
                     COMMENT ON COLUMN musextputils.exceptionlog.exceptionlog_package_name IS 'If a package is identified, the name of the package.';
                     COMMENT ON COLUMN musextputils.exceptionlog.exceptionlog_payload IS 'Contains relevant contextual information to the application''s state at the time of the exception in JSON format.  This can include calling parameters, internal values, or exception stack data.';
-                    
-                    PERFORM musextputils.add_common_table_columns('musextputils','exceptionlog', 'exceptionlog_date_created', 'exceptionlog_role_created', 'exceptionlog_date_deactivated', 'exceptionlog_role_deactivated' 
+
+                    PERFORM musextputils.add_common_table_columns('musextputils','exceptionlog', 'exceptionlog_date_created', 'exceptionlog_role_created', 'exceptionlog_date_deactivated', 'exceptionlog_role_deactivated'
                             , 'exceptionlog_date_modified', 'exceptionlog_wallclock_modified', 'exceptionlog_role_modified', 'exceptionlog_row_version_number', 'exceptionlog_is_active');
 
                     REVOKE ALL ON TABLE musextputils.exceptionlog FROM public;
@@ -62,16 +62,16 @@ CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table()
                                WHERE    table_schema_name = 'musextputils'
                                     AND table_name = 'exceptionlog'
                                     AND column_name = 'exceptionlog_payload'
-                                    AND column_type_name = 'text') THEN 
+                                    AND column_type_name = 'text') THEN
 
-                        -- OK.  We're going to rename our current column and 
-                        -- create a new one with the same name.  We won't 
+                        -- OK.  We're going to rename our current column and
+                        -- create a new one with the same name.  We won't
                         -- migrate the data since it's only diagnostic and will
                         -- be difficult to migrate without error or in a useful
-                        -- form.  Later we may deprecate the legacy column.  
+                        -- form.  Later we may deprecate the legacy column.
                         -- In the meantime, manual one-off migration can be
                         -- done outside of the package if appropriate.
-                        ALTER TABLE musextputils.exceptionlog 
+                        ALTER TABLE musextputils.exceptionlog
                             RENAME COLUMN exceptionlog_payload
                                 TO exceptionlog_legacy_payload;
 
@@ -84,8 +84,6 @@ CREATE OR REPLACE FUNCTION  musextputils.create_exceptionlog_table()
                     END IF;
 
                 END IF;
-                
-                
 
             END;
         $BODY$

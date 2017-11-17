@@ -9,13 +9,13 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-CREATE OR REPLACE FUNCTION musextputils.get_implied_null(pParam anyelement) 
+CREATE OR REPLACE FUNCTION musextputils.get_implied_null(pParam anyelement)
     RETURNS anyelement AS
         $BODY$
             DECLARE
@@ -23,7 +23,7 @@ CREATE OR REPLACE FUNCTION musextputils.get_implied_null(pParam anyelement)
             BEGIN
                 IF pParam::text = '' OR pParam::text = '0' THEN
                     -- We evaluate the type of the parameter and return a null based on that type.
-                    EXECUTE 'SELECT null::'||pg_catalog.pg_typeof(pParam) 
+                    EXECUTE 'SELECT null::'||pg_catalog.pg_typeof(pParam)
                         INTO vReturnValue;
                 ELSE
                     vReturnValue := pParam;
@@ -41,5 +41,5 @@ REVOKE EXECUTE ON FUNCTION musextputils.get_implied_null(pParam anyelement) FROM
 GRANT EXECUTE ON FUNCTION musextputils.get_implied_null(pParam anyelement) TO admin;
 GRANT EXECUTE ON FUNCTION musextputils.get_implied_null(pParam anyelement) TO xtrole;
 
-COMMENT ON FUNCTION musextputils.get_implied_null(pParam anyelement) 
+COMMENT ON FUNCTION musextputils.get_implied_null(pParam anyelement)
     IS 'A function to take values passed from higher level Qt JavaScript code and infer nulls based on the input.  In this case we generally mean that the empty string is null and that 0 is also a null';

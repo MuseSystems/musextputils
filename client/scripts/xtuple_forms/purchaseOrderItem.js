@@ -19,138 +19,141 @@
 // scripts which might need to make use of its services.  As such we'll
 // run at grade 0.
 
-//////////////////////////////////////////////////////////////////////////
-//  Namespace Definition
-//////////////////////////////////////////////////////////////////////////
+try {
+    //////////////////////////////////////////////////////////////////////////
+    //  Namespace Definition & Imports
+    //////////////////////////////////////////////////////////////////////////
+    if (typeof MuseUtils === "undefined") {
+        include("museUtils");
+        MuseUtils.loadMuseUtils([MuseUtils.EXCEPTION, MuseUtils.QT]);
+    }
 
-if (typeof MuseUtils === "undefined") {
-    MuseUtils = {};
-}
+    if (typeof MuseUtils.PurchaseOrderItem === "undefined") {
+        MuseUtils.PurchaseOrderItem = {};
+    }
 
-if (typeof MuseUtils.PurchaseOrderItem === "undefined") {
-    MuseUtils.PurchaseOrderItem = {};
-}
+    //////////////////////////////////////////////////////////////////////////
+    //  Module Defintion
+    //////////////////////////////////////////////////////////////////////////
 
-//////////////////////////////////////////////////////////////////////////
-//  Imports
-//////////////////////////////////////////////////////////////////////////
-include("museUtils");
+    (function(pPublicApi, pGlobal) {
+        var saveHookFramework = MuseUtils.initSaveHookFramework(
+            mywindow.sSave,
+            mywindow
+        );
 
-//////////////////////////////////////////////////////////////////////////
-//  Module Defintion
-//////////////////////////////////////////////////////////////////////////
+        //--------------------------------------------------------------------
+        //  Get Object References From Screen Definitions
+        //--------------------------------------------------------------------
+        _save = mywindow.findChild("_save");
 
-(function(pPublicApi, pGlobal) {
-    var saveHookFramework = MuseUtils.initSaveHookFramework(
-        mywindow.sSave,
-        mywindow
-    );
+        //--------------------------------------------------------------------
+        //  Custom Screen Objects and Starting GUI Manipulation
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  Get Object References From Screen Definitions
-    //--------------------------------------------------------------------
-    _save = mywindow.findChild("_save");
+        // Disconnect the native function and connect the framework.  Earlier
+        // the better.
+        toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSave()");
+        _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
 
-    //--------------------------------------------------------------------
-    //  Custom Screen Objects and Starting GUI Manipulation
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  "Private" Functional Logic
+        //--------------------------------------------------------------------
 
-    // Disconnect the native function and connect the framework.  Earlier
-    // the better.
-    toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSave()");
-    _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
+        //--------------------------------------------------------------------
+        //  Public Interface -- Slots
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  "Private" Functional Logic
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Slots
-    //--------------------------------------------------------------------
+        // Here we just expose the public methods of the save event hook framework
+        // instance to allow other scripts to make use of the facilities we're
+        // providing.
+        pPublicApi.addPreSaveHookFunc = function(pFunc) {
+            try {
+                saveHookFramework.addPreSaveHookFunc(pFunc);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
 
-    //--------------------------------------------------------------------
-    //  Public Interface -- Functions
-    //--------------------------------------------------------------------
+        pPublicApi.removePreSaveHookFunc = function(pFunc) {
+            try {
+                saveHookFramework.removePreSaveHookFunc(pFunc);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
 
-    // Here we just expose the public methods of the save event hook framework
-    // instance to allow other scripts to make use of the facilities we're
-    // providing.
-    pPublicApi.addPreSaveHookFunc = function(pFunc) {
-        try {
-            saveHookFramework.addPreSaveHookFunc(pFunc);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
+        pPublicApi.addPostSaveHookFunc = function(pFunc) {
+            try {
+                saveHookFramework.addPostSaveHookFunc(pFunc);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
 
-    pPublicApi.removePreSaveHookFunc = function(pFunc) {
-        try {
-            saveHookFramework.removePreSaveHookFunc(pFunc);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
+        pPublicApi.removePostSaveHookFunc = function(pFunc) {
+            try {
+                saveHookFramework.removePostSaveHookFunc(pFunc);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
 
-    pPublicApi.addPostSaveHookFunc = function(pFunc) {
-        try {
-            saveHookFramework.addPostSaveHookFunc(pFunc);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
+        pPublicApi.setNativeSaveFunc = function(pFunc) {
+            try {
+                saveHookFramework.setNativeSaveFunc(pFunc);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
 
-    pPublicApi.removePostSaveHookFunc = function(pFunc) {
-        try {
-            saveHookFramework.removePostSaveHookFunc(pFunc);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
-
-    pPublicApi.setNativeSaveFunc = function(pFunc) {
-        try {
-            saveHookFramework.setNativeSaveFunc(pFunc);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
-        }
-    };
-
-    /**
+        /**
      * Form startup initialization.  Standard part of the xTuple ERP
      * startup process.
      * @param {Object} pParams An associative array of values passed from
      *                         the xTuple C++ forms which contain context
      *                         setting information.
      */
-    pPublicApi.set = function(pParams) {};
+        pPublicApi.set = function(pParams) {};
 
-    //--------------------------------------------------------------------
-    //  Foreign Script "Set" Handling
-    //--------------------------------------------------------------------
+        //--------------------------------------------------------------------
+        //  Foreign Script "Set" Handling
+        //--------------------------------------------------------------------
 
-    // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
-    var foreignSetFunc;
+        // "Set" handling base on suggestion of Gil Moskowitz/xTuple.
+        var foreignSetFunc;
 
-    // Lower graded scripts should be loaded prior to our call and as such we
-    // should be able to intercept their set functions.
-    if (typeof pGlobal.set === "function") {
-        foreignSetFunc = pGlobal.set;
-    } else {
-        foreignSetFunc = function() {};
-    }
-
-    pGlobal.set = function(pParams) {
-        try {
-            foreignSetFunc(pParams);
-            pPublicApi.set(pParams);
-        } catch (e) {
-            MuseUtils.displayError(e, mywindow);
-            mywindow.close();
+        // Lower graded scripts should be loaded prior to our call and as such we
+        // should be able to intercept their set functions.
+        if (typeof pGlobal.set === "function") {
+            foreignSetFunc = pGlobal.set;
+        } else {
+            foreignSetFunc = function() {};
         }
-    };
-})(MuseUtils.PurchaseOrderItem, this);
+
+        pGlobal.set = function(pParams) {
+            try {
+                foreignSetFunc(pParams);
+                pPublicApi.set(pParams);
+            } catch (e) {
+                MuseUtils.displayError(e, mywindow);
+                mywindow.close();
+            }
+        };
+    })(MuseUtils.PurchaseOrderItem, this);
+} catch (e) {
+    QMessageBox.critical(
+        mainwindow,
+        "Muse Systems xTuple Utilities",
+        "We failed loading the purchaseOrderItem utilities. \n\n" + e.message
+    );
+}

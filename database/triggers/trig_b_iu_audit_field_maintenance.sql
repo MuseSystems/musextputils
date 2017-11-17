@@ -9,13 +9,13 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
-CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance() 
+CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
     RETURNS trigger AS
        $BODY$
          DECLARE
@@ -33,10 +33,10 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
           pIsActiveColumnName text;
 
          BEGIN
-          -- If this is an update and no actual data has changed, we can short 
+          -- If this is an update and no actual data has changed, we can short
           -- circuit the entire process a bit.  At this point the audit fields
           -- should not be updated either.
-          IF TG_OP = 'UPDATE' 
+          IF TG_OP = 'UPDATE'
             AND coalesce(
                   array_length(
                       akeys(hstore(NEW) - hstore(OLD)),1)
@@ -44,7 +44,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
 
               -- We detect no changes so just return NEW.  Nothing to update.
               RETURN NEW;
-              
+
           END IF;
 
           -- Now let's failsafe (a little) the trigger.  We're expecting parameters, but may not get them. (we'll label them "p" even though they are real function params.)
@@ -104,7 +104,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
 
           -- Let's turn the new and old records into hstores so we can arbitrarily get their columns.  We also need to make the final hstore look a lot like NEW.
           vHstoreNew := hstore(NEW);
-          
+
           vHstoreFinal := delete(vHstoreNew,ARRAY[ pDateCreatedColumnName
                                      ,pRoleCreatedColumnName
                                      ,pDateModifiedColumnName
@@ -114,7 +114,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
                                      ,pDateDeactivatedColumnName
                                      ,pRoleDeactivatedColumnName]);
 
-          -- Now we can get some work done.  
+          -- Now we can get some work done.
           IF TG_OP = 'INSERT' THEN
               vHstoreFinal := vHstoreFinal || hstore(pDateCreatedColumnName, (now())::text);
               vHstoreFinal := vHstoreFinal || hstore(pRoleCreatedColumnName, (session_user)::text);
@@ -128,7 +128,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
               IF (NOT (vHstoreNew->pIsActiveColumnName)::boolean AND (vHstoreOld->pIsActiveColumnName)::boolean) THEN
                  vHstoreFinal := vHstoreFinal || hstore(pDateDeactivatedColumnName, (now())::text);
                  vHstoreFinal := vHstoreFinal || hstore(pRoleDeactivatedColumnName, (session_user)::text);
-              ELSIF ((vHstoreNew->pIsActiveColumnName)::boolean AND NOT (vHstoreOld->pIsActiveColumnName)::boolean) THEN 
+              ELSIF ((vHstoreNew->pIsActiveColumnName)::boolean AND NOT (vHstoreOld->pIsActiveColumnName)::boolean) THEN
                  vHstoreFinal := vHstoreFinal || hstore(pDateDeactivatedColumnName,null);
                  vHstoreFinal := vHstoreFinal || hstore(pRoleDeactivatedColumnName,null);
               END IF;
@@ -151,7 +151,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
 
 ALTER FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
     OWNER TO admin;
-    
+
 REVOKE EXECUTE ON FUNCTION musextputils.trig_b_iu_audit_field_maintenance() FROM public;
 GRANT EXECUTE ON FUNCTION musextputils.trig_b_iu_audit_field_maintenance() TO admin;
 GRANT EXECUTE ON FUNCTION musextputils.trig_b_iu_audit_field_maintenance() TO xtrole;

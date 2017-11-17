@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -19,11 +19,11 @@
 -- Wraps the standard set_config PostgreSQL function with some formality useful for the xTuple context.  Note this version sets variables valid for an entire session.
 --
 
-CREATE OR REPLACE FUNCTION musextputils.set_session_variable(pPackage text, pVariable text, pValue text) 
+CREATE OR REPLACE FUNCTION musextputils.set_session_variable(pPackage text, pVariable text, pValue text)
     RETURNS boolean AS
         $BODY$
             DECLARE
-                
+
             BEGIN
                 -- Validate require parameters
                 IF pPackage IS NULL THEN
@@ -52,6 +52,6 @@ GRANT EXECUTE ON FUNCTION musextputils.set_session_variable(pPackage text, pVari
 GRANT EXECUTE ON FUNCTION musextputils.set_session_variable(pPackage text, pVariable text, pValue text) TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.set_session_variable(pPackage text, pVariable text, pValue text) 
+COMMENT ON FUNCTION musextputils.set_session_variable(pPackage text, pVariable text, pValue text)
     IS $DOC$Wraps the standard set_config PostgreSQL function with some formality useful
  for the xTuple context.  Note this version sets variables valid for an entire session.$DOC$;

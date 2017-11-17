@@ -9,15 +9,15 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
  ************************************************************************/
 
 -- Generic way to create a metric.  Since in most cases, we will create a metric for a single type of value, we handle a default single setting here.
---     More complex configurations are multi-type and that is allowable, but each type needs to be updated after creation for that use case. 
-CREATE OR REPLACE FUNCTION musextputils.create_musemetric(pMetricPackage text, pMetricName text, pMetricDescription text, pMetricValue anyelement) 
+--     More complex configurations are multi-type and that is allowable, but each type needs to be updated after creation for that use case.
+CREATE OR REPLACE FUNCTION musextputils.create_musemetric(pMetricPackage text, pMetricName text, pMetricDescription text, pMetricValue anyelement)
 	RETURNS bigint AS
 		$BODY$
 			DECLARE
@@ -66,12 +66,12 @@ CREATE OR REPLACE FUNCTION musextputils.create_musemetric(pMetricPackage text, p
 				END CASE;
 
 
-				EXECUTE format('INSERT INTO musextputils.musemetric (musemetric_package, musemetric_name, musemetric_descrip, %1$I ) 
-										SELECT %2$L,%3$L,%4$L,%5$L WHERE NOT EXISTS(SELECT 1 FROM musextputils.musemetric WHERE musemetric_package = %2$L AND lower(musemetric_name) = lower(%3$L)) 
+				EXECUTE format('INSERT INTO musextputils.musemetric (musemetric_package, musemetric_name, musemetric_descrip, %1$I )
+										SELECT %2$L,%3$L,%4$L,%5$L WHERE NOT EXISTS(SELECT 1 FROM musextputils.musemetric WHERE musemetric_package = %2$L AND lower(musemetric_name) = lower(%3$L))
 										RETURNING musemetric_id',lower(vValueColumn),lower(pMetricPackage),pMetricName,pMetricDescription,pMetricValue) INTO vReturnValue;
 
 				RETURN vReturnValue;  -- Let's return the id of the metric just created in case the caller has some use for it.  NULL means we didn't actually do anything probably because the package/metric combo existed... but let the caller handle that case.
-				
+
 			END;
 		$BODY$
 	LANGUAGE plpgsql;
