@@ -61,6 +61,13 @@ try {
             pPublicApi.DB
         ];
 
+        // Severity Levels
+        pPublicApi.LOG_DEBUG = false;
+        pPublicApi.LOG_INFO = false;
+        pPublicApi.LOG_WARNING = false;
+        pPublicApi.LOG_CRITICAL = true;
+        pPublicApi.LOG_FATAL = true;
+
         //------------------------------------------------------------------
         //  Private Functional Logic
         //------------------------------------------------------------------

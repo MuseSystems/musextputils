@@ -169,7 +169,7 @@ try {
                         "\nexpressionCaretOffset: " +
                             rootCause.expressionCaretOffset || "(N/A)";
                     returnText +=
-                        "\n\nPlease report this to your support staff along with the Exception Log Id above.";
+                        "\n\nPlease report this to your support staff along with the Exception Log Id above. if provided.";
                     returnText +=
                         "\n\n---------------------------------------------------\n";
                 }
@@ -198,28 +198,33 @@ try {
         var logException = function(pThis) {
             // Log the exception.  However, don't stop if we can't: not worth it.
             try {
-                var exceptionQeury = toolbox.executeQuery(
-                    'SELECT musextputils.log_exception(<? value("exceptionName") ?>, ' +
-                        ' <? value("exceptionDescription") ?>, <? value("message") ?>, ' +
-                        '<? value("functionName") ?>, <? value("packageName") ?>, ' +
-                        '(<? value("payload") ?>)::jsonb) AS exception_log_id',
-                    {
-                        exceptionName: pThis.myErrorName || "***UNDEFINED***",
-                        exceptionDescription:
-                            pThis.myErrorDesc || "***UNDEFINED***",
-                        message: pThis.myMessage || "***UNDEFINED***",
-                        functionName: pThis.myFunction || "***UNDEFINED***",
-                        packageName: pThis.myPackage || "***UNDEFINED***",
-                        payload: JSON.stringify(pThis.myPayload)
-                    }
-                );
-
-                // Update the exception name to include the log ID.  If we don't get anything... just move along.
-                if (exceptionQeury.first()) {
-                    return (
-                        "Exception Log ID: " +
-                        exceptionQeury.value("exception_log_id")
+                if (pThis.myIsLogged) {
+                    var exceptionQeury = toolbox.executeQuery(
+                        'SELECT musextputils.log_exception(<? value("exceptionName") ?>, ' +
+                            ' <? value("exceptionDescription") ?>, <? value("message") ?>, ' +
+                            '<? value("functionName") ?>, <? value("packageName") ?>, ' +
+                            '(<? value("payload") ?>)::jsonb) AS exception_log_id',
+                        {
+                            exceptionName:
+                                pThis.myErrorName || "***UNDEFINED***",
+                            exceptionDescription:
+                                pThis.myErrorDesc || "***UNDEFINED***",
+                            message: pThis.myMessage || "***UNDEFINED***",
+                            functionName: pThis.myFunction || "***UNDEFINED***",
+                            packageName: pThis.myPackage || "***UNDEFINED***",
+                            payload: JSON.stringify(pThis.myPayload)
+                        }
                     );
+
+                    // Update the exception name to include the log ID.  If we don't get anything... just move along.
+                    if (exceptionQeury.first()) {
+                        return (
+                            "Exception Log ID: " +
+                            exceptionQeury.value("exception_log_id")
+                        );
+                    }
+                } else {
+                    return "(Not Logged)";
                 }
             } catch (e) {
                 // This is all we do... anything more would stop flow when we might otherwise be able to succeed.
@@ -235,7 +240,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -243,6 +249,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "UnknownException";
             this.myErrorDesc =
                 "A generic exception thrown by a third party function or xTuple itself.";
@@ -257,7 +264,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -265,6 +273,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "ParameterException";
             this.myErrorDesc =
                 "Parameters passed to the named function were not valid or were missing.";
@@ -279,7 +288,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -287,6 +297,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "DatabaseException";
             this.myErrorDesc =
                 "There was an error accessing the database or while running a query.";
@@ -301,7 +312,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -309,6 +321,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "OutOfBoundsException";
             this.myErrorDesc =
                 "A provided value was outside of the checked bounds of the valid value range.";
@@ -323,7 +336,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -331,6 +345,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "PermissionException";
             this.myErrorDesc =
                 "There were insufficient permissions to perform the requested action.";
@@ -345,7 +360,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -353,6 +369,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "NotFoundException";
             this.myErrorDesc =
                 "We were unable to retrieve a value or record when we believed to be available.";
@@ -367,7 +384,8 @@ try {
             pPackage,
             pMessage,
             pFunction,
-            pPayload
+            pPayload,
+            pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
@@ -375,6 +393,7 @@ try {
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "RecordLockedException";
             this.myErrorDesc =
                 "We tried to get an advisory lock for editing, but someone else was using it.";
@@ -385,13 +404,20 @@ try {
         RecordLockedException.prototype.constructor = RecordLockedException;
         RecordLockedException.prototype.toString = getExceptionText;
 
-        var ApiException = function(pPackage, pMessage, pFunction, pPayload) {
+        var ApiException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
             this.myIsMuseUtilsException = true;
             this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
             this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
             this.myErrorName = "ApiException";
             this.myErrorDesc =
                 "We encountered an error processing an API call.  See exception stack for root cause details.";
@@ -426,8 +452,10 @@ try {
                         (pException.message || "Unknown") +
                         ")",
                     "MuseUtils.displayError",
-                    pException
+                    pException,
+                    MuseUtils.LOG_CRITICAL
                 );
+
                 displayError(error, pParent);
             }
         };
@@ -464,7 +492,8 @@ try {
                             pException: JSON.stringify(pException),
                             pParent: JSON.stringify(pParent)
                         }
-                    }
+                    },
+                    MuseUtils.LOG_FATAL
                 );
             } else if (!pParent) {
                 pParent = mainwindow;
@@ -479,7 +508,8 @@ try {
                     "musextputils",
                     "We require some exception object in order to parse it for a root cause.",
                     "MuseUtils.getRootCause",
-                    { params: { pException: pException } }
+                    { params: { pException: pException } },
+                    MuseUtils.LOG_CRITICAL
                 );
             }
 
