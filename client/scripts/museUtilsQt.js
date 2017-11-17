@@ -30,9 +30,9 @@ try {
     //////////////////////////////////////////////////////////////////////////
 
     MuseUtils.loadMuseUtils([
-        MuseUtils.NUMBRO,
-        MuseUtils.EXCEPTION,
-        MuseUtils.JSPOLYFILL
+        MuseUtils.MOD_NUMBRO,
+        MuseUtils.MOD_EXCEPTION,
+        MuseUtils.MOD_JSPOLYFILL
     ]);
 
     //////////////////////////////////////////////////////////////////////////

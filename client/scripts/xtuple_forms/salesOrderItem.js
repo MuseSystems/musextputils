@@ -24,7 +24,7 @@ try {
     //////////////////////////////////////////////////////////////////////////
     if (typeof MuseUtils === "undefined") {
         include("museUtils");
-        MuseUtils.loadMuseUtils([MuseUtils.EVENTHOOKS]);
+        MuseUtils.loadMuseUtils([MuseUtils.MOD_EVENTHOOKS]);
     }
 
     if (typeof MuseUtils.SalesOrderItem === "undefined") {
