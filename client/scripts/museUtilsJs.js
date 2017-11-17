@@ -19,19 +19,16 @@ try {
     //  Namespace Definition
     //////////////////////////////////////////////////////////////////////////
 
-    this.MuseUtils = this.MuseUtils || {};
+    if (typeof MuseUtils === "undefined") {
+        throw new Error(
+            "Please do load utility modules directly.  See museUtils.js for the loading methodology."
+        );
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //  Imports
     //////////////////////////////////////////////////////////////////////////
-
-    if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
-        include("museJsPolyfill");
-    }
-
-    if (!MuseUtils.isMuseUtilsExceptionLoaded) {
-        include("museUtilsException");
-    }
+    MuseUtils.loadMuseUtils([MuseUtils.JSPOLYFILL, MuseUtils.EXCEPTION]);
 
     //////////////////////////////////////////////////////////////////////////
     //  Module Defintion

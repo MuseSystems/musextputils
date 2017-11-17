@@ -20,7 +20,11 @@ try {
     //  Namespace Definition
     //////////////////////////////////////////////////////////////////////////
 
-    this.MuseUtils = this.MuseUtils || {};
+    if (typeof MuseUtils === "undefined") {
+        throw new Error(
+            "Please do load utility modules directly.  See museUtils.js for the loading methodology."
+        );
+    }
 
     //////////////////////////////////////////////////////////////////////////
     //  Module Definition
