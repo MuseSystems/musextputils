@@ -81,7 +81,9 @@
 	<loadappscript file="client/scripts/numbro/numbro.js" name="numbro" order="10">The numbro JavaScript number formatting library.  This manages formatting and takes care of some of our floating point math issues.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJsPolyfill.js" name="museUtilsJsPolyfill" order="10">A set of simple polyfills for those times the Qt JavaScript version falls short of the current standards.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsException.js" name="museUtilsException" order="10">A library encapsulating custom exception handling.</loadappscript>
-	<loadappscript file="client/scripts/museUtilsConfig.js" name="museUtilsConfig" order="10">A library encapsulating custom configuration handling.</loadappscript>
+	<loadappscript file="client/scripts/forms/museUtilsEventHooks.js" name="museUtilsEventHooks" order="10">A library which allows scripts to behave cooperatively when the context is native xTuple XDialog based forms </loadappscript>
+
+    <loadappscript file="client/scripts/museUtilsConfig.js" name="museUtilsConfig" order="10">A library encapsulating custom configuration handling.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsQt.js" name="museUtilsQt" order="10">A library defining custom extensions to stock Qt UI widgets and similar form related helpers.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsUser.js" name="museUtilsUser" order="10">A library encapsulating user related functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJs.js" name="museUtilsJs" order="10">A library defining misc., usefull JavaScript functions.</loadappscript>
