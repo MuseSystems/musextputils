@@ -15,45 +15,141 @@
  *************************************************************************
  ************************************************************************/
 
-//////////////////////////////////////////////////////////////////////////
-//  Namespace Definition
-//////////////////////////////////////////////////////////////////////////
+try {
+    //////////////////////////////////////////////////////////////////////////
+    //  Namespace Definition & Initialization
+    //////////////////////////////////////////////////////////////////////////
 
-this.MuseUtils = this.MuseUtils || {};
+    MuseUtils = {};
 
-//////////////////////////////////////////////////////////////////////////
-//  Includes
-//////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////
+    //  Module Defintion
+    ////////////////////////////////////////////////////////////////////////
 
-// Number formatting and basic math.
-if (!this.numbro) {
-    include("numbro");
-}
+    (function(pPublicApi, pGlobal) {
+        //------------------------------------------------------------------
+        //  Constants and State
+        //------------------------------------------------------------------
+        pPublicApi.isMuseUtilsJsPolyfillLoaded = false;
+        pPublicApi.isMuseUtilsExceptionLoaded = false;
+        pPublicApi.isMuseUtilsConfigLoaded = false;
+        pPublicApi.isMuseUtilsQtLoaded = false;
+        pPublicApi.isMuseUtilsUserLoaded = false;
+        pPublicApi.isMuseUtilsJsLoaded = false;
+        pPublicApi.isMuseUtilsDbLoaded = false;
 
-if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
-    include("museUtilsJsPolyfill");
-}
+        // Module name constances
+        pPublicApi.NUMBRO = "numbro";
+        pPublicApi.JSPOLYFILL = "museUtilsJsPolyfill";
+        pPublicApi.EXCEPTION = "museUtilsException";
+        pPublicApi.CONFIG = "museUtilsConfig";
+        pPublicApi.QT = "museUtilsQt";
+        pPublicApi.USER = "museUtilsUser";
+        pPublicApi.JS = "museUtilsJs";
+        pPublicApi.DB = "museUtilsDb";
+        pPublicApi.ALL = "***ALL UTILS***";
 
-if (!MuseUtils.isMuseUtilsExceptionLoaded) {
-    include("museUtilsException");
-}
+        //------------------------------------------------------------------
+        //  Private Functional Logic
+        //------------------------------------------------------------------
+        var load = function(pModules) {
+            for (var i = 0; i < pModules.length; i++) {
+                if (
+                    typeof numbro !== "function" &&
+                    (pModules[i] == pPublicApi.NUMBRO ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("numbro");
+                }
 
-if (!MuseUtils.isMuseUtilsConfigLoaded) {
-    include("museUtilsConfig");
-}
+                if (
+                    !pPublicApi.isMuseUtilsJsPolyfillLoaded &&
+                    (pModules[i] == pPublicApi.JSPOLYFILL ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsJsPolyfill");
+                }
 
-if (!MuseUtils.isMuseUtilsQtLoaded) {
-    include("museUtilsQt");
-}
+                if (
+                    !pPublicApi.isMuseUtilsExceptionLoaded &&
+                    (pModules[i] == pPublicApi.EXCEPTION ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsException");
+                }
 
-if (!MuseUtils.isMuseUtilsUserLoaded) {
-    include("museUtilsUser");
-}
+                if (
+                    !pPublicApi.isMuseUtilsConfigLoaded &&
+                    (pModules[i] == pPublicApi.CONFIG ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsConfig");
+                }
 
-if (!MuseUtils.isMuseUtilsJsLoaded) {
-    include("museUtilsJs");
-}
+                if (
+                    !pPublicApi.isMuseUtilsQtLoaded &&
+                    (pModules[i] == pPublicApi.QT ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsQt");
+                }
 
-if (!MuseUtils.isMuseUtilsDbLoaded) {
-    include("museUtilsDb");
+                if (
+                    !pPublicApi.isMuseUtilsUserLoaded &&
+                    (pModules[i] == pPublicApi.USER ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsUser");
+                }
+
+                if (
+                    !pPublicApi.isMuseUtilsJsLoaded &&
+                    (pModules[i] == pPublicApi.JS ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsJs");
+                }
+
+                if (
+                    !pPublicApi.isMuseUtilsDbLoaded &&
+                    (pModules[i] == pPublicApi.DB ||
+                        pModules[i] == pPublicApi.ALL)
+                ) {
+                    include("museUtilsDb");
+                }
+            }
+        };
+
+        //------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //------------------------------------------------------------------
+
+        // All client packages should check if the MuseUtils object exists and,
+        // if not, should:
+        // 1) Load this script via include("museUtils")
+        // 2) Call MuseUtils.loadMuseUtils(<array with required mods>)
+        pPublicApi.loadMuseUtils = function(pModules) {
+            try {
+                if (!pModules || pModules.length == 0) {
+                    pModules = [pPublicApi.ALL];
+                }
+
+                load(pModules);
+            } catch (e) {
+                QMessageBox.critical(
+                    mainwindow,
+                    "Muse Systems xTuple Utilities",
+                    "We encountered an error trying to load utilities modules.\n\n" +
+                        e
+                );
+            }
+        };
+    })(MuseUtils, this);
+} catch (e) {
+    QMessageBox.critical(
+        mainwindow,
+        "Muse Systems xTuple Utilities",
+        "We encountered a critical, unrecoverable error while initializing the utilities package.  Please report this to your system support team.\n\n" +
+            e
+    );
 }
