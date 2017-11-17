@@ -32,6 +32,7 @@ try {
         //------------------------------------------------------------------
         pPublicApi.isMuseUtilsJsPolyfillLoaded = false;
         pPublicApi.isMuseUtilsExceptionLoaded = false;
+        pPublicApi.isMuseUtilsEventHooksLoaded = false;
         pPublicApi.isMuseUtilsConfigLoaded = false;
         pPublicApi.isMuseUtilsQtLoaded = false;
         pPublicApi.isMuseUtilsUserLoaded = false;
@@ -42,12 +43,23 @@ try {
         pPublicApi.NUMBRO = "numbro";
         pPublicApi.JSPOLYFILL = "museUtilsJsPolyfill";
         pPublicApi.EXCEPTION = "museUtilsException";
+        pPublicApi.EVENTHOOKS = "museUtilsEventHooks";
         pPublicApi.CONFIG = "museUtilsConfig";
         pPublicApi.QT = "museUtilsQt";
         pPublicApi.USER = "museUtilsUser";
         pPublicApi.JS = "museUtilsJs";
         pPublicApi.DB = "museUtilsDb";
-        pPublicApi.ALL = "***ALL UTILS***";
+        pPublicApi.ALL = [
+            pPublicApi.NUMBRO,
+            pPublicApi.JSPOLYFILL,
+            pPublicApi.EXCEPTION,
+            pPublicApi.EVENTHOOKS,
+            pPublicApi.CONFIG,
+            pPublicApi.QT,
+            pPublicApi.USER,
+            pPublicApi.JS,
+            pPublicApi.DB
+        ];
 
         //------------------------------------------------------------------
         //  Private Functional Logic
@@ -56,64 +68,63 @@ try {
             for (var i = 0; i < pModules.length; i++) {
                 if (
                     typeof numbro !== "function" &&
-                    (pModules[i] == pPublicApi.NUMBRO ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.NUMBRO
                 ) {
                     include("numbro");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsJsPolyfillLoaded &&
-                    (pModules[i] == pPublicApi.JSPOLYFILL ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.JSPOLYFILL
                 ) {
                     include("museUtilsJsPolyfill");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsExceptionLoaded &&
-                    (pModules[i] == pPublicApi.EXCEPTION ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.EXCEPTION
                 ) {
                     include("museUtilsException");
                 }
 
                 if (
+                    !pPublicApi.isMuseUtilsExceptionLoaded &&
+                    pModules[i] == pPublicApi.EVENTHOOKS
+                ) {
+                    include("museUtilsEventHooks");
+                }
+
+                if (
                     !pPublicApi.isMuseUtilsConfigLoaded &&
-                    (pModules[i] == pPublicApi.CONFIG ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.CONFIG
                 ) {
                     include("museUtilsConfig");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsQtLoaded &&
-                    (pModules[i] == pPublicApi.QT ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.QT
                 ) {
                     include("museUtilsQt");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsUserLoaded &&
-                    (pModules[i] == pPublicApi.USER ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.USER
                 ) {
                     include("museUtilsUser");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsJsLoaded &&
-                    (pModules[i] == pPublicApi.JS ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.JS
                 ) {
                     include("museUtilsJs");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsDbLoaded &&
-                    (pModules[i] == pPublicApi.DB ||
-                        pModules[i] == pPublicApi.ALL)
+                    pModules[i] == pPublicApi.DB
                 ) {
                     include("museUtilsDb");
                 }
@@ -127,11 +138,11 @@ try {
         // All client packages should check if the MuseUtils object exists and,
         // if not, should:
         // 1) Load this script via include("museUtils")
-        // 2) Call MuseUtils.loadMuseUtils(<array with required mods>)
+        // 2) Call MuseUtils.loadMuseUtils(<array with required mods or MuseUtils.ALL>)
         pPublicApi.loadMuseUtils = function(pModules) {
             try {
                 if (!pModules || pModules.length == 0) {
-                    pModules = [pPublicApi.ALL];
+                    pModules = pPublicApi.ALL;
                 }
 
                 load(pModules);
