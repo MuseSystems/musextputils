@@ -40,26 +40,33 @@ try {
         pPublicApi.isMuseUtilsDbLoaded = false;
 
         // Module name constances
-        pPublicApi.NUMBRO = "numbro";
-        pPublicApi.JSPOLYFILL = "museUtilsJsPolyfill";
-        pPublicApi.EXCEPTION = "museUtilsException";
-        pPublicApi.EVENTHOOKS = "museUtilsEventHooks";
-        pPublicApi.CONFIG = "museUtilsConfig";
-        pPublicApi.QT = "museUtilsQt";
-        pPublicApi.USER = "museUtilsUser";
-        pPublicApi.JS = "museUtilsJs";
-        pPublicApi.DB = "museUtilsDb";
-        pPublicApi.ALL = [
-            pPublicApi.NUMBRO,
-            pPublicApi.JSPOLYFILL,
-            pPublicApi.EXCEPTION,
-            pPublicApi.EVENTHOOKS,
-            pPublicApi.CONFIG,
-            pPublicApi.QT,
-            pPublicApi.USER,
-            pPublicApi.JS,
-            pPublicApi.DB
+        pPublicApi.MOD_NUMBRO = "numbro";
+        pPublicApi.MOD_JSPOLYFILL = "museUtilsJsPolyfill";
+        pPublicApi.MOD_EXCEPTION = "museUtilsException";
+        pPublicApi.MOD_EVENTHOOKS = "museUtilsEventHooks";
+        pPublicApi.MOD_CONFIG = "museUtilsConfig";
+        pPublicApi.MOD_QT = "museUtilsQt";
+        pPublicApi.MOD_USER = "museUtilsUser";
+        pPublicApi.MOD_JS = "museUtilsJs";
+        pPublicApi.MOD_DB = "museUtilsDb";
+        pPublicApi.MOD_ALL = [
+            pPublicApi.MOD_NUMBRO,
+            pPublicApi.MOD_JSPOLYFILL,
+            pPublicApi.MOD_EXCEPTION,
+            pPublicApi.MOD_EVENTHOOKS,
+            pPublicApi.MOD_CONFIG,
+            pPublicApi.MOD_QT,
+            pPublicApi.MOD_USER,
+            pPublicApi.MOD_JS,
+            pPublicApi.MOD_DB
         ];
+
+        // Severity Levels
+        pPublicApi.LOG_DEBUG = false;
+        pPublicApi.LOG_INFO = false;
+        pPublicApi.LOG_WARNING = false;
+        pPublicApi.LOG_CRITICAL = true;
+        pPublicApi.LOG_FATAL = true;
 
         //------------------------------------------------------------------
         //  Private Functional Logic
@@ -68,63 +75,63 @@ try {
             for (var i = 0; i < pModules.length; i++) {
                 if (
                     typeof numbro !== "function" &&
-                    pModules[i] == pPublicApi.NUMBRO
+                    pModules[i] == pPublicApi.MOD_NUMBRO
                 ) {
                     include("numbro");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsJsPolyfillLoaded &&
-                    pModules[i] == pPublicApi.JSPOLYFILL
+                    pModules[i] == pPublicApi.MOD_JSPOLYFILL
                 ) {
                     include("museUtilsJsPolyfill");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsExceptionLoaded &&
-                    pModules[i] == pPublicApi.EXCEPTION
+                    pModules[i] == pPublicApi.MOD_EXCEPTION
                 ) {
                     include("museUtilsException");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsExceptionLoaded &&
-                    pModules[i] == pPublicApi.EVENTHOOKS
+                    pModules[i] == pPublicApi.MOD_EVENTHOOKS
                 ) {
                     include("museUtilsEventHooks");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsConfigLoaded &&
-                    pModules[i] == pPublicApi.CONFIG
+                    pModules[i] == pPublicApi.MOD_CONFIG
                 ) {
                     include("museUtilsConfig");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsQtLoaded &&
-                    pModules[i] == pPublicApi.QT
+                    pModules[i] == pPublicApi.MOD_QT
                 ) {
                     include("museUtilsQt");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsUserLoaded &&
-                    pModules[i] == pPublicApi.USER
+                    pModules[i] == pPublicApi.MOD_USER
                 ) {
                     include("museUtilsUser");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsJsLoaded &&
-                    pModules[i] == pPublicApi.JS
+                    pModules[i] == pPublicApi.MOD_JS
                 ) {
                     include("museUtilsJs");
                 }
 
                 if (
                     !pPublicApi.isMuseUtilsDbLoaded &&
-                    pModules[i] == pPublicApi.DB
+                    pModules[i] == pPublicApi.MOD_DB
                 ) {
                     include("museUtilsDb");
                 }
@@ -142,7 +149,7 @@ try {
         pPublicApi.loadMuseUtils = function(pModules) {
             try {
                 if (!pModules || pModules.length == 0) {
-                    pModules = pPublicApi.ALL;
+                    pModules = pPublicApi.MOD_ALL;
                 }
 
                 load(pModules);
