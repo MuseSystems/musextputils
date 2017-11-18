@@ -428,6 +428,54 @@ try {
         ApiException.prototype.constructor = ApiException;
         ApiException.prototype.toString = getExceptionText;
 
+        var ModuleException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
+            this.myIsMuseUtilsException = true;
+            this.myIsDeugging = pPublicApi.isDebugging;
+            this.myPackage = pPackage;
+            this.myMessage = pMessage;
+            this.myFunction = pFunction;
+            this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
+            this.myErrorName = "ModuleException";
+            this.myErrorDesc =
+                "We encountered an error processing a module definition script.  See exception stack for root cause details.";
+            this.logMsg = logException(this);
+        };
+
+        ModuleException.prototype = new Error();
+        ModuleException.prototype.constructor = ModuleException;
+        ModuleException.prototype.toString = getExceptionText;
+
+        var ScriptException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
+            this.myIsMuseUtilsException = true;
+            this.myIsDeugging = pPublicApi.isDebugging;
+            this.myPackage = pPackage;
+            this.myMessage = pMessage;
+            this.myFunction = pFunction;
+            this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
+            this.myErrorName = "ScriptException";
+            this.myErrorDesc =
+                "We encountered an error processing ad hoc scripting.  See exception stack for root cause details.";
+            this.logMsg = logException(this);
+        };
+
+        ScriptException.prototype = new Error();
+        ScriptException.prototype.constructor = ScriptException;
+        ScriptException.prototype.toString = getExceptionText;
+
         var displayError = function(pException, pParent) {
             // Let's parse the exception.  Check for our marker attribute.
             // If the marker is present we assume it is our exception and that we
@@ -478,6 +526,10 @@ try {
         pPublicApi.RecordLockedException = RecordLockedException;
 
         pPublicApi.ApiException = ApiException;
+
+        pPublicApi.ModuleException = ModuleException;
+
+        pPublicApi.ScriptException = ScriptException;
 
         pPublicApi.displayError = function(pException, pParent) {
             // First we need to know whether or not we were even called properly.
