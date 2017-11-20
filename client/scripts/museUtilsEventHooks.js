@@ -1,7 +1,7 @@
 /*************************************************************************
  *************************************************************************
  **
- ** File:        museEventHooks.js
+ ** File:        museUtilsEventHooks.js
  ** Project:     Muse Systems xTuple ERP Utilities
  ** Author:      Steven C. Buttgereit
  **

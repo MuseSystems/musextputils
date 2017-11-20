@@ -95,7 +95,7 @@ try {
                 }
 
                 if (
-                    !pPublicApi.isMuseUtilsExceptionLoaded &&
+                    !pPublicApi.isMuseUtilsEventHooksLoaded &&
                     pModules[i] == pPublicApi.MOD_EVENTHOOKS
                 ) {
                     include("museUtilsEventHooks");
