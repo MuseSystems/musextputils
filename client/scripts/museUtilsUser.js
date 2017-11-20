@@ -14,11 +14,8 @@
  **
  *************************************************************************
  ************************************************************************/
-try {
-    //////////////////////////////////////////////////////////////////////////
-    //  Namespace Definition
-    //////////////////////////////////////////////////////////////////////////
 
+try {
     if (typeof MuseUtils === "undefined") {
         throw new Error(
             "Please do load utility modules directly.  See museUtils.js for the loading methodology."
@@ -29,38 +26,62 @@ try {
     //  Imports
     //////////////////////////////////////////////////////////////////////////
 
+    if (typeof MuseUtils === "undefined") {
+        include("museUtils");
+    }
+
     MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION]);
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "MuseUtils",
+            "We encountered a script level issue while processing MuseUtils Mod User.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Defintion
-    //////////////////////////////////////////////////////////////////////////
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils Mod User."
+        );
+    }
+}
 
-    (function(pPublicApi) {
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
         //--------------------------------------------------------------------
-        //  "Private" Functional Logic
+        //  Private Functional Logic
         //--------------------------------------------------------------------
         var getCurrentUserId = function() {
             // Let's find out who we are... we are someone aren't we?  We'll use
             // current_user rather than session_user in case we want to pretend
             // we're someone else.
-            var userQuery;
+            var userQuery = toolbox.executeQuery(
+                "SELECT oid AS usr_id FROM pg_catalog.pg_roles WHERE rolname = current_user;"
+            );
 
-            try {
-                userQuery = toolbox.executeQuery(
-                    "SELECT oid AS usr_id FROM pg_catalog.pg_roles WHERE rolname = current_user;"
-                );
-            } catch (e) {
+            if (userQuery.lastError().type != QSqlError.NoError) {
                 throw new MuseUtils.DatabaseException(
                     "musextputils",
                     "We encountered a database problem determining the current user id.",
                     "MuseUtils.getCurrentUserId",
                     {
                         databaseError: userQuery.lastError()
-                    }
+                    },
+                    MuseUtils.LOG_WARNING
                 );
-            }
-
-            if (userQuery.first()) {
+            } else if (userQuery.first()) {
                 // We got something so lets return that.
                 var usrId = userQuery.value("usr_id");
                 return usrId;
@@ -72,36 +93,35 @@ try {
                     "MuseUtils.getCurrentUserId",
                     {
                         databaseError: userQuery.lastError()
-                    }
+                    },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         var getUserIdByUsername = function(pUsername) {
-            var userQuery;
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pUsername: pUsername
+            };
 
-            try {
-                userQuery = toolbox.executeQuery(
-                    "SELECT oid AS usr_id FROM pg_catalog.pg_roles " +
-                        'WHERE rolname = <? value("pUsername") ?>;',
-                    { pUsername: pUsername }
-                );
-            } catch (e) {
+            var userQuery = toolbox.executeQuery(
+                "SELECT oid AS usr_id FROM pg_catalog.pg_roles " +
+                    'WHERE rolname = <? value("pUsername") ?>;',
+                { pUsername: pUsername }
+            );
+
+            if (userQuery.lastError().type != QSqlError.NoError) {
                 throw new MuseUtils.DatabaseException(
                     "musextputils",
-                    "We encountered a database problem determining the requested user's id.",
-                    "MuseUtils.getCurrentUserId",
+                    "We encountered a database problem determining the current user id.",
+                    "MuseUtils.getUserIdByUsername",
                     {
-                        params: {
-                            pUsername: pUsername
-                        },
-                        databaseError: userQuery.lastError(),
-                        error: e
-                    }
+                        databaseError: userQuery.lastError()
+                    },
+                    MuseUtils.LOG_WARNING
                 );
-            }
-
-            if (userQuery.first()) {
+            } else if (userQuery.first()) {
                 // We got something so lets return that.
                 var usrId = userQuery.value("usr_id");
                 return usrId;
@@ -109,20 +129,18 @@ try {
                 // We didn't get something so lets error out.
                 throw new MuseUtils.NotFoundException(
                     "musextputils",
-                    "We encountered a problem determining the requested user's id.",
+                    "We encountered a problem determining the current user id.",
                     "MuseUtils.getUserIdByUsername",
                     {
-                        params: { pUsername: pUsername },
                         databaseError: userQuery.lastError()
-                    }
+                    },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
-
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
         //--------------------------------------------------------------------
-
         pPublicApi.getCurrentUserId = function() {
             try {
                 return getCurrentUserId();
@@ -133,23 +151,30 @@ try {
                     "MuseUtils.pPublicApi.getCurrentUserId",
                     {
                         thrownError: e
-                    }
+                    },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         pPublicApi.getUserIdByUsername = function(pUsername) {
-            try {
-                // validate the input
-                if (!pUsername) {
-                    throw new MuseUtils.ParameterException(
-                        "musextputils",
-                        "We were asked to look up a user id, but weren't given anybody's name.  This is a problem.",
-                        "MuseUtils.getUserIdByUsername",
-                        { params: { pUsername: pUsername } }
-                    );
-                }
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pUsername: pUsername
+            };
 
+            // validate the input
+            if (!pUsername) {
+                throw new MuseUtils.ParameterException(
+                    "musextputils",
+                    "We were asked to look up a user id, but weren't given anybody's name.  This is a problem.",
+                    "MuseUtils.getUserIdByUsername",
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
+                );
+            }
+
+            try {
                 return getUserIdByUsername(pUsername);
             } catch (e) {
                 throw new MuseUtils.ApiException(
@@ -158,19 +183,23 @@ try {
                     "MuseUtils.pPublicApi.getUserIdByUsername",
                     {
                         thrownError: e,
-                        params: { pUsername: pUsername }
-                    }
+                        params: funcParams
+                    },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsUserLoaded = true;
-    })(MuseUtils);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the user utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "MuseUtils",
+            "We enountered a MuseUtils User module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);

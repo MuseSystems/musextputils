@@ -14,7 +14,6 @@
  **
  *************************************************************************
  ************************************************************************/
-
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition
@@ -31,12 +30,35 @@ try {
     //////////////////////////////////////////////////////////////////////////
 
     MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION]);
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Defintion
-    //////////////////////////////////////////////////////////////////////////
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils."
+        );
+    }
+}
 
-    (function(pPublicApi, pGlobal) {
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
         //--------------------------------------------------------------------
         //  Constants
         //--------------------------------------------------------------------
@@ -45,6 +67,12 @@ try {
         //  Private Functional Logic
         //--------------------------------------------------------------------
         var initSaveHookFramework = function(pNativeSaveFunc, pParent) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pNativeSaveFunc: pNativeSaveFunc,
+                pParent: pParent
+            };
+
             return (function(pNativeSaveFunc, pParent) {
                 // Internal State for Save Event Hook Framework
                 var nativeSaveFunction = pNativeSaveFunc;
@@ -90,7 +118,8 @@ try {
                                 "musextputils",
                                 "We found an error while executing a 'pre-save' hook function.  We will abort the save that you requested.",
                                 "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                                { thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     }
@@ -103,7 +132,8 @@ try {
                             "musextputils",
                             "We caught an error trying trying to run the native form's save function.  We abort here as our state is indeterminate.",
                             "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                            { thrownError: e }
+                            { params: funcParams, thrownError: e },
+                            MuseUtils.LOG_WARNING
                         );
                     }
 
@@ -123,8 +153,10 @@ try {
                                     context: {
                                         preSaveEventFuncs: preSaveEventFuncs,
                                         postSaveEventFuncs: postSaveEventFuncs
-                                    }
-                                }
+                                    },
+                                    params: funcParams
+                                },
+                                MuseUtils.LOG_CRITICAL
                             );
 
                             // A rare example of a display error in a utility function; we
@@ -155,7 +187,8 @@ try {
                                 "musextputils",
                                 "We require a valid function to add to the pre-save event hook.",
                                 "MuseUtils.initSaveHookFramework.public.addPreSaveHookFunc",
-                                { params: funcParams }
+                                { params: funcParams },
+                                MuseUtils.LOG_WARNING
                             );
                         }
 
@@ -166,7 +199,8 @@ try {
                                 "musextputils",
                                 "We encountered an error trying to add a pre-save event hook function.",
                                 "MuseUtils.initSaveHookFramework.public.addPreSaveHookFunc",
-                                { params: funcParams, thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     },
@@ -181,7 +215,8 @@ try {
                                 "musextputils",
                                 "We require a valid function to remove it from the pre-save event hook.",
                                 "MuseUtils.initSaveHookFramework.public.removePreSaveHookFunc",
-                                { params: funcParams }
+                                { params: funcParams },
+                                MuseUtils.LOG_WARNING
                             );
                         }
 
@@ -192,7 +227,8 @@ try {
                                 "musextputils",
                                 "We encountered an error trying to remove a pre-save event hook function.",
                                 "MuseUtils.initSaveHookFramework.public.removePreSaveHookFunc",
-                                { params: funcParams, thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     },
@@ -207,7 +243,8 @@ try {
                                 "musextputils",
                                 "We require a valid function to add it to the post-save event hook.",
                                 "MuseUtils.initSaveHookFramework.public.addPostSaveHookFunc.",
-                                { params: funcParams }
+                                { params: funcParams },
+                                MuseUtils.LOG_WARNING
                             );
                         }
 
@@ -218,7 +255,8 @@ try {
                                 "musextputils",
                                 "We encountered an error trying to add post-save event hook function.",
                                 "MuseUtils.initSaveHookFramework.public.addPostSaveHookFunc",
-                                { params: funcParams, thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     },
@@ -233,7 +271,8 @@ try {
                                 "musextputils",
                                 "We require a valid function to remove it from the post-save event hook.",
                                 "MuseUtils.initSaveHookFramework.public.removePostSaveHookFunc",
-                                { params: funcParams }
+                                { params: funcParams },
+                                MuseUtils.LOG_WARNING
                             );
                         }
 
@@ -244,7 +283,8 @@ try {
                                 "musextputils",
                                 "We encountered an error trying to remove a post-save event hook function.",
                                 "MuseUtils.initSaveHookFramework.public.removePostSaveHookFunc",
-                                { params: funcParams, thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     },
@@ -265,7 +305,8 @@ try {
                                 "musextputils",
                                 "There was a non-recoverable error while trying to save a record.  We will abort the save process here.",
                                 "MuseUtils.initSaveHookFramework.public.sProcessSaveFramework",
-                                { thrownError: e }
+                                { thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     },
@@ -280,7 +321,8 @@ try {
                                 "musextputils",
                                 "We require a valid function in order to set a new native save function.",
                                 "MuseUtils.initSaveHookFramework.public.setNativeSaveFunc",
-                                { params: funcParams }
+                                { params: funcParams },
+                                MuseUtils.LOG_WARNING
                             );
                         }
 
@@ -291,7 +333,8 @@ try {
                                 "musextputils",
                                 "We encountered an error trying to set a new native function call.",
                                 "MuseUtils.initSaveHookFramework.public.setNativeSaveFunc",
-                                { params: funcParams, thrownError: e }
+                                { params: funcParams, thrownError: e },
+                                MuseUtils.LOG_WARNING
                             );
                         }
                     }
@@ -314,7 +357,8 @@ try {
                     "musextputils",
                     "We require a valid reference to the native form's save function in order to initialize the save hook framework.",
                     "MuseUtils.pPublicApi.initSaveHookFramework",
-                    { params: funcParams }
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
                 );
             }
 
@@ -323,7 +367,8 @@ try {
                     "musextputils",
                     "We require a valid reference to a suitable parent widget which will serve as the parent to any not-fatal exceptions that might be thrown.",
                     "MuseUtils.pPublicApi.initSaveHookFramework",
-                    { params: funcParams }
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
                 );
             }
 
@@ -334,18 +379,22 @@ try {
                     "musextputils",
                     "We failed to initialize the save event hook framework.",
                     "MuseUtils.pPublicApi.initSaveHookFramework",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsEventHooksLoaded = true;
-    })(MuseUtils, this);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the event hook utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a  MuseUtils module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);

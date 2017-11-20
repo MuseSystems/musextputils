@@ -14,7 +14,6 @@
  **
  *************************************************************************
  ************************************************************************/
-
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition
@@ -27,13 +26,40 @@ try {
     }
 
     //////////////////////////////////////////////////////////////////////////
-    //  Module Definition
+    //  Imports
     //////////////////////////////////////////////////////////////////////////
-    (function(pPublicApi) {
-        /****************************************
-         *  Private Functions & Vars
-         ***************************************/
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils Mod Exception.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils Mod Exception."
+        );
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
+        //--------------------------------------------------------------------
+        //  Module Level Vars & Initialization
+        //--------------------------------------------------------------------
         pPublicApi.isDebugging = false;
         pPublicApi.isRootCauseReported = false;
 
@@ -97,6 +123,9 @@ try {
             }
         };
 
+        //--------------------------------------------------------------------
+        //  Private Functional Logic
+        //--------------------------------------------------------------------
         /**
          * Constructs exception text messages to be displayed to the user.  The
          * content of the message depends on the debugErrorMessageDisplay
@@ -508,9 +537,9 @@ try {
             }
         };
 
-        /****************************************
-         *  Public API
-         ***************************************/
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
         pPublicApi.UnknownException = UnknownException;
 
         pPublicApi.ParameterException = ParameterException;
@@ -570,11 +599,14 @@ try {
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsExceptionLoaded = true;
-    })(MuseUtils);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the exception utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a MuseUtils Exception module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);
