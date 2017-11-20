@@ -25,25 +25,50 @@ try {
         );
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
-
     MuseUtils.loadMuseUtils([
         MuseUtils.MOD_NUMBRO,
         MuseUtils.MOD_EXCEPTION,
         MuseUtils.MOD_JSPOLYFILL
     ]);
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils Mod Qt.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Defintion
-    //////////////////////////////////////////////////////////////////////////
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils Mod Qt."
+        );
+    }
+}
 
-    (function(pPublicApi) {
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
         //--------------------------------------------------------------------
-        //  "Private" Functional Logic
+        //  Private Functional Logic
         //--------------------------------------------------------------------
         var numericLineEdit = function(pLineEdit, pDecimalPlaces) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pLineEdit: pLineEdit,
+                pDecimalPlaces: pDecimalPlaces
+            };
+
             // Get format values of the correct length.
             var vNumericFormat;
             var vTextFormat;
@@ -129,7 +154,8 @@ try {
                     "musextputils",
                     "We found errors while trying to create a new numeric XLineEdit widget.",
                     "MuseUtils.createNumericLineEdit",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -156,8 +182,13 @@ try {
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
         //--------------------------------------------------------------------
-
         pPublicApi.numericLineEdit = function(pLineEdit, pDecimalPlaces) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pLineEdit: pLineEdit,
+                pDecimalPlaces: pDecimalPlaces
+            };
+
             try {
                 // Validate our input
                 if (
@@ -168,12 +199,8 @@ try {
                         "musextputils",
                         "We require both a LineEdit widget and a number of decimal places.",
                         "MuseUtils.numericLineEdit",
-                        {
-                            params: {
-                                pLineEdit: pLineEdit,
-                                pDecimalPlaces: pDecimalPlaces
-                            }
-                        }
+                        { params: funcParams },
+                        MuseUtils.LOG_WARNING
                     );
                 }
 
@@ -183,13 +210,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.numericLineEdit",
-                    {
-                        params: {
-                            pLineEdit: pLineEdit,
-                            pDecimalPlaces: pDecimalPlaces
-                        },
-                        thrownError: e
-                    }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -211,7 +233,8 @@ try {
                     "musextputils",
                     "We require that you provide an object name for your new numeric XLineEdit widget.",
                     "MuseUtils.pPublicApi.createNumericLineEdit",
-                    { params: funcParams }
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
                 );
             }
 
@@ -222,7 +245,8 @@ try {
                     "musextputils",
                     "We failed to properly create a numeric XLineEdit widget as requested.",
                     "MuseUtils.pPublicApi.createNumericLineEdit",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -238,7 +262,8 @@ try {
                     "musextputils",
                     "We require an integer parameter in order to resolve the mode string.",
                     "MuseUtils.pPublicApi.getModeFromXtpEnumId",
-                    { params: funcParams }
+                    { params: funcParams },
+                    MuseUtils.LOG_WARNING
                 );
             }
 
@@ -247,11 +272,14 @@ try {
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsQtLoaded = true;
-    })(MuseUtils);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the Qt utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a MuseUtils Qt module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);

@@ -14,28 +14,51 @@
  **
  *************************************************************************
  ************************************************************************/
-
-// NOTE:  We want this script to run early and be available to all other
-// scripts which might need to make use of its services.  As such we'll
-// run at grade 0.
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition & Imports
     //////////////////////////////////////////////////////////////////////////
     if (typeof MuseUtils === "undefined") {
         include("museUtils");
-        MuseUtils.loadMuseUtils([MuseUtils.MOD_EVENTHOOKS]);
     }
+
+    MuseUtils.loadMuseUtils([MuseUtils.MOD_EVENTHOOKS]);
 
     if (typeof MuseUtils.ShipTo === "undefined") {
         MuseUtils.ShipTo = {};
     }
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils.ShipTo.",
+            "MuseUtils.ShipTo",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Defintion
-    //////////////////////////////////////////////////////////////////////////
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils.ShipTo Script Error",
+            "We encountered a script level issue while processing MuseUtils.ShipTo."
+        );
+    }
+}
 
-    (function(pPublicApi, pGlobal) {
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
+        //--------------------------------------------------------------------
+        //  Constants and Module State
+        //--------------------------------------------------------------------
         var saveHookFramework = MuseUtils.initSaveHookFramework(
             mywindow.sSave,
             mywindow
@@ -50,13 +73,8 @@ try {
         //  Custom Screen Objects and Starting GUI Manipulation
         //--------------------------------------------------------------------
 
-        // Disconnect the native function and connect the framework.  Earlier
-        // the better.
-        toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSave()");
-        _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
-
         //--------------------------------------------------------------------
-        //  "Private" Functional Logic
+        //  Private Functional Logic
         //--------------------------------------------------------------------
 
         //--------------------------------------------------------------------
@@ -71,58 +89,121 @@ try {
         // instance to allow other scripts to make use of the facilities we're
         // providing.
         pPublicApi.addPreSaveHookFunc = function(pFunc) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pFunc: pFunc
+            };
+
             try {
                 saveHookFramework.addPreSaveHookFunc(pFunc);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We had problems adding a pre-save hook event function.",
+                    "MuseUtils.ShipTo.pPublicApi.addPreSaveHookFunc",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
 
         pPublicApi.removePreSaveHookFunc = function(pFunc) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pFunc: pFunc
+            };
+
             try {
                 saveHookFramework.removePreSaveHookFunc(pFunc);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We had problems removing a pre-save hook event function.",
+                    "MuseUtils.ShipTo.pPublicApi.removePreSaveHookFunc",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
 
         pPublicApi.addPostSaveHookFunc = function(pFunc) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pFunc: pFunc
+            };
+
             try {
                 saveHookFramework.addPostSaveHookFunc(pFunc);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We had problems adding a post-save hook event function.",
+                    "MuseUtils.ShipTo.pPublicApi.addPostSaveHookFunc",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
 
         pPublicApi.removePostSaveHookFunc = function(pFunc) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pFunc: pFunc
+            };
+
             try {
                 saveHookFramework.removePostSaveHookFunc(pFunc);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We had problems removing a post-save hook event function.",
+                    "MuseUtils.ShipTo.pPublicApi.removePostSaveHookFunc",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
 
         pPublicApi.setNativeSaveFunc = function(pFunc) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pFunc: pFunc
+            };
+
             try {
                 saveHookFramework.setNativeSaveFunc(pFunc);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We had problems setting a native save function function.",
+                    "MuseUtils.ShipTo.pPublicApi.setNativeSaveFunc",
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
 
-        /**
-     * Form startup initialization.  Standard part of the xTuple ERP
-     * startup process.
-     * @param {Object} pParams An associative array of values passed from
-     *                         the xTuple C++ forms which contain context
-     *                         setting information.
-     */
-        pPublicApi.set = function(pParams) {};
+        pPublicApi.set = function(pParams) {
+            //----------------------------------------------------------------
+            //  Set Timed Connects/Disconnects
+            //----------------------------------------------------------------
+        };
+
+        //--------------------------------------------------------------------
+        //  Definition Timed Connects/Disconnects
+        //--------------------------------------------------------------------
+        toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSave()");
+        _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
 
         //--------------------------------------------------------------------
         //  Foreign Script "Set" Handling
@@ -144,15 +225,25 @@ try {
                 foreignSetFunc(pParams);
                 pPublicApi.set(pParams);
             } catch (e) {
-                MuseUtils.displayError(e, mywindow);
+                var error = new MuseUtils.ApiException(
+                    "musextputils",
+                    "We encountered a problem while initializing the form.",
+                    "global.set",
+                    { params: { pParams: pParams }, thrownError: e },
+                    MuseUtils.LOG_FATAL
+                );
+                MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
-    })(MuseUtils.ShipTo, this);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the shipTo utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a  MuseUtils.ShipTo module error that wasn't otherwise caught and handled.",
+            "MuseUtils.ShipTo",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils.ShipTo, this);

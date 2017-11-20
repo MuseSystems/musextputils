@@ -197,9 +197,24 @@ try {
     // Set a flag indicating that this library is loaded.
     MuseUtils.isMuseUtilsJsPolyfillLoaded = true;
 } catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the JsPolyfill utilities. \n\n" + e.message
-    );
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils JsPolyfill.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils JsPolyfill."
+        );
+    }
 }

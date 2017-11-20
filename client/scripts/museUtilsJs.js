@@ -16,7 +16,7 @@
  ************************************************************************/
 try {
     //////////////////////////////////////////////////////////////////////////
-    //  Namespace Definition
+    //  Namespace Definition & Imports
     //////////////////////////////////////////////////////////////////////////
 
     if (typeof MuseUtils === "undefined") {
@@ -25,21 +25,41 @@ try {
         );
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
     MuseUtils.loadMuseUtils([
         MuseUtils.MOD_JSPOLYFILL,
         MuseUtils.MOD_EXCEPTION
     ]);
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils Mod Js.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Defintion
-    //////////////////////////////////////////////////////////////////////////
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils Mod Js."
+        );
+    }
+}
 
-    (function(pPublicApi) {
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
         //--------------------------------------------------------------------
-        //  "Private" Functional Logic
+        //  Private Functional Logic
         //--------------------------------------------------------------------
         var isTrue = function(pBoolString) {
             if (pBoolString === undefined || pBoolString === null) {
@@ -156,7 +176,6 @@ try {
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
         //--------------------------------------------------------------------
-
         pPublicApi.isTrue = function(pBoolString) {
             // Capture function parameters for later exception references.
             var funcParams = {
@@ -170,7 +189,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.isTrue",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -178,18 +198,20 @@ try {
         pPublicApi.realNull = realNull;
 
         pPublicApi.setJsDefault = function(pCurrentValue, pDefaultValue) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pCurrentValue: pCurrentValue,
+                pDefaultValue: pDefaultValue
+            };
+
             try {
                 if (pDefaultValue === null || pDefaultValue === undefined) {
                     throw new MuseUtils.ParameterException(
                         "musextputils",
                         "We require a non-null/non-undefined value as a default.  If you require default or null, don't use this function.",
                         "MuseUtils.setJsDefault",
-                        {
-                            params: {
-                                pCurrentValue: pCurrentValue,
-                                pDefaultValue: pDefaultValue
-                            }
-                        }
+                        { params: funcParams },
+                        MuseUtils.LOG_WARNING
                     );
                 }
 
@@ -199,18 +221,18 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.setJsDefault",
-                    {
-                        params: {
-                            pCurrentValue: pCurrentValue,
-                            pDefaultValue: pDefaultValue
-                        },
-                        thrownError: e
-                    }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         pPublicApi.isNumber = function(pCandidateValue) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pCandidateValue: pCandidateValue
+            };
+
             try {
                 return isNumber(pCandidateValue);
             } catch (e) {
@@ -218,12 +240,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.isNumber",
-                    {
-                        params: {
-                            pCandidateValue: pCandidateValue
-                        },
-                        thrownError: e
-                    }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -241,12 +259,18 @@ try {
                             arguments: arguments
                         },
                         thrownError: e
-                    }
+                    },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         pPublicApi.isValidId = function(pCandidateId) {
+            // Capture function parameters for later exception references.
+            var funcParams = {
+                pCandidateId: pCandidateId
+            };
+
             try {
                 return isValidId(pCandidateId);
             } catch (e) {
@@ -254,12 +278,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.isValidId",
-                    {
-                        params: {
-                            pCandidateId: pCandidateId
-                        },
-                        thrownError: e
-                    }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -285,7 +305,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.getNormalizedString",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -303,7 +324,8 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.parseParams",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
@@ -321,18 +343,22 @@ try {
                     "musextputils",
                     "There was an error during the execution of an API call.",
                     "MuseUtils.pPublicApi.getCleanTextLine",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_WARNING
                 );
             }
         };
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsJsLoaded = true;
-    })(MuseUtils);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the JS utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a  MuseUtils module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);

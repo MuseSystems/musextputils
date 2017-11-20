@@ -14,7 +14,6 @@
  **
  *************************************************************************
  ************************************************************************/
-
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition
@@ -25,15 +24,38 @@ try {
             "Please do load utility modules directly.  See museUtils.js for the loading methodology."
         );
     }
+} catch (e) {
+    if (
+        typeof MuseUtils !== "undefined" &&
+        (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
+    ) {
+        var error = new MuseUtils.ScriptException(
+            "musextputils",
+            "We encountered a script level issue while processing MuseUtils Mod Exception.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Module Definition
-    //////////////////////////////////////////////////////////////////////////
-    (function(pPublicApi) {
-        /****************************************
-         *  Private Functions & Vars
-         ***************************************/
+        MuseUtils.displayError(error, mainwindow);
+    } else {
+        QMessageBox.critical(
+            mainwindow,
+            "MuseUtils Script Error",
+            "We encountered a script level issue while processing MuseUtils Mod Exception."
+        );
+    }
+}
 
+//////////////////////////////////////////////////////////////////////////
+//  Module Defintion
+//////////////////////////////////////////////////////////////////////////
+
+(function(pPublicApi, pGlobal) {
+    try {
+        //--------------------------------------------------------------------
+        //  Module Level Vars & Initialization
+        //--------------------------------------------------------------------
         pPublicApi.isDebugging = false;
         pPublicApi.isRootCauseReported = false;
 
@@ -97,6 +119,9 @@ try {
             }
         };
 
+        //--------------------------------------------------------------------
+        //  Private Functional Logic
+        //--------------------------------------------------------------------
         /**
          * Constructs exception text messages to be displayed to the user.  The
          * content of the message depends on the debugErrorMessageDisplay
@@ -428,6 +453,54 @@ try {
         ApiException.prototype.constructor = ApiException;
         ApiException.prototype.toString = getExceptionText;
 
+        var ModuleException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
+            this.myIsMuseUtilsException = true;
+            this.myIsDeugging = pPublicApi.isDebugging;
+            this.myPackage = pPackage;
+            this.myMessage = pMessage;
+            this.myFunction = pFunction;
+            this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
+            this.myErrorName = "ModuleException";
+            this.myErrorDesc =
+                "We encountered an error processing a module definition script.  See exception stack for root cause details.";
+            this.logMsg = logException(this);
+        };
+
+        ModuleException.prototype = new Error();
+        ModuleException.prototype.constructor = ModuleException;
+        ModuleException.prototype.toString = getExceptionText;
+
+        var ScriptException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
+            this.myIsMuseUtilsException = true;
+            this.myIsDeugging = pPublicApi.isDebugging;
+            this.myPackage = pPackage;
+            this.myMessage = pMessage;
+            this.myFunction = pFunction;
+            this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
+            this.myErrorName = "ScriptException";
+            this.myErrorDesc =
+                "We encountered an error processing ad hoc scripting.  See exception stack for root cause details.";
+            this.logMsg = logException(this);
+        };
+
+        ScriptException.prototype = new Error();
+        ScriptException.prototype.constructor = ScriptException;
+        ScriptException.prototype.toString = getExceptionText;
+
         var displayError = function(pException, pParent) {
             // Let's parse the exception.  Check for our marker attribute.
             // If the marker is present we assume it is our exception and that we
@@ -460,9 +533,9 @@ try {
             }
         };
 
-        /****************************************
-         *  Public API
-         ***************************************/
+        //--------------------------------------------------------------------
+        //  Public Interface -- Functions
+        //--------------------------------------------------------------------
         pPublicApi.UnknownException = UnknownException;
 
         pPublicApi.ParameterException = ParameterException;
@@ -478,6 +551,10 @@ try {
         pPublicApi.RecordLockedException = RecordLockedException;
 
         pPublicApi.ApiException = ApiException;
+
+        pPublicApi.ModuleException = ModuleException;
+
+        pPublicApi.ScriptException = ScriptException;
 
         pPublicApi.displayError = function(pException, pParent) {
             // First we need to know whether or not we were even called properly.
@@ -518,11 +595,14 @@ try {
 
         // Set a flag indicating that this library is loaded.
         pPublicApi.isMuseUtilsExceptionLoaded = true;
-    })(MuseUtils);
-} catch (e) {
-    QMessageBox.critical(
-        mainwindow,
-        "Muse Systems xTuple Utilities",
-        "We failed loading the exception utilities. \n\n" + e.message
-    );
-}
+    } catch (e) {
+        var error = new MuseUtils.ModuleException(
+            "musextputils",
+            "We enountered a MuseUtils Exception module error that wasn't otherwise caught and handled.",
+            "MuseUtils",
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
+        );
+        MuseUtils.displayError(error, mainwindow);
+    }
+})(MuseUtils, this);
