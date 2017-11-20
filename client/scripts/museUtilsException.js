@@ -24,10 +24,6 @@ try {
             "Please do load utility modules directly.  See museUtils.js for the loading methodology."
         );
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
 } catch (e) {
     if (
         typeof MuseUtils !== "undefined" &&

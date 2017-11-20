@@ -22,14 +22,6 @@ try {
         );
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
-
-    if (typeof MuseUtils === "undefined") {
-        include("museUtils");
-    }
-
     MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION]);
 } catch (e) {
     if (

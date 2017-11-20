@@ -16,21 +16,13 @@
  ************************************************************************/
 try {
     //////////////////////////////////////////////////////////////////////////
-    //  Namespace Definition
+    //  Namespace Definition & Imports
     //////////////////////////////////////////////////////////////////////////
 
     if (typeof MuseUtils === "undefined") {
         throw new Error(
             "Please do load utility modules directly.  See museUtils.js for the loading methodology."
         );
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
-
-    if (typeof MuseUtils === "undefined") {
-        include("museUtils");
     }
 
     MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION, MuseUtils.MOD_JS]);
@@ -64,14 +56,7 @@ try {
 (function(pPublicApi, pGlobal) {
     try {
         //--------------------------------------------------------------------
-        //  Constants
-        //--------------------------------------------------------------------
-
-        //--------------------------------------------------------------------
         //  Private Functional Logic
-        //--------------------------------------------------------------------
-        //--------------------------------------------------------------------
-        //  "Private" Functional Logic
         //--------------------------------------------------------------------
         var getQtSqlQueryStats = function(pSqlQuery) {
             var vReturnText =

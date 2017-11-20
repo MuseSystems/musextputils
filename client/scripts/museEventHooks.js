@@ -16,7 +16,7 @@
  ************************************************************************/
 try {
     //////////////////////////////////////////////////////////////////////////
-    //  Namespace Definition
+    //  Namespace Definition & Imports
     //////////////////////////////////////////////////////////////////////////
 
     if (typeof MuseUtils === "undefined") {
@@ -24,10 +24,6 @@ try {
             "Please do load utility modules directly.  See museUtils.js for the loading methodology."
         );
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
 
     MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION]);
 } catch (e) {
