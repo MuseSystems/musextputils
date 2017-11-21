@@ -28,6 +28,7 @@ This list of features is the short list of significant features.  Unfortunately,
 | museUtils.js           | Is a loader for all of the other scripts.  If you need the full utilities suite, simply include "museUtils" in your script.
 | museUtilsJsPolyfill.js | Provides polyfills for JavaScript functions from later versions of ECMAScript than that supported by QtScript directly.
 | museUtilsException.js  | An exception handling framework.  This script provides a standard way to throw more informative exceptions which can them be displayed in the user interface.  Exceptions and collected data are stored in a database table on display to the user.
+| museUtilsEventHooks.js | Provides a systematic workaround for xTuple core forms that are XDialog based and don't provide proper pre/post core save ability to scripts.
 | museUtilsConfig.js     | An extended configuration management framework.  xTuple's built in configuration management doesn't have explicit mechanisms for custom metric additions.  As such we define our own functionality and make it a bit more robust and flexible.
 | museUtilsQt.js         | Monkey patches for some Qt objects which provide convenience functions for working in a QtScript context.  Currently only QLineEdit/XLineEdit has some enhanced numeric handling ability.
 | museUtilsUser.js       | Convenience functions for accessing user information, such as session users, and such.
