@@ -1,4 +1,4 @@
-Muse Systems xTuple ERP Utilities v2.8.0
+Muse Systems xTuple ERP Utilities v3.0.0
 ========================================
 
 Overview
@@ -15,7 +15,7 @@ This version of the library requires the following minimum specifications:
 
 * PostgreSQL version 9.5.
 * The PostgreSQL "hstore" extension installed into the xTuple database.
-* xTuple ERP 4.10.0 or later (note that we have only tested on 4.10.x)
+* xTuple ERP 4.11.0 or later (note that we have only tested on 4.11.x)
 * xTuple Updater 2.4.0
 
 Features
@@ -48,6 +48,6 @@ There are a number of database functions, views, and utility triggers that are a
 ### Third Party Libraries and Code
 We distribute third party libraries in this utilities package and use small code extracts from various sources.  Small extracts are acknowledged inline with the code in the applicable source file.
 
-We also distribute version 1.9.3 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
+We also distribute version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
 
 &copy; 2017 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>

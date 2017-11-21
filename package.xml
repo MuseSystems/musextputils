@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.8.0"
+         version="3.0.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -37,13 +37,13 @@
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
          )
 	     SELECT
-                (major_version = 4 AND minor_version = 10 AND patch_version >= 0)
-            OR  (major_version = 4 AND minor_version > 10)
+                (major_version = 4 AND minor_version = 11 AND patch_version >= 0)
+            OR  (major_version = 4 AND minor_version > 11)
             OR  (major_version > 4)
          FROM version;
 	    </query>
 	    <message>
-	      This package must be installed against xTuple ERP version 4.10.0 or later.  This package has only been tested against version 4.10.0 and may not work in later version without updating.
+	      This package must be installed against xTuple ERP version 4.11.0 or later.  This package has only been tested against version 4.10.0 and may not work in later version without updating.
 	    </message>
 	</prerequisite>
 
