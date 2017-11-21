@@ -73,6 +73,15 @@ try {
         //------------------------------------------------------------------
         var load = function(pModules) {
             for (var i = 0; i < pModules.length; i++) {
+                // Check if we got something bogus
+                if (pPublicApi.MOD_ALL.indexOf(pModules[i]) < 0) {
+                    throw new Error(
+                        "The MuseUtils loader asked to load something that is not a module (" +
+                            pModules[i] +
+                            ")"
+                    );
+                }
+
                 if (
                     typeof numbro !== "function" &&
                     pModules[i] == pPublicApi.MOD_NUMBRO
