@@ -40,13 +40,15 @@ try {
             MuseUtils.LOG_FATAL
         );
 
-        MuseUtils.displayError(error, mainwindow);
+        MuseUtils.displayError(error, mywindow);
+        mydialog.reject();
     } else {
         QMessageBox.critical(
             mainwindow,
             "MuseUtils.SalesOrderItem Script Error",
             "We encountered a script level issue while processing MuseUtils.SalesOrderItem."
         );
+        mydialog.reject();
     }
 }
 
@@ -105,7 +107,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
 
@@ -126,7 +128,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
 
@@ -147,7 +149,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
 
@@ -168,7 +170,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
 
@@ -189,7 +191,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
 
@@ -233,7 +235,7 @@ try {
                     MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
-                mywindow.close();
+                mydialog.reject();
             }
         };
     } catch (e) {
@@ -244,6 +246,7 @@ try {
             { thrownError: e },
             MuseUtils.LOG_FATAL
         );
-        MuseUtils.displayError(error, mainwindow);
+        MuseUtils.displayError(error, mywindow);
+        mydialog.reject();
     }
 })(MuseUtils.SalesOrderItem, this);

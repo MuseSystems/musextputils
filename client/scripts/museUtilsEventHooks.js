@@ -25,7 +25,7 @@ try {
         );
     }
 
-    MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION]);
+    MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION, MuseUtils.MOD_JS]);
 } catch (e) {
     if (
         typeof MuseUtils !== "undefined" &&
