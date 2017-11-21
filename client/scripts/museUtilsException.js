@@ -54,55 +54,8 @@ try {
 (function(pPublicApi, pGlobal) {
     try {
         //--------------------------------------------------------------------
-        //  Module Level Vars & Initialization
+        //  Private Functional Logic
         //--------------------------------------------------------------------
-        pPublicApi.isDebugging = false;
-        pPublicApi.isRootCauseReported = false;
-
-        // Check the debugging configuration.
-        try {
-            var debugQuery = toolbox.executeQuery(
-                "SELECT musextputils.get_musemetric('musextputils', " +
-                    " 'debugErrorMessageDisplay', null::boolean) AS result"
-            );
-
-            if (debugQuery.first()) {
-                pPublicApi.isDebugging =
-                    "t" ==
-                    debugQuery
-                        .value("result")
-                        .toString()
-                        .toLowerCase()
-                        .substring(0, 1);
-            } else {
-                pPublicApi.isDebugging = false;
-            }
-        } catch (e) {
-            pPublicApi.isDebugging = false;
-        }
-
-        // Check the root cause reporting configuration.
-        try {
-            var rootCauseQuery = toolbox.executeQuery(
-                "SELECT musextputils.get_musemetric('musextputils', " +
-                    "'rootCauseReportingEnabled', null::boolean) AS result"
-            );
-
-            if (rootCauseQuery.first()) {
-                pPublicApi.isRootCauseReported =
-                    "t" ==
-                    rootCauseQuery
-                        .value("result")
-                        .toString()
-                        .toLowerCase()
-                        .substring(0, 1);
-            } else {
-                pPublicApi.isRootCauseReported = false;
-            }
-        } catch (e) {
-            pPublicApi.isRootCauseReported = false;
-        }
-
         var getRootCause = function(pMuseExceptionPayload) {
             if (
                 !pMuseExceptionPayload.hasOwnProperty("myIsMuseUtilsException")
@@ -119,9 +72,54 @@ try {
             }
         };
 
-        //--------------------------------------------------------------------
-        //  Private Functional Logic
-        //--------------------------------------------------------------------
+        var getSystemNotification = function() {
+            var rootCause = getRootCause(this || {});
+
+            var returnText = "Notification (" + this.logMsg + "):\n";
+            returnText += this.myMessage + "\n\n";
+
+            if (rootCause != this) {
+                if (rootCause.myIsMuseUtilsException == true ? true : false) {
+                    returnText += "Caused By (" + rootCause.logMsg + "):\n";
+                    returnText += rootCause.myMessage + "\n\n";
+                    returnText +=
+                        "--------------------------------------------\n\n";
+                    returnText += "Function Name: " + this.myFunction + "\n";
+                    returnText += "Package Name: " + this.myPackage + "\n\n";
+                    returnText +=
+                        "Root Function Name: " + rootCause.myFunction + "\n";
+                    returnText +=
+                        "Root Package Name: " + rootCause.myPackage + "\n\n";
+                } else {
+                    returnText += "Caused By (" + rootCause.logMsg + "):\n";
+                    returnText += (rootCause.message || "(N/A)") + "\n\n";
+                    returnText +=
+                        "--------------------------------------------\n\n";
+                    returnText += "Function Name: " + this.myFunction + "\n";
+                    returnText += "Package Name: " + this.myPackage + "\n\n";
+                    returnText +=
+                        "Root File Name: " +
+                        (rootCause.fileName || "(N/A)") +
+                        "\n";
+                    returnText +=
+                        "Root Line Number: " +
+                        (rootCause.lineNumber || "(N/A)") +
+                        "\n\n";
+                }
+            } else {
+                returnText +=
+                    "--------------------------------------------\n\n";
+                returnText += "Function Name: " + this.myFunction + "\n";
+                returnText += "Package Name: " + this.myPackage + "\n\n";
+            }
+
+            return returnText;
+        };
+
+        var getDebugData = function() {
+            return JSON.stringify(this, null, 4);
+        };
+
         /**
          * Constructs exception text messages to be displayed to the user.  The
          * content of the message depends on the debugErrorMessageDisplay
@@ -129,95 +127,11 @@ try {
          * @return {text} The final text ready for display.
          */
         var getExceptionText = function() {
-            var returnText;
-
-            returnText = "\n";
-            returnText += this.logMsg || "(Exception not logged!)";
-            returnText += "\n\n";
-            returnText += this.myMessage;
-            returnText +=
-                "\n\nPlease report this to your support staff along with the Exception Log Id above.";
-            returnText += "\n\n";
-            returnText += "Function Name: " + this.myFunction + "\n";
-            returnText += "Package Name: " + this.myPackage + "\n\n";
-            returnText +=
-                "---------------------------------------------------\n\n";
-
-            if (pPublicApi.isRootCauseReported) {
-                var rootCause = getRootCause(this || {});
-
-                if (rootCause.myIsMuseUtilsException || false) {
-                    returnText +=
-                        "Root Cause " + rootCause.logMsg ||
-                        "(Exception not logged!)";
-                    returnText += "\nRoot Cause: " + rootCause.myMessage;
-                    returnText +=
-                        "\n\nRoot Cause Function Name: " +
-                        rootCause.myFunction +
-                        "\n";
-                    returnText +=
-                        "Root Cause Package Name: " +
-                        rootCause.myPackage +
-                        "\n\n";
-                    returnText +=
-                        "---------------------------------------------------\n\n";
-                    if (pPublicApi.isDebugging) {
-                        returnText +=
-                            "Root Cause Exception Name: " +
-                            rootCause.myErrorName +
-                            "\n";
-                        returnText +=
-                            "Root Cause Exception Desc: " +
-                            rootCause.myErrorDesc +
-                            "\n";
-                        returnText +=
-                            "Root Cause Payload: " +
-                            JSON.stringify(rootCause.myPayload);
-                        returnText +=
-                            "\n\n------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n";
-                    }
-                } else {
-                    returnText += "\nmessage: " + rootCause.message || "(N/A)";
-                    returnText +=
-                        "\nfileName: " + rootCause.fileName || "(N/A)";
-                    returnText +=
-                        "\nsourceId: " + rootCause.sourceId || "(N/A)";
-                    returnText +=
-                        "\nlineNumber: " + rootCause.lineNumber || "(N/A)";
-                    returnText +=
-                        "\nexpressionEndOffset: " +
-                            rootCause.expressionEndOffset || "(N/A)";
-                    returnText +=
-                        "\nexpressionBeginOffset: " +
-                            rootCause.expressionBeginOffset || "(N/A)";
-                    returnText +=
-                        "\nexpressionCaretOffset: " +
-                            rootCause.expressionCaretOffset || "(N/A)";
-                    returnText +=
-                        "\n\nPlease report this to your support staff along with the Exception Log Id above. if provided.";
-                    returnText +=
-                        "\n\n---------------------------------------------------\n";
-                }
-            }
-
-            if (pPublicApi.isDebugging || false) {
-                // Setup local variables to convert the passed data to a string return.
-                returnText +=
-                    "Calling Function Name: " + this.myFunction + "\n";
-                returnText += "Calling Package Name: " + this.myPackage + "\n";
-                returnText +=
-                    "Calling Exception Name: " + this.myErrorName + "\n";
-                returnText +=
-                    "Calling Exception Desc: " + this.myErrorDesc + "\n";
-                returnText +=
-                    "Calling Payload: " +
-                    JSON.stringify(this.myPayload) +
-                    "\n\n";
-                returnText +=
-                    "------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n";
-            }
-
-            return returnText;
+            return (
+                this.getSystemNotification() +
+                "============================================\n\n" +
+                JSON.stringify(this.myPayload, null, 4)
+            );
         };
 
         var logException = function(pThis) {
@@ -249,7 +163,7 @@ try {
                         );
                     }
                 } else {
-                    return "(Not Logged)";
+                    return "Not Logged";
                 }
             } catch (e) {
                 // This is all we do... anything more would stop flow when we might otherwise be able to succeed.
@@ -269,7 +183,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -284,6 +197,8 @@ try {
         UnknownException.prototype = new Error();
         UnknownException.prototype.constructor = UnknownException;
         UnknownException.prototype.toString = getExceptionText;
+        UnknownException.prototype.getSystemNotification = getSystemNotification;
+        UnknownException.prototype.getDebugData = getDebugData;
 
         var ParameterException = function(
             pPackage,
@@ -293,7 +208,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -308,6 +222,8 @@ try {
         ParameterException.prototype = new Error();
         ParameterException.prototype.constructor = ParameterException;
         ParameterException.prototype.toString = getExceptionText;
+        ParameterException.prototype.getSystemNotification = getSystemNotification;
+        ParameterException.prototype.getDebugData = getDebugData;
 
         var DatabaseException = function(
             pPackage,
@@ -317,7 +233,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -332,6 +247,8 @@ try {
         DatabaseException.prototype = new Error();
         DatabaseException.prototype.constructor = DatabaseException;
         DatabaseException.prototype.toString = getExceptionText;
+        DatabaseException.prototype.getSystemNotification = getSystemNotification;
+        DatabaseException.prototype.getDebugData = getDebugData;
 
         var OutOfBoundsException = function(
             pPackage,
@@ -341,7 +258,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -356,6 +272,8 @@ try {
         OutOfBoundsException.prototype = new Error();
         OutOfBoundsException.prototype.constructor = OutOfBoundsException;
         OutOfBoundsException.prototype.toString = getExceptionText;
+        OutOfBoundsException.prototype.getSystemNotification = getSystemNotification;
+        OutOfBoundsException.prototype.getDebugData = getDebugData;
 
         var PermissionException = function(
             pPackage,
@@ -365,7 +283,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -380,6 +297,8 @@ try {
         PermissionException.prototype = new Error();
         PermissionException.prototype.constructor = PermissionException;
         PermissionException.prototype.toString = getExceptionText;
+        PermissionException.prototype.getSystemNotification = getSystemNotification;
+        PermissionException.prototype.getDebugData = getDebugData;
 
         var NotFoundException = function(
             pPackage,
@@ -389,7 +308,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -404,6 +322,8 @@ try {
         NotFoundException.prototype = new Error();
         NotFoundException.prototype.constructor = NotFoundException;
         NotFoundException.prototype.toString = getExceptionText;
+        NotFoundException.prototype.getSystemNotification = getSystemNotification;
+        NotFoundException.prototype.getDebugData = getDebugData;
 
         var RecordLockedException = function(
             pPackage,
@@ -413,7 +333,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -428,6 +347,8 @@ try {
         RecordLockedException.prototype = new Error();
         RecordLockedException.prototype.constructor = RecordLockedException;
         RecordLockedException.prototype.toString = getExceptionText;
+        RecordLockedException.prototype.getSystemNotification = getSystemNotification;
+        RecordLockedException.prototype.getDebugData = getDebugData;
 
         var ApiException = function(
             pPackage,
@@ -437,7 +358,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -452,6 +372,8 @@ try {
         ApiException.prototype = new Error();
         ApiException.prototype.constructor = ApiException;
         ApiException.prototype.toString = getExceptionText;
+        ApiException.prototype.getSystemNotification = getSystemNotification;
+        ApiException.prototype.getDebugData = getDebugData;
 
         var ModuleException = function(
             pPackage,
@@ -461,7 +383,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -476,6 +397,8 @@ try {
         ModuleException.prototype = new Error();
         ModuleException.prototype.constructor = ModuleException;
         ModuleException.prototype.toString = getExceptionText;
+        ModuleException.prototype.getSystemNotification = getSystemNotification;
+        ModuleException.prototype.getDebugData = getDebugData;
 
         var ScriptException = function(
             pPackage,
@@ -485,7 +408,6 @@ try {
             pIsLogged
         ) {
             this.myIsMuseUtilsException = true;
-            this.myIsDeugging = pPublicApi.isDebugging;
             this.myPackage = pPackage;
             this.myMessage = pMessage;
             this.myFunction = pFunction;
@@ -500,6 +422,8 @@ try {
         ScriptException.prototype = new Error();
         ScriptException.prototype.constructor = ScriptException;
         ScriptException.prototype.toString = getExceptionText;
+        ScriptException.prototype.getSystemNotification = getSystemNotification;
+        ScriptException.prototype.getDebugData = getDebugData;
 
         var displayError = function(pException, pParent) {
             // Let's parse the exception.  Check for our marker attribute.
@@ -508,24 +432,26 @@ try {
             if (pException.hasOwnProperty("myIsMuseUtilsException")) {
                 // This is one of our exceptions so we can print richer
                 // information.
-                QMessageBox.critical(
-                    pParent,
-                    "Error: " +
-                        pException.myPackage +
-                        "/" +
-                        pException.myFunction,
-                    "Error encountered." + pException.toString()
+                var exceptionDialog = toolbox.openWindow(
+                    "museUtilsExceptionDialog",
+                    0,
+                    Qt.ApplicationModal,
+                    Qt.Dialog
                 );
+
+                var tmp = toolbox.lastWindow().set({
+                    systemNotification: pException.getSystemNotification(),
+                    debugData: pException.getDebugData()
+                });
+
+                exceptionDialog.exec();
             } else {
                 // Not our BaseException, so show something more generic.
                 var error = new UnknownException(
                     "musextputils",
-                    "There was an error which does not use our error framework.\n\n" +
-                        "(Message: " +
-                        (pException.message || "Unknown") +
-                        ")",
+                    "There was an error which does not use our error framework.",
                     "MuseUtils.displayError",
-                    pException,
+                    { thrownError: pException },
                     MuseUtils.LOG_CRITICAL
                 );
 
