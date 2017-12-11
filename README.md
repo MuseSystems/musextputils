@@ -15,7 +15,7 @@ This version of the library requires the following minimum specifications:
 
 * PostgreSQL version 9.5.
 * The PostgreSQL "hstore" extension installed into the xTuple database.
-* xTuple ERP 4.11.0 or later (note that we have only tested on 4.11.x)
+* xTuple ERP 4.10.0 or later (note that we have only tested on 4.10.x)
 * xTuple Updater 2.4.0
 
 Features
