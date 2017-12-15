@@ -114,7 +114,7 @@ try {
                                 "musextputils",
                                 "We found an error while executing a 'pre-save' hook function.  We will abort the save that you requested.",
                                 "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                                { params: funcParams, thrownError: e },
+                                { thrownError: e },
                                 MuseUtils.LOG_WARNING
                             );
                         }
@@ -128,7 +128,7 @@ try {
                             "musextputils",
                             "We caught an error trying trying to run the native form's save function.  We abort here as our state is indeterminate.",
                             "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                            { params: funcParams, thrownError: e },
+                            { thrownError: e },
                             MuseUtils.LOG_WARNING
                         );
                     }
@@ -149,8 +149,7 @@ try {
                                     context: {
                                         preSaveEventFuncs: preSaveEventFuncs,
                                         postSaveEventFuncs: postSaveEventFuncs
-                                    },
-                                    params: funcParams
+                                    }
                                 },
                                 MuseUtils.LOG_CRITICAL
                             );
