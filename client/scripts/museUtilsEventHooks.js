@@ -145,7 +145,7 @@ try {
                                 "We found an error while executing a 'post-save' hook function.  The record you are saving has been saved, though there may be problems, especially with any custom module that also must save information.  Please be sure to double check the record you just saved for accurracy.",
                                 "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
                                 {
-                                    thrownError: myError,
+                                    thrownError: e,
                                     context: {
                                         preSaveEventFuncs: preSaveEventFuncs,
                                         postSaveEventFuncs: postSaveEventFuncs
