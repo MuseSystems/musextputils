@@ -68,6 +68,11 @@ try {
         pPublicApi.LOG_CRITICAL = true;
         pPublicApi.LOG_FATAL = true;
 
+        // User Approval Return Codes
+        pPublicApi.AUTH_REJECTED = 0;
+        pPublicApi.AUTH_SELF = 1;
+        pPublicApi.AUTH_MANAGER = 2;
+
         //------------------------------------------------------------------
         //  Private Functional Logic
         //------------------------------------------------------------------
