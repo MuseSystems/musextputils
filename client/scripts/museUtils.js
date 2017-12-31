@@ -41,6 +41,7 @@ try {
 
         // Module name constances
         pPublicApi.MOD_NUMBRO = "numbro";
+        pPublicApi.MOD_SJCL = "sjcl";
         pPublicApi.MOD_JSPOLYFILL = "museUtilsJsPolyfill";
         pPublicApi.MOD_EXCEPTION = "museUtilsException";
         pPublicApi.MOD_EVENTHOOKS = "museUtilsEventHooks";
@@ -51,6 +52,7 @@ try {
         pPublicApi.MOD_DB = "museUtilsDb";
         pPublicApi.MOD_ALL = [
             pPublicApi.MOD_NUMBRO,
+            pPublicApi.MOD_SJCL,
             pPublicApi.MOD_JSPOLYFILL,
             pPublicApi.MOD_EXCEPTION,
             pPublicApi.MOD_EVENTHOOKS,
@@ -92,6 +94,13 @@ try {
                     pModules[i] == pPublicApi.MOD_NUMBRO
                 ) {
                     include("numbro");
+                }
+
+                if (
+                    typeof sjcl !== "object" &&
+                    pModules[i] == pPublicApi.MOD_SJCL
+                ) {
+                    include("sjcl");
                 }
 
                 if (
