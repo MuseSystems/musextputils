@@ -49,6 +49,8 @@ There are a number of database functions, views, and utility triggers that are a
 ### Third Party Libraries and Code
 We distribute third party libraries in this utilities package and use small code extracts from various sources.  Small extracts are acknowledged inline with the code in the applicable source file.
 
-We also distribute version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
+We distribute the following libraries (runtime versions, not full source):
+* Version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
+* Version 1.04 of the <a href="https://bitwiseshiftleft.github.io/sjcl/" target="_blank">Stanford Javascript Crypto Library</a>.  Its license and terms are in the client/scripts/sjcl directory of this package.
 
 &copy; 2017 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>
