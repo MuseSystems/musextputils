@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.8.0"
+         version="2.9.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -90,6 +90,7 @@
     <loadappscript file="client/scripts/xtuple_forms/salesOrderItem.js" name="salesOrderItem" order="0">A script to provide Sales Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="0">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/shipTo.js" name="shipTo" order="0">A script to provide ShipTo save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
+    <loadappscript file="client/scripts/xtuple_forms/itemAvailabilityWorkbench.js" name="itemAvailabilityWorkbench" order="100">A script to provide Item Availability Workbench forced loading and initialization of scripts backing the embedded Item Master form.</loadappscript>
 
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
