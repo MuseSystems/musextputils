@@ -484,7 +484,7 @@ if (!MuseUtils.isMuseUtilsJsPolyfillLoaded) {
             pEnumId: pEnumId
         };
 
-        if (!Number.isInteger(pEnumId) || pEnumId < 0) {
+        if (!Number.isInteger(pEnumId)) {
             throw new MuseUtils.ParameterException(
                 "musextputils",
                 "We require an integer parameter in order to resolve the mode string.",
