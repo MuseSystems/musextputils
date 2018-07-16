@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -20,7 +20,7 @@
 -- format.
 --
 
-CREATE OR REPLACE FUNCTION musextputils.get_xtuple_version() 
+CREATE OR REPLACE FUNCTION musextputils.get_xtuple_version()
     RETURNS TABLE(   major_version integer
                     ,minor_version integer
                     ,patch_version integer) AS
@@ -42,5 +42,5 @@ GRANT EXECUTE ON FUNCTION musextputils.get_xtuple_version() TO admin;
 GRANT EXECUTE ON FUNCTION musextputils.get_xtuple_version() TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.get_xtuple_version() 
+COMMENT ON FUNCTION musextputils.get_xtuple_version()
     IS $DOC$A function which returns the xTuple ERP version number in an easy to evaluate format.$DOC$;

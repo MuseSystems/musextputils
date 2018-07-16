@@ -21,28 +21,25 @@ try {
     //////////////////////////////////////////////////////////////////////////
 
     if (typeof MuseUtils === "undefined") {
-        MuseUtils = {};
+        include("museUtils");
     }
+
+    MuseUtils.loadMuseUtils([MuseUtils.MOD_EXCEPTION, MuseUtils.MOD_JS]);
 
     if (typeof MuseUtils.ItemAvailability === "undefined") {
         MuseUtils.ItemAvailability = {};
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    //  Imports
-    //////////////////////////////////////////////////////////////////////////
-
-    include("museUtils");
 } catch (e) {
     if (
         typeof MuseUtils !== "undefined" &&
         (MuseUtils.isMuseUtilsExceptionLoaded === true ? true : false)
     ) {
-        var error = new MuseUtils.UnknownException(
+        var error = new MuseUtils.ScriptException(
             "musextputils",
             "We encountered a script level issue while processing MuseUtils.ItemAvailability.",
             "MuseUtils.ItemAvailability",
-            { thrownError: e }
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
         );
 
         MuseUtils.displayError(error, mainwindow);
@@ -54,6 +51,7 @@ try {
         );
     }
 }
+
 //////////////////////////////////////////////////////////////////////////
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
@@ -63,16 +61,12 @@ try {
         //--------------------------------------------------------------------
         //  Constants and Module State
         //--------------------------------------------------------------------
-        // Somehow newId on _item gets called twice and the second time we
-        // don't get a referenc to itemMaster... ensure we only run once.  It's
-        // a hack... but isn't it all?
-        var lastSeenItemId = -1;
 
         //--------------------------------------------------------------------
         //  Get Object References From Screen Definitions
         //--------------------------------------------------------------------
         var _item = mywindow.findChild("_item");
-        var itemMaster = mywindow.findChild("item");
+
         //--------------------------------------------------------------------
         //  Custom Screen Objects and Starting GUI Manipulation
         //--------------------------------------------------------------------
@@ -91,31 +85,24 @@ try {
             };
 
             try {
-                // Call the native populate function since we want to always
-                // run it and run after it.
-                mywindow.populate();
-
                 // Force the loading and initialization of the embedded Item
                 // Master form which is otherwise lazily loaded and never
                 // initialized in the normal way.
-                if (
-                    MuseUtils.isValidId(pItemId) &&
-                    pItemId != lastSeenItemId &&
-                    MuseUtils.realNull(itemMaster) !== null
-                ) {
+                if (MuseUtils.isValidId(pItemId)) {
+                    var itemMaster = mywindow.findChild("item");
+
                     // Call the embedded Item Master's set function in view mode
                     // as that is the default that is in effect in core xTuple
                     // when called from Item Availability Workbench.
                     itemMaster.set({ item_id: pItemId, mode: "view" });
-
-                    lastSeenItemId = pItemId;
                 }
             } catch (e) {
                 var error = new MuseUtils.ApiException(
                     "musextputils",
                     "We had problems responding and handling a new Item selection.",
                     "MuseUtils.ItemAvailability.pPublicApi.sHandleNewId",
-                    { params: funcParams, thrownError: e }
+                    { params: funcParams, thrownError: e },
+                    MuseUtils.LOG_CRITICAL
                 );
 
                 MuseUtils.displayError(error, mywindow);
@@ -135,7 +122,6 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
-        toolbox.coreDisconnect(_item, "newId(int)", mywindow, "populate()");
         _item["newId(int)"].connect(pPublicApi.sHandleNewId);
 
         //--------------------------------------------------------------------
@@ -162,7 +148,7 @@ try {
                 foreignSetFunc(myParams);
                 pPublicApi.set(myParams);
             } catch (e) {
-                var error = new MuseUtils.UnknownException(
+                var error = new MuseUtils.ModuleException(
                     "musextputils",
                     "We enountered an error while initializing the form.",
                     "global.set",
@@ -172,18 +158,20 @@ try {
                         context: {
                             parsedParams: myParams
                         }
-                    }
+                    },
+                    MuseUtils.LOG_FATAL
                 );
                 MuseUtils.displayError(error, mywindow);
                 mywindow.close();
             }
         };
     } catch (e) {
-        var error = new MuseUtils.UnknownException(
+        var error = new MuseUtils.ModuleException(
             "musextputils",
             "We enountered a MuseUtils.ItemAvailability module error that wasn't otherwise caught and handled.",
             "MuseUtils.ItemAvailability",
-            { thrownError: e }
+            { thrownError: e },
+            MuseUtils.LOG_FATAL
         );
         MuseUtils.displayError(error, mainwindow);
     }

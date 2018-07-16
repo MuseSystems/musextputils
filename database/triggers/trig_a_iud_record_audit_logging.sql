@@ -9,7 +9,7 @@
  **
  ** Contact:
  ** muse.information@musesystems.com  :: https://muse.systems
- ** 
+ **
  ** License: MIT License. See LICENSE.md for complete licensing details.
  **
  *************************************************************************
@@ -23,7 +23,7 @@
 -- reasonably safely.
 --
 
-CREATE OR REPLACE FUNCTION musextputils.trig_a_iud_record_audit_logging() 
+CREATE OR REPLACE FUNCTION musextputils.trig_a_iud_record_audit_logging()
     RETURNS trigger AS
         $BODY$
             DECLARE
@@ -39,9 +39,9 @@ CREATE OR REPLACE FUNCTION musextputils.trig_a_iud_record_audit_logging()
                     vNewRecJson := to_jsonb(NEW);
                     vOldRecJson := to_jsonb(OLD);
 
-                    IF (SELECT count(1) 
+                    IF (SELECT count(1)
                         FROM jsonb_each(
-                            musextputils.jsonb_diff(vNewRecJson, 
+                            musextputils.jsonb_diff(vNewRecJson,
                                 vOldRecJson))) = 0 THEN
                         -- Nothing to do here... there are no changes... just
                         -- return.
@@ -70,9 +70,9 @@ CREATE OR REPLACE FUNCTION musextputils.trig_a_iud_record_audit_logging()
                     ,vNewRecJson);
 
                 -- We return new or old based on our operation type.
-                IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN 
+                IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
                     RETURN NEW;
-                ELSE    
+                ELSE
                     RETURN OLD;
                 END IF;
             END;
@@ -87,5 +87,5 @@ GRANT EXECUTE ON FUNCTION musextputils.trig_a_iud_record_audit_logging() TO admi
 GRANT EXECUTE ON FUNCTION musextputils.trig_a_iud_record_audit_logging() TO xtrole;
 
 
-COMMENT ON FUNCTION musextputils.trig_a_iud_record_audit_logging() 
+COMMENT ON FUNCTION musextputils.trig_a_iud_record_audit_logging()
     IS $DOC$Looks for changes in data and logs the old and new version of the record (as appropriate to the change type) in the musextputils.auditlog table.  Note that this trigger should not be applied to tables directly; use the musextputils.add_table_auditing function to ensure tha the trigger is set up reasonably safely.$DOC$;

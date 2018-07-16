@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="2.9.1"
+         version="3.0.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -72,20 +72,29 @@
     <createfunction file="database/functions/add_table_auditing.sql" name="add_table_auditing" />
     <createfunction file="database/functions/jsonb_diff.sql" name="jsonb_diff" />
     <createfunction file="database/functions/get_normalized_name.sql" name="get_normalized_name" />
+    <createfunction file="database/functions/get_mean_absolute_deviation.sql" name="get_mean_absolute_deviation" />
 
 	<createview file="database/views/v_basic_catalog.sql" name="v_basic_catalog"/>
 	<createview file="database/views/v_catalog_triggers.sql" name="v_catalog_triggers"/>
     <createview file="database/views/v_auditlog_changes.sql" name="v_auditlog_changes" />
     <createview file="database/views/v_characteristic.sql" name="v_characteristic" />
-	<loadappscript file="client/scripts/museUtils.js" name="museUtils" order="10">A JavaScript module providing opinionated functions that facilitate custom development of the xTuple ERP desktop client.  This script now only includes all the sub-modules; it otherwise contains no functionality.</loadappscript>
+
+    <loadappui file="client/uiforms/museUtilsExceptionDialog.ui" order="20">Establishes the layout of the exception dialog.</loadappui>
+    <!-- <loadappui file="client/uiforms/museUtilsApprovalDialog.ui" order="20">Layout for managerial override functionality.</loadappui> -->
+
+    <loadappscript file="client/scripts/museUtils.js" name="museUtils" order="10">A JavaScript module providing opinionated functions that facilitate custom development of the xTuple ERP desktop client.  This script now only includes all the sub-modules; it otherwise contains no functionality.</loadappscript>
 	<loadappscript file="client/scripts/numbro/numbro.js" name="numbro" order="10">The numbro JavaScript number formatting library.  This manages formatting and takes care of some of our floating point math issues.</loadappscript>
+    <loadappscript file="client/scripts/sjcl/sjcl.js" name="sjcl" order="10">The Stanford JavaScript Crypto Library.  Used for some hashing and crypto work where needed and not otherwise exposed from Qt.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJsPolyfill.js" name="museUtilsJsPolyfill" order="10">A set of simple polyfills for those times the Qt JavaScript version falls short of the current standards.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsException.js" name="museUtilsException" order="10">A library encapsulating custom exception handling.</loadappscript>
-	<loadappscript file="client/scripts/museUtilsConfig.js" name="museUtilsConfig" order="10">A library encapsulating custom configuration handling.</loadappscript>
+	<loadappscript file="client/scripts/museUtilsEventHooks.js" name="museUtilsEventHooks" order="10">A library which allows scripts to behave cooperatively when the context is native xTuple XDialog based forms </loadappscript>
+    <loadappscript file="client/scripts/museUtilsConfig.js" name="museUtilsConfig" order="10">A library encapsulating custom configuration handling.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsQt.js" name="museUtilsQt" order="10">A library defining custom extensions to stock Qt UI widgets and similar form related helpers.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsUser.js" name="museUtilsUser" order="10">A library encapsulating user related functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsJs.js" name="museUtilsJs" order="10">A library defining misc., usefull JavaScript functions.</loadappscript>
 	<loadappscript file="client/scripts/museUtilsDb.js" name="museUtilsDb" order="10">A library defining custom database access functionality.</loadappscript>
+
+    <loadappscript file="client/scripts/museUtilsExceptionDialog.js" name="museUtilsExceptionDialog" order="10">Backs the exception dialog form.</loadappscript>
 
     <loadappscript file="client/scripts/xtuple_forms/salesOrderItem.js" name="salesOrderItem" order="0">A script to provide Sales Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="0">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
