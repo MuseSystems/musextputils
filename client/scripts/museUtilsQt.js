@@ -28,7 +28,8 @@ try {
     MuseUtils.loadMuseUtils([
         MuseUtils.MOD_NUMBRO,
         MuseUtils.MOD_EXCEPTION,
-        MuseUtils.MOD_JSPOLYFILL
+        MuseUtils.MOD_JSPOLYFILL,
+        MuseUtils.MOD_JS
     ]);
 } catch (e) {
     if (

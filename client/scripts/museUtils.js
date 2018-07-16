@@ -41,6 +41,7 @@ try {
 
         // Module name constances
         pPublicApi.MOD_NUMBRO = "numbro";
+        pPublicApi.MOD_SJCL = "sjcl";
         pPublicApi.MOD_JSPOLYFILL = "museUtilsJsPolyfill";
         pPublicApi.MOD_EXCEPTION = "museUtilsException";
         pPublicApi.MOD_EVENTHOOKS = "museUtilsEventHooks";
@@ -51,6 +52,7 @@ try {
         pPublicApi.MOD_DB = "museUtilsDb";
         pPublicApi.MOD_ALL = [
             pPublicApi.MOD_NUMBRO,
+            pPublicApi.MOD_SJCL,
             pPublicApi.MOD_JSPOLYFILL,
             pPublicApi.MOD_EXCEPTION,
             pPublicApi.MOD_EVENTHOOKS,
@@ -68,16 +70,37 @@ try {
         pPublicApi.LOG_CRITICAL = true;
         pPublicApi.LOG_FATAL = true;
 
+        // User Approval Return Codes
+        pPublicApi.AUTH_REJECTED = 0;
+        pPublicApi.AUTH_SELF = 1;
+        pPublicApi.AUTH_MANAGER = 2;
+
         //------------------------------------------------------------------
         //  Private Functional Logic
         //------------------------------------------------------------------
         var load = function(pModules) {
             for (var i = 0; i < pModules.length; i++) {
+                // Check if we got something bogus
+                if (pPublicApi.MOD_ALL.indexOf(pModules[i]) < 0) {
+                    throw new Error(
+                        "The MuseUtils loader asked to load something that is not a module (" +
+                            pModules[i] +
+                            ")"
+                    );
+                }
+
                 if (
                     typeof numbro !== "function" &&
                     pModules[i] == pPublicApi.MOD_NUMBRO
                 ) {
                     include("numbro");
+                }
+
+                if (
+                    typeof sjcl !== "object" &&
+                    pModules[i] == pPublicApi.MOD_SJCL
+                ) {
+                    include("sjcl");
                 }
 
                 if (

@@ -114,7 +114,7 @@ try {
                                 "musextputils",
                                 "We found an error while executing a 'pre-save' hook function.  We will abort the save that you requested.",
                                 "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                                { params: funcParams, thrownError: e },
+                                { thrownError: e },
                                 MuseUtils.LOG_WARNING
                             );
                         }
@@ -128,7 +128,7 @@ try {
                             "musextputils",
                             "We caught an error trying trying to run the native form's save function.  We abort here as our state is indeterminate.",
                             "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
-                            { params: funcParams, thrownError: e },
+                            { thrownError: e },
                             MuseUtils.LOG_WARNING
                         );
                     }
@@ -145,12 +145,11 @@ try {
                                 "We found an error while executing a 'post-save' hook function.  The record you are saving has been saved, though there may be problems, especially with any custom module that also must save information.  Please be sure to double check the record you just saved for accurracy.",
                                 "MuseUtils.initSaveHookFramework.runSaveHookFunctions",
                                 {
-                                    thrownError: myError,
+                                    thrownError: e,
                                     context: {
                                         preSaveEventFuncs: preSaveEventFuncs,
                                         postSaveEventFuncs: postSaveEventFuncs
-                                    },
-                                    params: funcParams
+                                    }
                                 },
                                 MuseUtils.LOG_CRITICAL
                             );

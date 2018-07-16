@@ -425,6 +425,31 @@ try {
         ScriptException.prototype.getSystemNotification = getSystemNotification;
         ScriptException.prototype.getDebugData = getDebugData;
 
+        var FormException = function(
+            pPackage,
+            pMessage,
+            pFunction,
+            pPayload,
+            pIsLogged
+        ) {
+            this.myIsMuseUtilsException = true;
+            this.myPackage = pPackage;
+            this.myMessage = pMessage;
+            this.myFunction = pFunction;
+            this.myPayload = pPayload;
+            this.myIsLogged = pIsLogged === true ? true : false;
+            this.myErrorName = "FormException";
+            this.myErrorDesc =
+                "We encountered an error while executing an application form function.  See exception stack for root cause details.";
+            this.logMsg = logException(this);
+        };
+
+        FormException.prototype = new Error();
+        FormException.prototype.constructor = FormException;
+        FormException.prototype.toString = getExceptionText;
+        FormException.prototype.getSystemNotification = getSystemNotification;
+        FormException.prototype.getDebugData = getDebugData;
+
         var displayError = function(pException, pParent) {
             // Let's parse the exception.  Check for our marker attribute.
             // If the marker is present we assume it is our exception and that we
@@ -481,6 +506,8 @@ try {
         pPublicApi.ModuleException = ModuleException;
 
         pPublicApi.ScriptException = ScriptException;
+
+        pPublicApi.FormException = FormException;
 
         pPublicApi.displayError = function(pException, pParent) {
             // First we need to know whether or not we were even called properly.

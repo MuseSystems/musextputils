@@ -14,7 +14,7 @@ License: MIT License. See LICENSE.md for complete licensing details.</comment>
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>420</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -31,6 +31,18 @@ License: MIT License. See LICENSE.md for complete licensing details.</comment>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <widget class="QGroupBox" name="sysNotificationGroupBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>1</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>300</height>
+        </size>
+       </property>
        <property name="title">
         <string>System Notification</string>
        </property>
@@ -49,6 +61,12 @@ License: MIT License. See LICENSE.md for complete licensing details.</comment>
       <widget class="QGroupBox" name="debugGroupBox">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>3</verstretch>
+        </sizepolicy>
        </property>
        <property name="title">
         <string>Technical Information</string>

@@ -1,4 +1,4 @@
-Muse Systems xTuple ERP Utilities v2.9.1
+Muse Systems xTuple ERP Utilities v3.0.0
 ========================================
 
 Overview
@@ -28,6 +28,7 @@ This list of features is the short list of significant features.  Unfortunately,
 | museUtils.js           | Is a loader for all of the other scripts.  If you need the full utilities suite, simply include "museUtils" in your script.
 | museUtilsJsPolyfill.js | Provides polyfills for JavaScript functions from later versions of ECMAScript than that supported by QtScript directly.
 | museUtilsException.js  | An exception handling framework.  This script provides a standard way to throw more informative exceptions which can them be displayed in the user interface.  Exceptions and collected data are stored in a database table on display to the user.
+| museUtilsEventHooks.js | Provides a systematic workaround for xTuple core forms that are XDialog based and don't provide proper pre/post core save ability to scripts.
 | museUtilsConfig.js     | An extended configuration management framework.  xTuple's built in configuration management doesn't have explicit mechanisms for custom metric additions.  As such we define our own functionality and make it a bit more robust and flexible.
 | museUtilsQt.js         | Monkey patches for some Qt objects which provide convenience functions for working in a QtScript context.  Currently only QLineEdit/XLineEdit has some enhanced numeric handling ability.
 | museUtilsUser.js       | Convenience functions for accessing user information, such as session users, and such.
@@ -48,6 +49,8 @@ There are a number of database functions, views, and utility triggers that are a
 ### Third Party Libraries and Code
 We distribute third party libraries in this utilities package and use small code extracts from various sources.  Small extracts are acknowledged inline with the code in the applicable source file.
 
-We also distribute version 1.9.3 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
+We distribute the following libraries (runtime versions, not full source):
+* Version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
+* Version 1.04 of the <a href="https://bitwiseshiftleft.github.io/sjcl/" target="_blank">Stanford Javascript Crypto Library</a>.  Its license and terms are in the client/scripts/sjcl directory of this package.
 
 &copy; 2017 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>
