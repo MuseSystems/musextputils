@@ -491,14 +491,14 @@ try {
                     "FROM     " +
                     "    (SELECT vbc.column_name AS json_key, null::text AS json_value " +
                     "     FROM musextputils.v_basic_catalog vbc  " +
-                    "         JOIN pg_catalog.pg_trigger pt  " +
+                    "         LEFT OUTER JOIN pg_catalog.pg_trigger pt  " +
                     "             ON vbc.table_oid = pt.tgrelid   " +
-                    "     WHERE pt.tgname ~ 'trig_b_iu_audit_field_maintenance'  " +
-                    '         AND vbc.table_schema_name = <? value("pSchema") ?>' +
-                    '         AND vbc.table_name =  <? value("pTable") ?>  ' +
+                    "               AND pt.tgname ~ 'trig_b_iu_audit_field_maintenance' " +
+                    "     WHERE vbc.table_schema_name = <? value('pSchema') ?>" +
+                    "         AND vbc.table_name =  <? value('pTable') ?>  " +
                     "         AND vbc.column_ordinal > 0  " +
-                    "         AND NOT vbc.column_name = ANY(string_to_array( " +
-                    "                                    encode(tgargs, 'escape'),E'\\\\000'))  " +
+                    "         AND coalesce(NOT vbc.column_name = ANY(string_to_array( " +
+                    "                                    encode(tgargs, 'escape'),E'\\\\000')), true)  " +
                     "     ORDER BY column_ordinal) q",
                 {
                     pSchema: pSchema,
