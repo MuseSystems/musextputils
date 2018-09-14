@@ -61,6 +61,7 @@ try {
         //--------------------------------------------------------------------
         //  Constants and Module State
         //--------------------------------------------------------------------
+        var itemMaster = null;
 
         //--------------------------------------------------------------------
         //  Get Object References From Screen Definitions
@@ -88,8 +89,8 @@ try {
                 // Force the loading and initialization of the embedded Item
                 // Master form which is otherwise lazily loaded and never
                 // initialized in the normal way.
-                if (MuseUtils.isValidId(pItemId)) {
-                    var itemMaster = mywindow.findChild("item");
+                if (MuseUtils.isValidId(pItemId) && itemMaster === null) {
+                    itemMaster = mywindow.findChild("item");
 
                     // Call the embedded Item Master's set function in view mode
                     // as that is the default that is in effect in core xTuple
