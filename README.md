@@ -1,4 +1,4 @@
-Muse Systems xTuple ERP Utilities v3.0.1
+Muse Systems xTuple ERP Utilities v4.0.0
 ========================================
 
 Overview
@@ -15,7 +15,7 @@ This version of the library requires the following minimum specifications:
 
 * PostgreSQL version 9.5.
 * The PostgreSQL "hstore" extension installed into the xTuple database.
-* xTuple ERP 4.10.0 or later (note that we have only tested on 4.10.x)
+* xTuple ERP 4.11.3 or later (note that we have only tested on 4.11.3)
 * xTuple Updater 2.4.0
 
 Features

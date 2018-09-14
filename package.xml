@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="3.0.1"
+         version="4.0.0"
          updater="2.4.0">
 
 	<pkgnotes>
@@ -37,13 +37,13 @@
                 (SELECT substring(fetchMetricText('ServerVersion'),E'^[[:digit:]]+\.[[:digit:]]+\.([[:digit:]]+)'))::integer as patch_version
          )
 	     SELECT
-                (major_version = 4 AND minor_version = 10 AND patch_version >= 0)
-            OR  (major_version = 4 AND minor_version > 10)
+                (major_version = 4 AND minor_version = 11 AND patch_version >= 3)
+            OR  (major_version = 4 AND minor_version > 11)
             OR  (major_version > 4)
          FROM version;
 	    </query>
 	    <message>
-	      This package must be installed against xTuple ERP version 4.10.0 or later.  This package has only been tested against version 4.10.0 and may not work in later version without updating.
+	      This package must be installed against xTuple ERP version 4.11.3 or later.  This package has only been tested against version 4.11.3 and may not work in later version without updating.
 	    </message>
 	</prerequisite>
 
@@ -99,7 +99,6 @@
     <loadappscript file="client/scripts/xtuple_forms/salesOrderItem.js" name="salesOrderItem" order="0">A script to provide Sales Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="0">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/shipTo.js" name="shipTo" order="0">A script to provide ShipTo save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
-    <loadappscript file="client/scripts/xtuple_forms/itemAvailabilityWorkbench.js" name="itemAvailabilityWorkbench" order="100">A script to provide Item Availability Workbench forced loading and initialization of scripts backing the embedded Item Master form.</loadappscript>
-
+    <loadappscript file="client/scripts/xtuple_forms/itemAvailabilityWorkbench.js" name="itemAvailabilityWorkbench" order="100">A script to ensure that any "item" scripts are initialized on load of the Item Availability workbench.</loadappscript>
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
