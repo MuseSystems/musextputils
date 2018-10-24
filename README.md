@@ -1,4 +1,4 @@
-Muse Systems xTuple ERP Utilities v4.0.0
+Muse Systems xTuple ERP Utilities v4.1.0
 ========================================
 
 Overview
@@ -53,4 +53,4 @@ We distribute the following libraries (runtime versions, not full source):
 * Version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities.  Its license and terms are in the client/scripts/numbro directory of this package.
 * Version 1.04 of the <a href="https://bitwiseshiftleft.github.io/sjcl/" target="_blank">Stanford Javascript Crypto Library</a>.  Its license and terms are in the client/scripts/sjcl directory of this package.
 
-&copy; 2017 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>
+&copy; 2017-2018 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>
