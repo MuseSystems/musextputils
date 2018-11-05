@@ -83,10 +83,10 @@ try {
             var metricQuery;
             // Get the metric
             metricQuery = toolbox.executeQuery(
-                'SELECT musextputils.get_musemetric(<? value("package") ?>, ' +
+                'SELECT to_json(musextputils.get_musemetric(<? value("package") ?>, ' +
                     ' <? value("metric") ?>, null::' +
                     pMetricType +
-                    ") AS result",
+                    ")) AS result",
                 {
                     package: pPackageName,
                     metric: pMetricName
@@ -109,7 +109,7 @@ try {
             }
 
             if (metricQuery.first()) {
-                return metricQuery.value("result");
+                return JSON.parse(metricQuery.value("result"));
             }
 
             // We didn't get a result, just return null.
