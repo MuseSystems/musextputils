@@ -129,7 +129,9 @@ try {
         };
         var getDateMetric = function(pPackageName, pMetricName) {
             // Get the metric
-            return getMetric(pPackageName, pMetricName, "timestamptz");
+            return new Date(
+                getMetric(pPackageName, pMetricName, "timestamptz")
+            );
         };
         var getHstoreMetric = function(pPackageName, pMetricName) {
             // Get the metric
