@@ -1,4 +1,4 @@
-Muse Systems xTuple ERP Utilities v5.0.0
+Muse Systems xTuple ERP Utilities v5.0.1
 ========================================
 
 Overview
