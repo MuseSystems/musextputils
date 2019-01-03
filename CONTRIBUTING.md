@@ -36,11 +36,11 @@ Once the work is merged with the develop branch, it will automatically be includ
 ### Basic Ground Rules for Code Submission
 We have a few simple requirements for any code submission before it can be merged with the package.
 
-1) We don't have a formal style guide as such, but we try to be reasonably consistent.
+1) If you represent a business which owns the rights to the contribution you wish to make, we require that the business have a fully exectued "Entity Contributor License Agreement" with Muse Systems on file.  If you are an individual who owns the rights to the submission, we require that you have a fully exectuted "Individual Contributor License Agreement" with Muse Systems on file.  A single Entity/Individual Contributor License Agreement covers all Muse Systems projects which accepts contributions, including this one.  For details, see our <a href="https://muse.systems/products/contributors" target="_blank">contributors page</a>.
 
-2) Don't abuse the global namespace.  Unfortunately, this is a common practice in xTuple package development and we cannot perpetuate it here.  If something goes into the global namespace, there must be a compelling reason.
+2) We don't have a formal style guide as such, but we try to be reasonably consistent.
 
-3) There is a camp that likes commented code, and one which abhors it.  We like it and we should be more consistent in doing so.
+3) Don't abuse the global namespace.  Unfortunately, this is a common practice in xTuple package development and we cannot perpetuate it here.  If something goes into the global namespace, there must be a compelling reason.
 
-4) The big controversial requirement: we want you to get credit for any code you submit, but we must insist on copyright assignment to Muse Systems.  There are a number of reasons for this, but most importantly, we don't want any complexity in terms of how the future of this package may evolve.  We want to offer this code to the community, but at the same time we may find ourselves in situations where we must dual license the code on a commercial basis or similar.  We will promise that you will receive an appropriate place in the list of contributors and that any submission will appear in at least one open source release of the package.  We will nonetheless reserve the right to issue the work under other licenses, commercially license, sell the intellectual property rights to the package without further notice or permission from the contributors, and possibly cease public distribution of the package.  Having said that, the heat death of the universe will likely come pass before any of that becomes an issue for this software package... and even that's assuming there's interest outside of Muse System in contributing code!
+4) There is a camp that likes commented code, and one which abhors it.  We like it and we should be more consistent in doing so.
 
