@@ -30,3 +30,10 @@ sjcl v1.0.4
 Copyright (c) 2009-2015, Emily Stark, Mike Hamburg and Dan Boneh at
 Stanford University. All rights reserved.
 (via 2-Clause BSD License see license details in scripts/sjcl directory)
+
+museUtilsJsPolyfill.js
+==============================
+Most code in this file was sourced from the JavaScript language references at
+https://developer.mozilla.org and are in the public domain according to the
+terms of that publisher.  Specific references and attestations of public
+domain status are in the museUtilsPolyfill.js file.
