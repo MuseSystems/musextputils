@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File: 		create_musemetric.sql
- ** Project: 	Muse Systems xTuple ERP Utilities
- ** Author:		Steven C. Buttgereit
- **
- ** (C) 2014-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        create_musemetric.sql
+-- Location:    musextputils/database/functions
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 -- Generic way to create a metric.  Since in most cases, we will create a metric for a single type of value, we handle a default single setting here.
 --     More complex configurations are multi-type and that is allowable, but each type needs to be updated after creation for that use case.

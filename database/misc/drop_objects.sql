@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         drop_objects.sql
- ** Project:      Muse Systems xTuple Utilities
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2016-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        drop_objects.sql
+-- Location:    musextputils/database/misc
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 -- This script will clean up package objects such as scripts, reports, and
 -- UI forms.  These objects can get left behind as cruft as change happens

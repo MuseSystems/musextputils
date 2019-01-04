@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:    trig_b_iu_audit_field_maintenance.sql
- ** Project:    Muse Systems xTuple Utils
- ** Author:     Steven C. Buttgereit
- **
- ** (C) 2014-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        trig_b_iu_audit_field_maintenance.sql
+-- Location:    musextputils/database/triggers
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
     RETURNS trigger AS

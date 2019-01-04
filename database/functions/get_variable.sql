@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         get_variable.sql
- ** Project:      Muse Systems xTuple Utilties
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2016-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        get_variable.sql
+-- Location:    musextputils/database/functions
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 --
 -- Retrieves a session or local variable and casts it to a useful type.  We also
