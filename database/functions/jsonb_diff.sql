@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         jsonb_diff.sql
- ** Project:      Muse Systems xTuple Utilities
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2016-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        jsonb_diff.sql
+-- Location:    musextputils/database/functions
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 --
 -- Compares two JSONB objects and returns any attributes from the Primary object that don't exist or have different values as compared to the secondary object.  Inspired by origtinal work from Christophe Pettus (http://thebuild.com/blog/2016/01/21/a-simple-json-difference-function/).

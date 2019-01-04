@@ -2,12 +2,30 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="5.0.0"
+         version="5.0.1"
          updater="2.4.0">
 
 	<pkgnotes>
 		A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module.
 	</pkgnotes>
+    <prerequisite type="license" name="License Terms" >
+        <message>
+&lt;p>
+Muse Systems xTuple ERP Utilities (musextputils) &lt;br/>
+Version 5.0.1
+&lt;/p>
+&lt;p>
+Copyright (C) 2016-2019 &lt;br/>
+Lima Buttgereit Holdings LLC (d/b/a Muse Systems)&lt;br/>
+All Rights Reserved
+&lt;/p>
+&lt;p>
+Muse Systems licenses this file to you under the Apache License, Version 2.0.
+&lt;/p>
+See the LICENSE file in the project root for full terms and conditions.&lt;br/>
+See the NOTICE file in the project root for full copyright ownership information.&lt;br/>
+        </message>
+ </prerequisite>
 	<prerequisite type="Query"
 		        name="PostgreSQL Database Version">
 	    <query>

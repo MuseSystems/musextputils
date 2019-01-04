@@ -1,0 +1,39 @@
+Muse Systems xTuple ERP Utilities (musextputils)
+Copyright (C) 2016-2019 Lima Buttgereit Holdings LLC (d/b/a Muse Systems)
+All Rights Reserved
+
+This product includes software developed at Muse Systems (https://muse.systems/)
+
+This product may include software developed and copyrighted by third parties who
+have:
+
+    1) passively licensed this product to Muse Systems via a so-called
+       "open source" license which is compatible with the license under which
+       Muse Systems makes this product available;
+    2) granted a license to Muse Systems to incorporate, sub-license, and
+       distribute their software via a Contributor License Agreement with Muse
+       Systems;
+    3) granted a license to Muse Systems which includes rights to incorporate,
+       sub-license, and distribute their software into this product and under
+       the offered license terms of this product.
+
+A list of third party copyright holders appears below:
+
+numbro v1.11.0
+==============
+Copyright © 2014 Adam Draper
+Copyright © 2015-2016 Företagsplatsen AB
+(via MIT License, see license details in scripts/numbro directory)
+
+sjcl v1.0.4
+===========
+Copyright (c) 2009-2015, Emily Stark, Mike Hamburg and Dan Boneh at
+Stanford University. All rights reserved.
+(via 2-Clause BSD License see license details in scripts/sjcl directory)
+
+museUtilsJsPolyfill.js
+==============================
+Most code in this file was sourced from the JavaScript language references at
+https://developer.mozilla.org and are in the public domain according to the
+terms of that publisher.  Specific references and attestations of public
+domain status are in the museUtilsPolyfill.js file.

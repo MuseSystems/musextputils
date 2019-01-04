@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:        museUtilsJsPolyfill.js
- ** Project:
- ** Author:      Steven C. Buttgereit
- **
- ** (C) 2016-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+// File:        museUtilsJsPolyfill.js
+// Location:    musextputils/client/scripts
+// Project:     Muse Systems xTuple ERP Utilities
+//
+// Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+// more agreements.  Muse Systems licenses this file to you under the Apache
+// License, Version 2.0.
+//
+// See the LICENSE file in the project root for license terms and conditions.
+// See the NOTICE file in the project root for copyright ownership information.
+//
+// muse.information@musesystems.com  :: https://muse.systems
+
 try {
     //////////////////////////////////////////////////////////////////////////
     //  Namespace Definition
@@ -145,7 +142,7 @@ try {
      * Object.keys polyfill from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
      * This code is in the Public Domain per the licensing terms of the source
      * website.
-    */
+     */
     if (!Object.keys) {
         Object.keys = (function() {
             "use strict";

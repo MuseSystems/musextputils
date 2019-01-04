@@ -1,19 +1,16 @@
-/*************************************************************************
- *************************************************************************
- **
- ** File:         create_metrics.sql
- ** Project:      Muse Systems xTuple Utilities
- ** Author:       Steven C. Buttgereit
- **
- ** (C) 2014-2017 Lima Buttgereit Holdings LLC d/b/a Muse Systems
- **
- ** Contact:
- ** muse.information@musesystems.com  :: https://muse.systems
- **
- ** License: MIT License. See LICENSE.md for complete licensing details.
- **
- *************************************************************************
- ************************************************************************/
+-- File:        create_metrics.sql
+-- Location:    musextputils/database/misc
+-- Project:     Muse Systems xTuple ERP Utilities
+--
+-- Licensed to Lima Buttgereit Holdings LLC (d/b/a Muse Systems) under one or
+-- more agreements.  Muse Systems licenses this file to you under the Apache
+-- License, Version 2.0.
+--
+-- See the LICENSE file in the project root for license terms and conditions.
+-- See the NOTICE file in the project root for copyright ownership information.
+--
+-- muse.information@musesystems.com  :: https://muse.systems
+
 
 -- This script is used to create metrics in the common/custom musextputils.metrics table.  Only try if the metric doesn't exist already.
 SELECT musextputils.create_musemetric('musextputils', 'debugErrorMessageDisplay', 'Determines whether the displayError function will show full error messages or simplified error messages suitable for end users.', false)
