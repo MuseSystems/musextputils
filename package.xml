@@ -29,10 +29,10 @@ See the NOTICE file in the project root for full copyright ownership information
 	<prerequisite type="Query"
 		        name="PostgreSQL Database Version">
 	    <query>
-	      SELECT CASE WHEN (current_setting('server_version_num'))::integer >= 90500 THEN true ELSE false END;
+	      SELECT CASE WHEN (current_setting('server_version_num'))::integer >= 100000 THEN true ELSE false END;
 	    </query>
 	    <message>
-	      This package must be installed against PostgreSQL Database Version 9.5 or later.
+	      This package must be installed against PostgreSQL Database Version 10 or later.
 	    </message>
 	</prerequisite>
 	<prerequisite type="Query"
