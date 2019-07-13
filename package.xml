@@ -3,7 +3,7 @@
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
          version="6.0.0"
-         updater="2.4.0">
+         updater="2.5.2">
 
 	<pkgnotes>
 		A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module.
