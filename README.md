@@ -12,10 +12,10 @@ This library is maintained by <a href="https://muse.systems" target="_blank">Mus
 
 This version of the library requires the following minimum specifications:
 
--   PostgreSQL version 9.5.
+-   PostgreSQL version 10.
 -   The PostgreSQL "hstore" extension installed into the xTuple database.
--   xTuple ERP 4.11.3 or later (note that we have only tested on 4.11.3)
--   xTuple Updater 2.4.0
+-   xTuple ERP 5.0.0 or later (note that we have only tested on 5.0.0)
+-   xTuple Updater 2.5.2
 
 ## Features
 
