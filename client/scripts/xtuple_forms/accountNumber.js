@@ -67,7 +67,7 @@ try {
         //  Get Object References From Screen Definitions
         //--------------------------------------------------------------------
         // _save = mywindow.findChild("_buttonBox").accepted;
-        _save = mywindow.findChild("_buttonBox");
+        _save = mywindow.findChild("_buttonBox").button(QDialogButtonBox.Save);
         // _save = mywindow.findChild("_save");
 
         //--------------------------------------------------------------------
