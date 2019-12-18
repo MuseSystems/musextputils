@@ -203,7 +203,6 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
-        toolbox.coreDisconnect(_save, "clicked()", mywindow, "sSaveClicked()");
         _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
 
         //--------------------------------------------------------------------
