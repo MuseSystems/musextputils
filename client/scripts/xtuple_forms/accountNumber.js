@@ -67,7 +67,8 @@ try {
         //  Get Object References From Screen Definitions
         //--------------------------------------------------------------------
         // _save = mywindow.findChild("_buttonBox").accepted;
-        _save = mywindow.findChild("_buttonBox").button(QDialogButtonBox.Save);
+        _buttonBox = mywindow.findChild("_buttonBox");
+        _save = _buttonBox.button(QDialogButtonBox.Save);
         // _save = mywindow.findChild("_save");
 
         //--------------------------------------------------------------------
@@ -203,6 +204,7 @@ try {
         //--------------------------------------------------------------------
         //  Definition Timed Connects/Disconnects
         //--------------------------------------------------------------------
+        toolbox.coreDisconnect(_buttonBox, "accepted()", mywindow, "sSave()");
         _save.clicked.connect(saveHookFramework.sProcessSaveFramework);
 
         //--------------------------------------------------------------------
