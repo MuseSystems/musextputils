@@ -2,8 +2,8 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="6.0.0"
-         updater="2.4.0">
+         version="6.1.0"
+         updater="2.5.2">
 
 	<pkgnotes>
 		A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module.
@@ -12,10 +12,10 @@
         <message>
 &lt;p>
 Muse Systems xTuple ERP Utilities (musextputils) &lt;br/>
-Version 6.0.0
+Version 6.1.0
 &lt;/p>
 &lt;p>
-Copyright (C) 2016-2019 &lt;br/>
+Copyright (C) 2016-2020 &lt;br/>
 Lima Buttgereit Holdings LLC (d/b/a Muse Systems)&lt;br/>
 All Rights Reserved
 &lt;/p>
@@ -118,6 +118,7 @@ See the NOTICE file in the project root for full copyright ownership information
     <loadappscript file="client/scripts/xtuple_forms/transferOrderItem.js" name="transferOrderItem" order="6">A script to provide Transfer Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/purchaseOrderItem.js" name="purchaseOrderItem" order="6">A script to provide Purchase Order Item save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/shipTo.js" name="shipTo" order="6">A script to provide ShipTo save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
+    <loadappscript file="client/scripts/xtuple_forms/accountNumber.js" name="accountNumber" order="6">A script to provide Ledger Account Number save event hook services to other scripts that want a guaranteed run time relative to the native save function being run.</loadappscript>
     <loadappscript file="client/scripts/xtuple_forms/itemAvailabilityWorkbench.js" name="itemAvailabilityWorkbench" order="100">A script to ensure that any "item" scripts are initialized on load of the Item Availability workbench.</loadappscript>
 	<finalscript file="database/misc/create_metrics.sql" />
 </package>
