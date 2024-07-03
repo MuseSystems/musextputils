@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="6.1.0"
+         version="6.2.0"
          updater="2.5.2">
 
 	<pkgnotes>
@@ -12,7 +12,7 @@
         <message>
 &lt;p>
 Muse Systems xTuple ERP Utilities (musextputils) &lt;br/>
-Version 6.1.0
+Version 6.2.0
 &lt;/p>
 &lt;p>
 Copyright (C) 2016-2020 &lt;br/>
@@ -35,16 +35,6 @@ See the NOTICE file in the project root for full copyright ownership information
 	      This package must be installed against PostgreSQL Database Version 9.5 or later.
 	    </message>
 	</prerequisite>
-	<prerequisite type="Query"
-		        name="PostgreSQL hstore Module Installed">
-	    <query>
-	      SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname = 'hstore');
-	    </query>
-	    <message>
-	      The PostgreSQL contrib module "hstore" must be installed prior to loading this package.
-	    </message>
-	</prerequisite>
-
 	<prerequisite type="Query"
 		        name="xTuple ERP Version">
 	    <query>

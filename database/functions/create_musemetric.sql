@@ -35,8 +35,8 @@ CREATE OR REPLACE FUNCTION musextputils.create_musemetric(pMetricPackage text, p
 					RAISE EXCEPTION 'pMetricDescription must have a non-null, non-empty-string value.  You passed: %.  Please try again. (FUNC: )',pMetricDescription;
 				END IF;
 
-				IF pg_typeof(pMetricValue)::text NOT IN ('numeric','text','boolean','timestamptz','hstore','jsonb','numeric[]','text[]') THEN
-					RAISE EXCEPTION 'pMetricValue must one of types numeric, text, boolean, timestamptz, hstore, jsonb, numeric[], text[]... you passed us: %.  Please try again. (FUNC: musextputils.create_musemetric)', pg_typeof(pMetricValue)::text;
+				IF pg_typeof(pMetricValue)::text NOT IN ('numeric','text','boolean','timestamptz','jsonb','numeric[]','text[]') THEN
+					RAISE EXCEPTION 'pMetricValue must one of types numeric, text, boolean, timestamptz, jsonb, numeric[], text[]... you passed us: %.  Please try again. (FUNC: musextputils.create_musemetric)', pg_typeof(pMetricValue)::text;
 				END IF;
 
 				-- We got something reasonable so we'll go forward... start by figuring out the correct value column.
@@ -49,8 +49,6 @@ CREATE OR REPLACE FUNCTION musextputils.create_musemetric(pMetricPackage text, p
 						vValueColumn := 'musemetric_flag';
 					WHEN pg_typeof(pMetricValue)::text = 'timestamptz' THEN
 						vValueColumn := 'musemetric_date';
-					WHEN pg_typeof(pMetricValue)::text = 'hstore' THEN
-						vValueColumn := 'musemetric_hstore';
 					WHEN pg_typeof(pMetricValue)::text = 'jsonb' THEN
 						vValueColumn := 'musemetric_jsonb';
 					WHEN pg_typeof(pMetricValue)::text = 'numeric[]' THEN
