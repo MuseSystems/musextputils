@@ -35,7 +35,6 @@ CREATE OR REPLACE FUNCTION musextputils.create_musemetric_table()
                             ,musemetric_text                text
                             ,musemetric_flag                boolean
                             ,musemetric_date                timestamptz
-                            ,musemetric_hstore              hstore
                             ,musemetric_jsonb               jsonb
                             ,musemetric_number_array        numeric[]
                             ,musemetric_text_array          text[]
@@ -82,6 +81,12 @@ CREATE OR REPLACE FUNCTION musextputils.create_musemetric_table()
                         COMMENT ON COLUMN musextputils.musemetric.musemetric_jsonb
                             IS 'A column to store JSONB based configuration data.';
                     END IF;
+
+                    -- TODO: At some point we should add code to remove the
+                    --       musemetric.musemetric_hstore column if it exists.
+                    --       But that's not a safe operation since valuable data
+                    --       may exist there with some users.  As such, we'll
+                    --       just ignore its existence for now.
 
                 END IF;
 

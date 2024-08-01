@@ -1,4 +1,4 @@
-# Muse Systems xTuple ERP Utilities v6.1.0
+# Muse Systems xTuple ERP Utilities v7.0.0
 
 ## Overview
 
@@ -13,7 +13,6 @@ This library is maintained by <a href="https://muse.systems" target="_blank">Mus
 This version of the library requires the following minimum specifications:
 
 -   PostgreSQL version 9.5.
--   The PostgreSQL "hstore" extension installed into the xTuple database.
 -   xTuple ERP 4.11.3 or later (note that we have only tested on 4.11.3)
 -   xTuple Updater 2.5.2
 
@@ -56,4 +55,4 @@ We distribute the following libraries (runtime versions, not full source):
 -   Version 1.11.0 of the <a href="http://numbrojs.com/" target="_blank">numbro</a> number manipulation library and use it within our utilities. Its license and terms are in the client/scripts/numbro directory of this package.
 -   Version 1.04 of the <a href="https://bitwiseshiftleft.github.io/sjcl/" target="_blank">Stanford Javascript Crypto Library</a>. Its license and terms are in the client/scripts/sjcl directory of this package.
 
-&copy; 2017-2020 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>
+&copy; 2017-2024 Lima Buttgereit Holdings LLC d/b/a <a href="https://muse.systems" target="_blank">Muse Systems</a>

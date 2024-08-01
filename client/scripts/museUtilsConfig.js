@@ -50,7 +50,7 @@ try {
 //  Module Defintion
 //////////////////////////////////////////////////////////////////////////
 
-(function(pPublicApi, pGlobal) {
+(function (pPublicApi, pGlobal) {
     try {
         //--------------------------------------------------------------------
         //  Constants
@@ -59,7 +59,7 @@ try {
         //--------------------------------------------------------------------
         //  Private Functional Logic
         //--------------------------------------------------------------------
-        var getMetric = function(pPackageName, pMetricName, pMetricType) {
+        var getMetric = function (pPackageName, pMetricName, pMetricType) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -81,9 +81,9 @@ try {
             // Get the metric
             metricQuery = toolbox.executeQuery(
                 'SELECT to_json(musextputils.get_musemetric(<? value("package") ?>, ' +
-                    ' <? value("metric") ?>, null::' +
-                    pMetricType +
-                    ")) AS result",
+                ' <? value("metric") ?>, null::' +
+                pMetricType +
+                ")) AS result",
                 {
                     package: pPackageName,
                     metric: pMetricName
@@ -112,37 +112,33 @@ try {
             // We didn't get a result, just return null.
             return null;
         };
-        var getNumberMetric = function(pPackageName, pMetricName) {
+        var getNumberMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "numeric");
         };
-        var getTextMetric = function(pPackageName, pMetricName) {
+        var getTextMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "text");
         };
-        var getFlagMetric = function(pPackageName, pMetricName) {
+        var getFlagMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "boolean");
         };
-        var getDateMetric = function(pPackageName, pMetricName) {
+        var getDateMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return new Date(
                 getMetric(pPackageName, pMetricName, "timestamptz")
             );
         };
-        var getHstoreMetric = function(pPackageName, pMetricName) {
-            // Get the metric
-            return getMetric(pPackageName, pMetricName, "hstore");
-        };
-        var getJsonMetric = function(pPackageName, pMetricName) {
+        var getJsonMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "jsonb");
         };
-        var getNumberArrayMetric = function(pPackageName, pMetricName) {
+        var getNumberArrayMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "numeric[]");
         };
-        var getTextArrayMetric = function(pPackageName, pMetricName) {
+        var getTextArrayMetric = function (pPackageName, pMetricName) {
             // Get the metric
             return getMetric(pPackageName, pMetricName, "text[]");
         };
@@ -150,7 +146,7 @@ try {
         //--------------------------------------------------------------------
         //  Public Interface -- Functions
         //--------------------------------------------------------------------
-        pPublicApi.getNumberMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getNumberMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -170,7 +166,7 @@ try {
             }
         };
 
-        pPublicApi.getTextMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getTextMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -190,7 +186,7 @@ try {
             }
         };
 
-        pPublicApi.getFlagMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getFlagMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -210,7 +206,7 @@ try {
             }
         };
 
-        pPublicApi.getDateMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getDateMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -230,27 +226,8 @@ try {
             }
         };
 
-        pPublicApi.getHstoreMetric = function(pPackageName, pMetricName) {
-            // Capture function parameters for later exception references.
-            var funcParams = {
-                pPackageName: pPackageName,
-                pMetricName: pMetricName
-            };
 
-            try {
-                return getHstoreMetric(pPackageName, pMetricName);
-            } catch (e) {
-                throw new MuseUtils.ApiException(
-                    "musextputils",
-                    "There was an error during execution of an API call.",
-                    "MuseUtils.pPublicApi.getHstoreMetric",
-                    { params: funcParams },
-                    MuseUtils.LOG_WARNING
-                );
-            }
-        };
-
-        pPublicApi.getJsonMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getJsonMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -270,7 +247,7 @@ try {
             }
         };
 
-        pPublicApi.getNumberArrayMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getNumberArrayMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
@@ -290,7 +267,7 @@ try {
             }
         };
 
-        pPublicApi.getTextArrayMetric = function(pPackageName, pMetricName) {
+        pPublicApi.getTextArrayMetric = function (pPackageName, pMetricName) {
             // Capture function parameters for later exception references.
             var funcParams = {
                 pPackageName: pPackageName,
