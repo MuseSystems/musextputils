@@ -2,7 +2,7 @@
          name="musextputils"
          developer="Muse Systems"
          descrip="A library package of generically useful PostgreSQL and xTuple ERP functions and such from Muse Systems.  Based on the Muse Systems 'muse_syscore' module."
-         version="6.2.0"
+         version="7.0.0"
          updater="2.5.2">
 
 	<pkgnotes>
@@ -12,10 +12,10 @@
         <message>
 &lt;p>
 Muse Systems xTuple ERP Utilities (musextputils) &lt;br/>
-Version 6.2.0
+Version 7.0.0
 &lt;/p>
 &lt;p>
-Copyright (C) 2016-2020 &lt;br/>
+Copyright (C) 2016-2024 &lt;br/>
 Lima Buttgereit Holdings LLC (d/b/a Muse Systems)&lt;br/>
 All Rights Reserved
 &lt;/p>

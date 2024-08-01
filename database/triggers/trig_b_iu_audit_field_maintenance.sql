@@ -80,10 +80,10 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
 
               vJsonbOld := to_jsonb( old );
 
-              IF (NOT (vJsonbNew->pIsActiveColumnName)::boolean AND (vJsonbOld->pIsActiveColumnName)::boolean) THEN
+              IF (NOT (vJsonbNew->>pIsActiveColumnName)::boolean AND (vJsonbOld->>pIsActiveColumnName)::boolean) THEN
                  vJsonbFinal := vJsonbFinal || jsonb_build_object(pDateDeactivatedColumnName, now());
                  vJsonbFinal := vJsonbFinal || jsonb_build_object(pRoleDeactivatedColumnName, session_user);
-              ELSIF ((vJsonbNew->pIsActiveColumnName)::boolean AND NOT (vJsonbOld->pIsActiveColumnName)::boolean) THEN
+              ELSIF ((vJsonbNew->>pIsActiveColumnName)::boolean AND NOT (vJsonbOld->>pIsActiveColumnName)::boolean) THEN
                  vJsonbFinal := vJsonbFinal || jsonb_build_object(pDateDeactivatedColumnName,null);
                  vJsonbFinal := vJsonbFinal || jsonb_build_object(pRoleDeactivatedColumnName,null);
               END IF;
@@ -91,7 +91,7 @@ CREATE OR REPLACE FUNCTION musextputils.trig_b_iu_audit_field_maintenance()
               vJsonbFinal := vJsonbFinal || jsonb_build_object(pDateModifiedColumnName, now());
               vJsonbFinal := vJsonbFinal || jsonb_build_object(pWallclockModifiedColumnName, clock_timestamp());
               vJsonbFinal := vJsonbFinal || jsonb_build_object(pRoleModifiedColumnName, session_user);
-              vJsonbFinal := vJsonbFinal || jsonb_build_object(pRowVersionNumberColumnName, ((vJsonbOld->pRowVersionNumberColumnName)::int8 + 1));
+              vJsonbFinal := vJsonbFinal || jsonb_build_object(pRowVersionNumberColumnName, ((vJsonbOld->>pRowVersionNumberColumnName)::int8 + 1));
 
           ELSE
 
